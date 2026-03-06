@@ -1032,4 +1032,23 @@
     tl.addEventListener('mousedown', e => {
       down = true; sx = e.pageX - tl.offsetLeft; sl = tl.scrollLeft;
     });
-    document.addEventListener('mouseup', 
+    document.addEventListener('mouseup', () => { down = false; });
+    tl.addEventListener('mousemove', e => {
+      if (!down) return;
+      e.preventDefault();
+      const x = e.pageX - tl.offsetLeft;
+      const walk = (x - sx) * 2;
+      tl.scrollLeft = sl - walk;
+    });
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
