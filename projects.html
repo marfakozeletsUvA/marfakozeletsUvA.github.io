@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Marfa Kozelets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --chalk:  #EEECEA;
+      --navy:   #0F1623;
+      --blue:   #2563EB;
+      --ink:    #1A1A1A;
+      --muted:  #6B7280;
+      --border: rgba(15,22,35,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Cormorant', serif;
+      background: var(--chalk);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--chalk);
+      border-bottom: 1px solid var(--border);
+      padding: 0 52px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.active { color: var(--blue); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--ink);
+    }
+
+    .mobile-nav-drawer {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0; right: 0;
+      background: var(--chalk);
+      border-bottom: 1px solid var(--border);
+      padding: 28px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .mobile-nav-drawer.open { display: flex; }
+
+    .mobile-nav-drawer a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 72px 52px 56px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--blue);
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .page-title {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 24px;
+    }
+
+    .page-title em {
+      font-style: italic;
+    }
+
+    .page-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.9;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── PROJECTS CONTAINER ── */
+    .projects-container {
+      padding: 52px 52px 0;
+    }
+
+    /* ── HERO CARD — KALLIPOLIS ── */
+    .hero-card {
+      border: 1px dashed rgba(15,22,35,0.25);
+      background: rgba(15,22,35,0.025);
+      margin-bottom: 2px;
+      padding: 56px 52px;
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 40px;
+      align-items: start;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .hero-card:hover {
+      background: rgba(15,22,35,0.04);
+    }
+
+    .card-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .hero-card .card-tag {
+      color: rgba(107,114,128,0.6);
+    }
+
+    .card-title {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .hero-card .card-title {
+      color: rgba(26,26,26,0.45);
+      font-style: italic;
+    }
+
+    .card-desc {
+      font-family: 'Cormorant', serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: #4B5563;
+      max-width: 580px;
+      margin-bottom: 28px;
+    }
+
+    .hero-card .card-desc {
+      color: rgba(107,114,128,0.7);
+    }
+
+    .card-methods {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .method-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: 1px solid var(--border);
+      padding: 4px 11px;
+      color: var(--muted);
+    }
+
+    .hero-card .method-tag {
+      border-color: rgba(15,22,35,0.08);
+      color: rgba(107,114,128,0.5);
+    }
+
+    .card-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink);
+      text-decoration: none;
+      transition: gap 0.2s, color 0.2s;
+    }
+
+    .card-arrow::after {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.2s;
+    }
+
+    .card-arrow:hover { gap: 14px; }
+    .card-arrow:hover::after { width: 40px; }
+
+    .hero-card .card-arrow {
+      color: rgba(107,114,128,0.5);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ── STATUS BLOCK ── */
+    .card-status-block {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 14px;
+      padding-top: 4px;
+    }
+
+    .status-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 5px 13px;
+      border: 1px solid;
+    }
+
+    .status-coming {
+      color: rgba(107,114,128,0.5);
+      border-color: rgba(107,114,128,0.25);
+      border-style: dashed;
+    }
+
+    .status-progress {
+      color: var(--blue);
+      border-color: rgba(37,99,235,0.4);
+    }
+
+    .status-complete {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .card-year {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--blue);
+    }
+
+    .hero-card .card-year {
+      color: rgba(107,114,128,0.4);
+    }
+
+    /* ── LOWER TWO CARDS ── */
+    .lower-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .project-card {
+      border: 1px solid var(--border);
+      background: var(--chalk);
+      padding: 44px 40px;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.2s, border-color 0.25s;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .project-card:hover {
+      background: #E8E6E3;
+      border-color: rgba(15,22,35,0.25);
+    }
+
+    .project-card .card-title {
+      font-size: clamp(22px, 2.5vw, 32px);
+      margin-bottom: 16px;
+    }
+
+    .project-card .card-desc {
+      font-size: 15px;
+      margin-bottom: 24px;
+      flex: 1;
+    }
+
+    .project-card .card-methods {
+      margin-bottom: 28px;
+    }
+
+    /* ── STANDOUT STAT ── */
+    .card-stat {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      border-left: 2px solid var(--blue);
+      padding-left: 16px;
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .card-stat strong {
+      display: block;
+      font-family: 'Cormorant', serif;
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--ink);
+      margin-bottom: 4px;
+      line-height: 1;
+    }
+
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: auto;
+    }
+
+    /* ── DARK CTA ── */
+    .contact-cta {
+      background: var(--navy);
+      padding: 100px 52px;
+      text-align: center;
+      margin-top: 52px;
+    }
+
+    .cta-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .cta-heading {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.1;
+      color: var(--chalk);
+      margin-bottom: 16px;
+    }
+
+    .cta-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 44px;
+      letter-spacing: 0.04em;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 15px 40px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      text-decoration: none;
+      color: var(--chalk);
+      background: transparent;
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .cta-btn:hover {
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      padding: 28px 52px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-copy {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--blue); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .page-header { padding: 48px 24px 40px; }
+      .projects-container { padding: 32px 24px 0; }
+      .contact-cta { padding: 72px 24px; margin-top: 32px; }
+      footer { padding: 24px; }
+
+      .hero-card {
+        grid-template-columns: 1fr;
+        padding: 40px 28px;
+      }
+
+      .card-status-block {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+      .lower-cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">M. Kozelets</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="projects.html" class="active">Projects</a></li>
+      <li><a href="writing.html">Writing</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <a href="index.html">Home</a>
+    <a href="research.html">Research</a>
+    <a href="projects.html">Projects</a>
+    <a href="writing.html">Writing</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header fade-up">
+    <span class="page-eyebrow">Selected Work</span>
+    <h1 class="page-title">Pro<em>jects</em></h1>
+    <p class="page-subtitle">
+      Flagship work where research becomes something you can see, use, and argue with.
+      Each project makes methodology public.
+    </p>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="projects-container">
+
+    <!-- HERO — KALLIPOLIS -->
+    <div class="hero-card fade-up">
+      <div class="hero-card-inner">
+        <span class="card-tag">Ethics &amp; AI Governance · Interactive Tool</span>
+        <h2 class="card-title">Project Kallipolis</h2>
+
+        <div class="card-methods">
+          <span class="method-tag">HTML / CSS / JS</span>
+          <span class="method-tag">Ethics</span>
+          <span class="method-tag">Political Philosophy</span>
+          <span class="method-tag">Interactive Prototype</span>
+        </div>
+        <span class="card-arrow">Available upon submission</span>
+      </div>
+      <div class="card-status-block">
+        <span class="status-tag status-coming">Coming Soon</span>
+        <span class="card-year">2026</span>
+      </div>
+    </div>
+
+    <!-- LOWER TWO -->
+    <div class="lower-cards">
+
+      <!-- ROADMAP FOR CHANGE -->
+      <a class="project-card fade-up" href="research.html">
+        <span class="card-tag">Urban Mobility · Agent-Based Modelling</span>
+        <h2 class="card-title">Roadmap for Change</h2>
+        <p class="card-desc">
+          Agent-based model simulating cyclist behaviour from 110 sensor-recorded
+          trips across Amsterdam — identifying unsafe infrastructure hotspots
+          before accidents happen. Built with Tapp Smart Architecture
+          and presented at Innovation Centre Amsterdam.
+        </p>
+        <div class="card-stat">
+          <strong>93.9%</strong>
+          of hard braking occurs away from traffic lights — infrastructure, not behaviour, is the risk.
+        </div>
+        <div class="card-methods">
+          <span class="method-tag">Python</span>
+          <span class="method-tag">Mesa ABM</span>
+          <span class="method-tag">GeoPandas</span>
+          <span class="method-tag">OpenStreetMap</span>
+        </div>
+        <div class="card-bottom">
+          <span class="status-tag status-complete">Completed</span>
+          <span class="card-year">2025–2026</span>
+        </div>
+      </a>
+
+      <!-- NEO-COLONIAL NETWORKS -->
+      <a class="project-card fade-up" href="research.html">
+        <span class="card-tag">Political Science · Predictive Analysis</span>
+        <h2 class="card-title">Neo-Colonial Networks</h2>
+        <p class="card-desc">
+          Using 10 datasets as proxies for post-colonial power structures to build
+          a predictive model of state political instability and journalist killings.
+          Examines how legacy colonial relationships continue to shape contemporary
+          governance failure.
+        </p>
+        <div class="card-methods">
+          <span class="method-tag">Python</span>
+          <span class="method-tag">Network Analysis</span>
+          <span class="method-tag">Regression</span>
+          <span class="method-tag">Post-Colonial Theory</span>
+        </div>
+        <div class="card-bottom">
+          <span class="status-tag status-progress">In Progress</span>
+          <span class="card-year">2025–present</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- DARK CTA -->
+  <div class="contact-cta">
+    <span class="cta-label">Get in touch</span>
+    <h2 class="cta-heading">Interested in my work?<br>Let's talk.</h2>
+    <p class="cta-sub">Open to research collaborations, academic discussions, and internship opportunities.</p>
+    <a href="contact.html" class="cta-btn">Contact me →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-copy">© Marfa Kozelets — marfakozelets.com</span>
+    <div class="footer-links">
+      <a href="#">Email</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleDrawer() {
+      document.getElementById('mobileDrawer').classList.toggle('open');
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.06 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
