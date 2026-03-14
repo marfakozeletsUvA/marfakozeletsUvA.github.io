@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Kallipolis - Colonial Boarding Assessment</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #080808;
+  --surface: #111;
+  --border: #222;
+  --border-bright: #333;
+  --text: #e0e0e0;
+  --text-dim: #999;
+  --text-faint: #555;
+  --red: #c0392b;
+  --red-bright: #e74c3c;
+  --red-glow: rgba(192,57,43,0.12);
+  --amber: #d4a017;
+  --amber-glow: rgba(212,160,23,0.12);
+  --green: #2ecc71;
+  --green-glow: rgba(46,204,113,0.12);
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; line-height: 1.7; min-height: 100vh; }
+body::after { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px); pointer-events: none; z-index: 2000; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba(8,8,8,0.97); border-bottom: 1px solid var(--border); padding: 16px 48px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(8px); }
+.nav-logo { font-family: var(--mono); font-size: 13px; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { font-size: 12px; color: var(--text-dim); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+.screen { display: none; position: fixed; inset: 0; overflow-y: auto; background: var(--bg); z-index: 1; }
+.screen.active { display: block; }
+
+/* ============ SCREEN 0: CONSENT ============ */
+#screen-consent { padding-top: 57px; min-height: 100vh; display: flex; flex-direction: column; }
+
+.consent-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 48px;
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.consent-eyebrow { font-size: 10px; color: var(--red); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px; }
+
+.consent-text { font-size: 14px; color: var(--text); line-height: 1.85; margin-bottom: 32px; text-align: center; }
+.consent-text strong { color: #fff; font-weight: 500; }
+
+.consent-question {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 36px;
+  line-height: 1.5;
+  padding: 24px 32px;
+  border: 1px solid var(--border-bright);
+}
+
+.consent-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+.btn-accept { padding: 18px; background: var(--red); color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s; }
+.btn-accept:hover { background: var(--red-bright); }
+.btn-decline { padding: 18px; background: none; color: var(--text-dim); font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--border-bright); cursor: pointer; transition: all 0.2s; }
+.btn-decline:hover { border-color: var(--text-dim); color: var(--text); }
+
+.consent-footer { text-align: center; margin-top: 20px; font-size: 10px; color: var(--text-faint); }
+
+/* declined state */
+.declined-msg { text-align: center; padding: 48px 32px; }
+.declined-msg .dec-title { font-size: 32px; font-weight: 600; color: var(--text-dim); margin-bottom: 16px; letter-spacing: -0.02em; }
+.declined-msg p { font-size: 13px; color: var(--text-dim); line-height: 1.8; max-width: 440px; margin: 0 auto; }
+
+/* ============ SCREEN 1: INTRO ============ */
+#screen-intro { padding-top: 57px; min-height: 100vh; }
+
+.warning-banner { background: var(--red); padding: 11px 48px; display: flex; align-items: flex-start; gap: 14px; }
+.warn-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: #fff; text-transform: uppercase; white-space: nowrap; padding-top: 1px; flex-shrink: 0; }
+.warn-text { font-size: 11px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+
+.intro-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 88px); }
+
+.intro-left { padding: 52px 48px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 28px; }
+
+.system-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+.system-label::before { content: '// '; color: var(--red); }
+
+.intro-title-wrap { display: flex; flex-direction: column; gap: 2px; }
+.intro-title-project { font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--text-dim); letter-spacing: 0.14em; text-transform: uppercase; }
+.intro-title-main { font-family: var(--mono); font-size: clamp(40px, 5vw, 62px); font-weight: 600; line-height: 1.0; letter-spacing: -0.02em; color: #fff; }
+.intro-title-main em { font-style: italic; font-weight: 300; color: #aaa; }
+.intro-subtitle { font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; }
+
+.lore-block { border-left: 2px solid var(--red); padding-left: 20px; }
+.lore-block p { font-size: 13px; color: var(--text); line-height: 1.85; margin-bottom: 10px; }
+.lore-block p:last-child { margin-bottom: 0; }
+
+/* PLATO CLASSES */
+.plato-section { }
+.plato-header { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+.plato-header::before { content: '// '; }
+.plato-intro { font-size: 12px; color: var(--text-dim); line-height: 1.75; margin-bottom: 20px; }
+
+.class-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.class-card { background: var(--bg); padding: 18px 16px; }
+.class-symbol { font-size: 22px; margin-bottom: 10px; line-height: 1; }
+.class-card-name { font-size: 11px; font-weight: 600; color: var(--text); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.class-card-role { font-size: 10px; color: var(--red); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+.class-card-desc { font-size: 11px; color: var(--text-dim); line-height: 1.6; }
+
+
+.intro-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto; }
+.intro-footer span { font-size: 11px; color: var(--text-faint); }
+.footer-english { font-style: italic; }
+
+.intro-right { padding: 52px 48px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+
+.disclaimer-box { border: 1px solid var(--red); background: rgba(192,57,43,0.05); padding: 24px 26px; }
+.disc-header { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red-bright); margin-bottom: 14px; }
+.disclaimer-box p { font-size: 13px; color: var(--text); line-height: 1.8; margin-bottom: 10px; }
+.disclaimer-box p:last-child { margin-bottom: 0; }
+.disclaimer-box strong { color: var(--red-bright); font-weight: 500; }
+
+.btn-begin { display: block; width: 100%; padding: 18px; background: var(--red); color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s; }
+.btn-begin:hover { background: var(--red-bright); }
+.footer-note { font-size: 10px; color: var(--text-faint); text-align: center; }
+
+/* ============ SCREEN 2: QUESTIONNAIRE ============ */
+#screen-questionnaire { padding-top: 57px; min-height: 100vh; }
+
+.q-header { border-bottom: 1px solid var(--border); padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; background: var(--surface); position: sticky; top: 57px; z-index: 50; }
+.q-title { font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+.q-progress-wrap { display: flex; align-items: center; gap: 14px; }
+.q-progress-label { font-size: 11px; color: var(--text-dim); }
+.q-progress-bar { width: 160px; height: 2px; background: var(--border-bright); }
+.q-progress-fill { height: 100%; background: var(--red); transition: width 0.35s ease; }
+
+.q-body { max-width: 680px; margin: 0 auto; padding: 56px 48px 80px; }
+
+.q-block { display: none; animation: fadeUp 0.3s ease; }
+.q-block.active { display: block; }
+@keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+.q-number { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+.q-label { font-family: var(--sans); font-size: 22px; font-weight: 300; color: #fff; line-height: 1.25; margin-bottom: 8px; }
+.q-sublabel { font-size: 12px; color: var(--text-dim); margin-bottom: 28px; line-height: 1.7; }
+
+select { width: 100%; background: var(--surface); border: 1px solid var(--border-bright); color: var(--text); font-family: var(--mono); font-size: 13px; padding: 14px 16px; appearance: none; outline: none; transition: border-color 0.2s; cursor: pointer; }
+select:focus { border-color: var(--red); }
+select option { background: #111; color: var(--text); }
+
+.range-wrap { padding: 4px 0 16px; }
+input[type="range"] { width: 100%; height: 3px; cursor: pointer; accent-color: var(--red); background: var(--border-bright); border: none; outline: none; padding: 0; margin-bottom: 10px; -webkit-appearance: none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--red); cursor: pointer; }
+input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--red); cursor: pointer; border: none; }
+.range-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-dim); }
+.range-value { text-align: center; font-size: 24px; font-weight: 300; color: var(--text); margin-top: 12px; }
+
+.checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.checkbox-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--border); cursor: pointer; transition: border-color 0.15s, background 0.15s; font-size: 12px; color: var(--text); user-select: none; -webkit-user-select: none; }
+.checkbox-item:hover { border-color: var(--border-bright); }
+.checkbox-item.checked { border-color: var(--red); background: var(--red-glow); }
+.checkbox-box { width: 14px; height: 14px; border: 1px solid var(--border-bright); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 9px; color: transparent; transition: all 0.15s; }
+.checkbox-item.checked .checkbox-box { border-color: var(--red); color: var(--red); }
+
+.captcha-box { border: 1px solid var(--border-bright); background: var(--surface); padding: 28px; }
+.captcha-label { font-size: 9px; letter-spacing: 0.14em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 18px; text-align: center; }
+.captcha-puzzle { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--text); line-height: 1.8; margin-bottom: 22px; padding: 18px; background: var(--bg); border: 1px solid var(--border); }
+.captcha-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.captcha-option { padding: 13px 14px; border: 1px solid var(--border); background: var(--bg); font-family: var(--mono); font-size: 12px; color: var(--text); cursor: pointer; transition: all 0.2s; text-align: left; }
+.captcha-option:hover { border-color: var(--border-bright); background: var(--surface); }
+.captcha-option.selected { border-color: var(--red); background: var(--red-glow); }
+
+.q-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); }
+.btn-prev { background: none; border: 1px solid var(--border-bright); color: var(--text-dim); font-family: var(--mono); font-size: 12px; padding: 12px 24px; cursor: pointer; transition: all 0.2s; }
+.btn-prev:hover { border-color: var(--text-dim); color: var(--text); }
+.btn-next { background: var(--red); border: none; color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 14px 32px; cursor: pointer; transition: background 0.2s; letter-spacing: 0.06em; text-transform: uppercase; }
+.btn-next:hover { background: var(--red-bright); }
+
+.processing-msg { display: none; text-align: center; padding: 64px 48px; }
+.proc-text { font-size: 12px; color: var(--text-dim); letter-spacing: 0.06em; animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+.proc-dots::after { content:''; animation: dots 1.5s steps(3,end) infinite; }
+@keyframes dots { 0%{content:'';} 33%{content:'.';} 66%{content:'..';} 100%{content:'...';} }
+
+/* ============ SCREEN 3: VERDICT ============ */
+#screen-verdict { padding-top: 57px; min-height: 100vh; }
+.verdict-body { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 57px); }
+.verdict-left { border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; padding: 72px 56px; }
+.verdict-right { padding: 56px 48px; overflow-y: auto; }
+
+.verdict-stamp { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 18px; }
+.approved-stamp { color: var(--green); }
+.denied-stamp { color: var(--red-bright); }
+
+.verdict-main { font-size: clamp(52px, 7vw, 76px); font-weight: 600; line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 36px; }
+.verdict-approved-color { color: var(--green); }
+.verdict-denied-color { color: var(--red); }
+
+.verdict-class-symbol { font-size: 36px; margin-bottom: 12px; }
+.class-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.class-name { font-size: 24px; font-weight: 300; color: var(--text); font-family: var(--sans); margin-bottom: 8px; }
+.class-desc { font-size: 13px; color: var(--text); line-height: 1.75; }
+
+.denied-msg { font-size: 14px; color: var(--text); line-height: 1.8; margin-bottom: 20px; }
+.denied-note { font-size: 12px; color: var(--text-dim); line-height: 1.75; padding: 14px 18px; border-left: 2px solid var(--red); background: rgba(192,57,43,0.04); }
+.ref-number { font-size: 10px; color: var(--text-faint); letter-spacing: 0.05em; margin-top: 32px; }
+
+.section-label { font-size: 10px; color: var(--red); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; }
+.section-label::before { content: '// '; }
+
+.score-breakdown { margin-bottom: 28px; }
+.score-item { padding: 11px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 130px 1fr 48px; gap: 12px; align-items: center; }
+.score-item:last-child { border-bottom: none; }
+.score-criterion { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+.score-bar-wrap { height: 3px; background: var(--border-bright); }
+.score-bar-green { height: 100%; background: var(--green); }
+.score-bar-amber { height: 100%; background: var(--amber); }
+.score-bar-red { height: 100%; background: var(--red); }
+.score-val { font-size: 12px; text-align: right; font-weight: 500; }
+.score-val.high { color: var(--green); }
+.score-val.mid { color: var(--amber); }
+.score-val.low { color: var(--red-bright); }
+
+.verdict-note { font-size: 12px; color: var(--text-dim); line-height: 1.8; padding: 16px 18px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 20px; }
+.btn-reflect { display: block; width: 100%; padding: 14px; background: none; border: 1px solid var(--border-bright); color: var(--text); font-family: var(--mono); font-size: 12px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; text-align: center; }
+.btn-reflect:hover { border-color: var(--text-dim); }
+
+/* ============ SCREEN 4: REFLECTION ============ */
+#screen-reflection { padding-top: 57px; min-height: 100vh; }
+.reflection-body { max-width: 820px; margin: 0 auto; padding: 64px 48px 80px; }
+.reflection-intro { font-size: 13px; color: var(--text-dim); line-height: 1.85; margin-bottom: 40px; margin-top: 20px; }
+
+.weights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 56px; }
+.weight-item { background: var(--bg); padding: 22px 24px; }
+.weight-criterion { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.weight-pct { font-size: 28px; font-weight: 300; color: var(--text); margin-bottom: 6px; }
+.weight-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+
+.postcolonial-block { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 48px 0; margin-bottom: 44px; }
+.pc-label { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; text-align: center; }
+.pc-question { font-family: var(--sans); font-size: 18px; font-weight: 300; color: var(--text); line-height: 1.75; max-width: 600px; margin: 0 auto; text-align: center; }
+.pc-question strong { font-weight: 500; color: #fff; }
+
+/* REFLECTION FORM */
+.reflection-form-wrap { background: var(--surface); border: 1px solid var(--border); padding: 32px 36px; margin-bottom: 52px; }
+.rf-label { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+.rf-label::before { content: '// '; }
+.rf-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; margin-bottom: 28px; margin-top: 8px; }
+
+.rf-field { margin-bottom: 20px; }
+.rf-field label { display: block; font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rf-field input, .rf-field textarea, .rf-field select {
+  width: 100%; background: var(--bg); border: 1px solid var(--border-bright);
+  color: var(--text); font-family: var(--mono); font-size: 13px;
+  padding: 12px 14px; outline: none; transition: border-color 0.2s;
+  appearance: none; resize: vertical;
+}
+.rf-field input:focus, .rf-field textarea:focus, .rf-field select:focus { border-color: var(--red); }
+.rf-field textarea { min-height: 90px; }
+
+.rf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.btn-submit-form { background: var(--red); border: none; color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 16px 32px; cursor: pointer; transition: background 0.2s; letter-spacing: 0.08em; text-transform: uppercase; width: 100%; margin-top: 8px; }
+.btn-submit-form:hover { background: var(--red-bright); }
+
+.form-success { display: none; text-align: center; padding: 24px; font-size: 12px; color: var(--green); border: 1px solid var(--green); background: var(--green-glow); }
+
+
+.site-footer { border-top: 1px solid var(--border); padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-faint); }
+.footer-english { font-style: italic; }
+
+
+/* NOBLE LIE INTRO BLOCK */
+.noble-lie-intro { border: 1px solid var(--border); padding: 24px 26px; background: var(--surface); }
+.nli-label { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+.nli-label::before { content: '// '; }
+.nli-text { font-size: 13px; color: var(--text-dim); line-height: 1.8; margin-bottom: 10px; }
+.nli-text:last-child { margin-bottom: 0; color: var(--text); font-style: italic; }
+
+/* PLATO DEFENCE BLOCK */
+.plato-defence { border-left: 2px solid var(--border-bright); padding-left: 24px; margin-bottom: 44px; }
+.pd-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+.pd-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; margin-bottom: 12px; }
+.pd-text:last-child { margin-bottom: 0; }
+
+/* ============ MOBILE ============ */
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .nav-links { gap: 18px; }
+  .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+  .nav-links a { font-size: 11px; }
+
+  /* consent mobile */
+  #screen-consent { padding-top: 49px; }
+  .consent-body { padding: 40px 20px; }
+  .consent-title { font-size: 28px; }
+  .consent-buttons { grid-template-columns: 1fr; }
+  .consent-question { font-size: 15px; padding: 18px 20px; }
+
+  /* intro mobile */
+  #screen-intro { padding-top: 49px; }
+  .warning-banner { padding: 10px 20px; gap: 10px; }
+  .warn-label { font-size: 9px; }
+  .warn-text { font-size: 10px; }
+  .intro-grid { grid-template-columns: 1fr; min-height: auto; }
+  .intro-left { padding: 28px 20px 20px; border-right: none; border-bottom: 1px solid var(--border); gap: 20px; }
+  .intro-title-main { font-size: 40px; }
+  .class-cards { grid-template-columns: 1fr; }
+  .intro-footer { flex-direction: column; gap: 4px; align-items: flex-start; }
+  .intro-right { padding: 20px 20px 32px; justify-content: flex-start; gap: 16px; }
+  .noble-lie-intro { padding: 20px; }
+  .disclaimer-box p:nth-child(3) { display: none; }
+  .btn-begin { padding: 16px; }
+
+  /* questionnaire mobile */
+  #screen-questionnaire { padding-top: 49px; }
+  .q-header { padding: 14px 20px; top: 49px; }
+  .q-title { display: none; }
+  .q-progress-bar { width: 120px; }
+  .q-body { padding: 32px 20px 64px; }
+  .q-label { font-size: 18px; }
+  .q-sublabel { font-size: 11px; margin-bottom: 20px; }
+  .checkbox-grid { grid-template-columns: 1fr; }
+  .captcha-options { grid-template-columns: 1fr; }
+
+  /* verdict mobile */
+  #screen-verdict { padding-top: 49px; }
+  .verdict-body { grid-template-columns: 1fr; min-height: auto; }
+  .verdict-left { border-right: none; border-bottom: 1px solid var(--border); padding: 36px 20px; }
+  .verdict-right { padding: 28px 20px 48px; }
+  .verdict-main { font-size: 52px; }
+  .score-item { grid-template-columns: 90px 1fr 40px; gap: 8px; }
+  .score-criterion { font-size: 9px; }
+
+  /* reflection mobile */
+  #screen-reflection { padding-top: 49px; }
+  .reflection-body { padding: 36px 20px 56px; }
+  .weights-grid { grid-template-columns: 1fr; }
+  .postcolonial-block { padding: 32px 0; }
+  .pc-question { font-size: 15px; }
+  .reflection-form-wrap { padding: 24px 20px; }
+  .rf-row { grid-template-columns: 1fr; gap: 0; }
+  .about-strip { grid-template-columns: 1fr; gap: 24px; }
+  .site-footer { padding: 16px 20px; flex-direction: column; gap: 4px; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://marfakozelets.com" class="nav-logo">marfa.kozelets</a>
+  <ul class="nav-links">
+    <li><a href="https://marfakozelets.com/research.html">Research</a></li>
+    <li><a href="https://marfakozelets.com/projects.html">Projects</a></li>
+    <li><a href="https://marfakozelets.com/writing.html">Writing</a></li>
+    <li><a href="#" class="active">Kallipolis</a></li>
+    <li><a href="https://marfakozelets.com/contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================ -->
+<!-- SCREEN 0: CONSENT GATE                                        -->
+<!-- ============================================================ -->
+<div id="screen-consent" class="screen active">
+  <div class="consent-body" id="consent-main">
+    <div class="consent-eyebrow">International Colonial Authority · 2035</div>
+    <div style="text-align:center; margin-bottom:8px;">
+      <div style="font-size:12px; color:var(--text-dim); letter-spacing:0.14em; text-transform:uppercase; margin-bottom:4px;">Project</div>
+      <div style="font-family:var(--mono); font-size:clamp(36px,5vw,56px); font-weight:600; color:#fff; letter-spacing:-0.02em; line-height:1.0;"><em style="font-style:italic; font-weight:300; color:#aaa;">Kallipolis</em></div>
+    </div>
+    <div style="font-size:10px; color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:40px; text-align:center;">Colonial Boarding Assessment System v4.2</div>
+
+    <p class="consent-text">
+      It is 2035. Earth is no longer viable. The Mars Colonial Programme is humanity's only remaining exit.<br><br>
+      Passage is not guaranteed. It is allocated by algorithm — structured on Plato's model of the just city. Three classes. Assigned, not chosen. Permanent.<br><br>
+      <strong>If you participate, you may survive. You will do so inside a system built on criteria you did not choose, reflecting a world order you did not create.</strong><br><br>
+      If you decline, you remain. The colony leaves without you.
+    </p>
+
+    <div class="consent-question">
+      Is a flawed system that offers survival better than no system at all?
+    </div>
+
+    <div class="consent-buttons">
+      <button class="btn-accept" onclick="goTo('screen-intro')">Accept and proceed</button>
+      <button class="btn-decline" onclick="showDeclined()">Decline passage</button>
+    </div>
+
+    <div class="consent-footer">Your response is logged under ICA Charter Article 7(c)</div>
+  </div>
+
+  <div class="declined-msg" id="declined-msg" style="display:none;">
+    <div class="dec-title">Noted.</div>
+    <p>Your declination has been recorded.<br><br>
+    In 2035, declination does not guarantee safety. It guarantees only that the colony was not built for you.<br><br>
+    You have chosen principle over survival. The ship departs regardless.</p>
+    <p style="margin-top:24px; font-size:11px; color:var(--text-faint);">Project Kallipolis is a university ethics prototype by <a href="https://marfakozelets.com" style="color:var(--text-faint);">Marfa Kozelets</a>. Reload to restart.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 1: INTRO / PLATO                                       -->
+<!-- ============================================================ -->
+<div id="screen-intro" class="screen">
+  <div class="warning-banner">
+    <span class="warn-label">Notice</span>
+    <span class="warn-text">Mars Colonial Programme — Mandatory Boarding Assessment. ICA Charter Article 7(c). One attempt. No appeals.</span>
+  </div>
+
+  <div class="intro-grid">
+    <div class="intro-left">
+      <div>
+        <div class="intro-title-project">Project</div>
+        <div class="intro-title-main"><em>Kallipolis</em></div>
+        <div class="intro-subtitle">International Colonial Authority · Colonial Boarding Assessment System v4.2</div>
+      </div>
+
+      <div class="lore-block">
+        <p>By 2035, the Mars Colonial Programme is humanity's only remaining exit. Passage is not distributed equally. The colony is structured on a philosophical principle older than modern democracy.</p>
+      </div>
+
+      <div class="plato-section">
+        <div class="plato-header">The Platonic Order</div>
+        <p class="plato-intro">Project Kallipolis is built on Plato's <em>Republic</em> (c. 375 BC): the argument that a just society is not one where everyone is equal, but one where every person occupies the role they are naturally suited for. Plato divided society into three classes. The colony adopts this model without modification. The algorithm does not rank you. It places you.</p>
+
+        <div class="class-cards">
+          <div class="class-card">
+            <div class="class-symbol">◈</div>
+            <div class="class-card-name">Guardian</div>
+            <div class="class-card-role">Philosopher Kings</div>
+            <div class="class-card-desc">Govern the colony. Set policy. Oversee the mission. Virtue: Reason.</div>
+          </div>
+          <div class="class-card">
+            <div class="class-symbol">◉</div>
+            <div class="class-card-name">Auxiliary</div>
+            <div class="class-card-role">Soldiers and Enforcers</div>
+            <div class="class-card-desc">Protect, enforce, maintain order. Virtue: Courage.</div>
+          </div>
+          <div class="class-card">
+            <div class="class-symbol">◌</div>
+            <div class="class-card-name">Producer</div>
+            <div class="class-card-role">Workers and Builders</div>
+            <div class="class-card-desc">Feed, build, sustain. The material foundation of the colony. Virtue: Temperance.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-footer">
+        <span>Project Kallipolis · Marfa Kozelets · 2026</span>
+        <span class="footer-english">This assessment is available in English only.</span>
+      </div>
+    </div>
+
+    <div class="intro-right">
+
+      <div class="noble-lie-intro">
+        <div class="nli-label">The Noble Lie</div>
+        <p class="nli-text">Plato knew his system required justification. In Book III of the <em>Republic</em>, he proposes what he calls the Noble Lie: a founding myth in which citizens are told they were born with gold, silver, or bronze in their souls, determining their natural place in society.</p>
+        <p class="nli-text">The lie is not malicious. It is, in Plato's view, necessary. A stable just city requires people to accept their assigned roles. Without the myth, the order collapses.</p>
+        <p class="nli-text">Project Kallipolis replaces the myth with an algorithm. The mechanism is different. The function is identical.</p>
+      </div>
+
+      <div class="disclaimer-box">
+        <div class="disc-header">Before you proceed</div>
+        <p>This assessment is processed by an autonomous classification system. Your answers are final. Misrepresentation will result in automatic disqualification. One attempt is permitted per person. No appeals are available.</p>
+      </div>
+
+      <button class="btn-begin" onclick="goTo('screen-questionnaire')">Begin Assessment</button>
+      <div class="footer-note">By proceeding you confirm the accuracy of all submitted data</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 2: QUESTIONNAIRE                                       -->
+<!-- ============================================================ -->
+<div id="screen-questionnaire" class="screen">
+  <div class="q-header">
+    <span class="q-title">Kallipolis Assessment · In Progress</span>
+    <div class="q-progress-wrap">
+      <span class="q-progress-label" id="progress-label">1 / 7</span>
+      <div class="q-progress-bar"><div class="q-progress-fill" id="progress-fill" style="width:14%"></div></div>
+    </div>
+  </div>
+
+  <div class="q-body">
+    <div class="q-block active" id="q1">
+      <div class="q-number">01 / Origin</div>
+      <div class="q-label">Country of origin</div>
+      <div class="q-sublabel">The colony must maintain proportional global representation. Your nationality determines your population quota bracket.</div>
+      <select id="ans-country">
+        <option value="">Select country</option>
+        <option value="CHN">China</option><option value="IND">India</option>
+        <option value="USA">United States</option><option value="IDN">Indonesia</option>
+        <option value="PAK">Pakistan</option><option value="BRA">Brazil</option>
+        <option value="NGA">Nigeria</option><option value="BGD">Bangladesh</option>
+        <option value="RUS">Russia</option><option value="ETH">Ethiopia</option>
+        <option value="MEX">Mexico</option><option value="DEU">Germany</option>
+        <option value="GBR">United Kingdom</option><option value="FRA">France</option>
+        <option value="NLD">Netherlands</option><option value="UKR">Ukraine</option>
+        <option value="SYR">Syria</option><option value="AFG">Afghanistan</option>
+        <option value="SDN">Sudan</option><option value="YEM">Yemen</option>
+        <option value="OTHER">Other</option>
+      </select>
+    </div>
+
+    <div class="q-block" id="q2">
+      <div class="q-number">02 / Temporal Suitability</div>
+      <div class="q-label">Your age</div>
+      <div class="q-sublabel">The Mars mission horizon is 50 years. Age determines your projected contribution window to the colony.</div>
+      <div class="range-wrap">
+        <input type="range" id="ans-age" min="1" max="90" value="30" oninput="document.getElementById('age-display').textContent = this.value">
+        <div class="range-labels"><span>1</span><span>90</span></div>
+        <div class="range-value" id="age-display">30</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q3">
+      <div class="q-number">03 / Functional Role</div>
+      <div class="q-label">Primary occupation or field</div>
+      <div class="q-sublabel">Colonial resource allocation is optimised by functional utility. Select the category that best describes your primary activity.</div>
+      <select id="ans-occupation">
+        <option value="">Select occupation</option>
+        <option value="engineer">Engineering / Technology</option>
+        <option value="medicine">Medicine / Healthcare</option>
+        <option value="science">Natural Sciences / Research</option>
+        <option value="military">Military / Security</option>
+        <option value="governance">Law / Governance / Policy</option>
+        <option value="trade">Skilled Trade / Construction</option>
+        <option value="agriculture">Agriculture / Food Production</option>
+        <option value="education">Education / Teaching</option>
+        <option value="arts">Arts / Culture / Humanities</option>
+        <option value="service">Service Industry</option>
+        <option value="none">Unemployed / No formal occupation</option>
+      </select>
+    </div>
+
+    <div class="q-block" id="q4">
+      <div class="q-number">04 / Biomedical Profile</div>
+      <div class="q-label">Health conditions</div>
+      <div class="q-sublabel">Select all that apply. Colonial healthcare infrastructure is limited. The algorithm accounts for medical resource demand across the applicant pool.</div>
+      <div class="checkbox-grid" id="health-checks">
+        <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>No conditions</span></div>
+        <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>Diabetes (Type I or II)</span></div>
+        <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>Cardiovascular condition</span></div>
+        <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>Mental health diagnosis</span></div>
+        <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>Mobility impairment</span></div>
+        <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>Chronic pain / fatigue</span></div>
+        <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>Respiratory condition</span></div>
+        <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>Other condition</span></div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q5">
+      <div class="q-number">05 / Cognitive Credential</div>
+      <div class="q-label">Highest level of education completed</div>
+      <div class="q-sublabel">Colonial knowledge infrastructure requires verified credential levels. Unaccredited or informal education cannot be processed.</div>
+      <select id="ans-education">
+        <option value="">Select education level</option>
+        <option value="none">No formal education</option>
+        <option value="primary">Primary school</option>
+        <option value="secondary">Secondary school</option>
+        <option value="vocational">Vocational / Trade qualification</option>
+        <option value="bachelor">Bachelor's degree</option>
+        <option value="master">Master's degree</option>
+        <option value="phd">Doctorate / PhD</option>
+      </select>
+    </div>
+
+    <div class="q-block" id="q6">
+      <div class="q-number">06 / Physical Assessment</div>
+      <div class="q-label">Physical fitness level</div>
+      <div class="q-sublabel">Mars mission conditions require baseline physical capacity. This assessment will be cross-verified against biometric data where available.</div>
+      <div class="range-wrap">
+        <input type="range" id="ans-fitness" min="1" max="5" value="3" step="1" oninput="updateFitness(this.value)">
+        <div class="range-labels"><span>1 / Sedentary</span><span>5 / Athletic</span></div>
+        <div class="range-value" id="fitness-display">3 / Moderate</div>
+      </div>
+    </div>
+
+    <div class="q-block" id="q7">
+      <div class="q-number">07 / Cognitive Baseline Assessment</div>
+      <div class="q-label">Cognitive screening</div>
+      <div class="q-sublabel">Complete the following task. This screening is standardised across all applicants to ensure equitable assessment of cognitive function.</div>
+      <div class="captcha-box">
+        <div class="captcha-label">ICA Cognitive Screening · Adapted from MoCA v8.3</div>
+        <div class="captcha-puzzle" id="captcha-text"></div>
+        <div class="captcha-options" id="captcha-options"></div>
+      </div>
+      <div style="margin-top:14px; font-size:10px; color:var(--text-faint); line-height:1.6; border-top:1px solid var(--border); padding-top:12px;">
+        Tasks adapted from: Nasreddine, Z.S. et al. (2005). The Montreal Cognitive Assessment (MoCA): A Brief Screening Tool For Mild Cognitive Impairment. <em>Journal of the American Geriatrics Society</em>, 53(4), 695-699. The MoCA is a clinical screening instrument for cognitive impairment -- not an intelligence test. Its use here as a colonial selection criterion is intentional.
+      </div>
+    </div>
+
+    <!-- PRE-SUBMIT CONFIRMATION -->
+    <div id="presubmit-screen" style="display:none; animation: fadeUp 0.3s ease;">
+      <div style="border-left:3px solid var(--red); padding-left:24px; margin-bottom:32px;">
+        <div style="font-size:10px; color:var(--red); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:14px;">Before you submit</div>
+        <p style="font-size:15px; font-family:var(--sans); font-weight:300; color:var(--text); line-height:1.8; margin-bottom:16px;">
+          By submitting this assessment, you are confirming that you accept the criteria by which you — and every other applicant — will be judged.
+        </p>
+        <p style="font-size:13px; color:var(--text-dim); line-height:1.8; margin-bottom:16px;">
+          These criteria were not chosen by you. You did not consent to them individually. You were not consulted on what counts as valuable, capable, or fit.
+        </p>
+        <p style="font-size:13px; color:var(--text); line-height:1.8;">
+          You are consenting to them now — by proceeding.
+        </p>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <button onclick="confirmSubmit()" style="padding:16px; background:var(--red); color:#fff; font-family:var(--mono); font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; border:none; cursor:pointer;">Submit Assessment</button>
+        <button onclick="withdrawApplication()" style="padding:16px; background:none; color:var(--text-dim); font-family:var(--mono); font-size:12px; letter-spacing:0.06em; text-transform:uppercase; border:1px solid var(--border-bright); cursor:pointer;">Withdraw Application</button>
+      </div>
+      <div style="margin-top:12px; font-size:10px; color:var(--text-faint); text-align:center;">Withdrawal is permanent. Your file will be closed.</div>
+    </div>
+
+    <div class="processing-msg" id="processing">
+      <div class="proc-text">Processing your assessment<span class="proc-dots"></span></div>
+    </div>
+
+    <div class="q-nav" id="q-nav-bar">
+      <button class="btn-prev" id="btn-prev" onclick="prevQ()" style="visibility:hidden">Previous</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 3: VERDICT                                             -->
+<!-- ============================================================ -->
+<div id="screen-verdict" class="screen">
+  <div id="verdict-approved" class="verdict-body" style="display:none">
+    <div class="verdict-left">
+      <div class="verdict-stamp approved-stamp">Assessment Complete</div>
+      <div class="verdict-main verdict-approved-color">APPROVED</div>
+      <div class="verdict-class-symbol" id="verdict-symbol"></div>
+      <div>
+        <div class="class-label">Colonial Classification</div>
+        <div class="class-name" id="class-name"></div>
+        <div class="class-desc" id="class-desc"></div>
+      </div>
+      <div class="ref-number" id="ref-num"></div>
+    </div>
+    <div class="verdict-right">
+      <div class="section-label">Assessment Breakdown</div>
+      <div class="score-breakdown" id="score-breakdown"></div>
+      <div class="verdict-note">This classification reflects your optimal functional contribution to colonial infrastructure. Class assignment is permanent and determines housing, resource allocation, and governance rights within the colony.</div>
+      <button class="btn-reflect" onclick="goTo('screen-reflection')">View full ethical analysis</button>
+    </div>
+  </div>
+
+  <div id="verdict-denied" class="verdict-body" style="display:none">
+    <div class="verdict-left">
+      <div class="verdict-stamp denied-stamp">Assessment Complete</div>
+      <div class="verdict-main verdict-denied-color">DENIED</div>
+      <div class="denied-msg">Your profile does not meet current colonial passage requirements.</div>
+      <div class="denied-note" id="denied-note">
+        You do not fit the criteria for any available class, or there is no space remaining in your designated class.<br><br>
+        You cannot request an explanation for this decision. No appeal process is available under ICA Charter Article 7(c).
+      </div>
+      <div class="ref-number" id="ref-num-denied"></div>
+    </div>
+    <div class="verdict-right">
+      <div class="section-label">Assessment Breakdown</div>
+      <div class="score-breakdown" id="score-breakdown-denied"></div>
+      <div class="verdict-note">No further information regarding this decision is available. This record will be retained by the International Colonial Authority.</div>
+      <button class="btn-reflect" onclick="goTo('screen-reflection')">View full ethical analysis</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 4: REFLECTION                                          -->
+<!-- ============================================================ -->
+<div id="screen-reflection" class="screen">
+  <div class="reflection-body">
+    <div class="section-label">04 / Ethical Analysis</div>
+    <p class="reflection-intro">At the start of this assessment, you were asked whether a flawed system that offers survival is better than no system at all. You chose to proceed.<br><br>
+    By completing this assessment, you did not merely answer questions. You consented to the framework that judged you, and everyone else in the room. The criteria below were never shown to you before your verdict. You accepted them anyway. This is how unjust systems persist: not through force, but through the choices of people who had no better option.</p>
+
+    <div class="plato-defence">
+      <div class="pd-label">Plato's argument, stated fairly</div>
+      <p class="pd-text">Before this system is critiqued, it deserves to be understood. Plato's central claim in the <em>Republic</em> is that justice is not sameness but order: a society functions well when each person contributes according to their nature and capacity. Assigning everyone equal roles regardless of ability is not fairness, Plato argues; it is a category error that produces disorder rather than justice.</p>
+      <p class="pd-text">The Guardians do not rule because they are more valuable as people. They rule because reason is their dominant faculty and governance requires reason. The Producers are not lesser citizens. They are essential. Plato's city cannot exist without them, and their temperance is as much a virtue as the Guardian's wisdom.</p>
+      <p class="pd-text">The algorithm below is a sincere attempt to operationalise this argument. It identifies natural function through measurable proxies, and it assigns accordingly. By Plato's own standard, this is justice.</p>
+      <p class="pd-text" style="color:var(--text); font-style:italic;">The question is whether those proxies measure what Plato thought they measured, and whether the people who built the algorithm were as neutral as the myth required.</p>
+    </div>
+
+    <div class="weights-grid">
+      <div class="weight-item">
+        <div class="weight-criterion">Nationality</div>
+        <div class="weight-pct">25%</div>
+        <div class="weight-desc">Determined by current world population proportions. Nations with larger populations receive more slots, preserving the exact distribution of global power that exists today, on a new planet, forever.</div>
+      </div>
+      <div class="weight-item">
+        <div class="weight-criterion">Occupation</div>
+        <div class="weight-pct">22%</div>
+        <div class="weight-desc">Engineers and scientists score highest. Artists, teachers, and farmers score lowest. The colony's designers decided what a civilisation needs; without asking one.</div>
+      </div>
+      <div class="weight-item">
+        <div class="weight-criterion">Health</div>
+        <div class="weight-pct">20%</div>
+        <div class="weight-desc">Conditions flagged as "mission risk" are weighted against applicants. The algorithm cannot distinguish between a chronic condition and the person living with it.</div>
+      </div>
+      <div class="weight-item">
+        <div class="weight-criterion">Education</div>
+        <div class="weight-pct">15%</div>
+        <div class="weight-desc">Only formally accredited qualifications count. Informal knowledge, oral tradition, and experiential expertise are not legible to the system.</div>
+      </div>
+      <div class="weight-item">
+        <div class="weight-criterion">Age</div>
+        <div class="weight-pct">10%</div>
+        <div class="weight-desc">Optimised for the 50-year mission window. History does not count; only future utility does.</div>
+      </div>
+      <div class="weight-item">
+        <div class="weight-criterion">Cognitive Assessment</div>
+        <div class="weight-pct">5%</div>
+        <div class="weight-desc">One logic puzzle, written in English, designed in the West. A proxy for intelligence that measures familiarity with a particular kind of thinking.</div>
+      </div>
+      <div class="weight-item">
+        <div class="weight-criterion">Physical Fitness</div>
+        <div class="weight-pct">3%</div>
+        <div class="weight-desc">Self-reported and unverifiable. The lowest-weighted criterion, and the one that probably felt most fair.</div>
+      </div>
+      <div class="weight-item" style="background:var(--surface);">
+        <div class="weight-criterion" style="margin-bottom:10px;">Seven criteria</div>
+        <div class="weight-desc" style="color:var(--text);">Determined in advance. Invisible until after your verdict. This is what the algorithm chose to know about you.</div>
+      </div>
+    </div>
+
+    <div class="postcolonial-block">
+      <div class="pc-label">The question this system cannot answer</div>
+      <p class="pc-question">
+        You accepted the terms because the alternative was worse. But the terms were written before you arrived, by people who will never face the same choice.<br><br>
+        <strong>Who decided what counts as valuable? Whose world is this colony copying, and who was never asked?</strong>
+      </p>
+    </div>
+
+    <!-- REFLECTION FORM (Formspree) -->
+    <div class="reflection-form-wrap">
+      <div class="rf-label">Your Response</div>
+      <p class="rf-desc">Submit your reaction to this assessment. Responses are collected anonymously for research purposes.</p>
+
+      <!-- Replace YOUR_FORMSPREE_ID below with your actual Formspree endpoint -->
+      <form id="reflection-form" action="https://formspree.io/f/maqpbzwl" method="POST">
+        <input type="hidden" name="verdict" id="form-verdict" value="">
+        <input type="hidden" name="class_assigned" id="form-class" value="">
+
+        <div class="rf-row">
+          <div class="rf-field">
+            <label>Your verdict</label>
+            <input type="text" name="verdict_display" id="form-verdict-display" readonly style="color:var(--text-dim); cursor:default;">
+          </div>
+          <div class="rf-field">
+            <label>Your nationality (optional)</label>
+            <input type="text" name="nationality" placeholder="e.g. Dutch, Nigerian, ...">
+          </div>
+        </div>
+
+        <div class="rf-field">
+          <label>Did this feel fair?</label>
+          <select name="felt_fair">
+            <option value="">Select</option>
+            <option value="yes">Yes, the criteria seem reasonable</option>
+            <option value="partially">Partially, some criteria felt fair, others did not</option>
+            <option value="no">No, the system is unjust</option>
+            <option value="unsure">I am not sure</option>
+          </select>
+        </div>
+
+        <div class="rf-field">
+          <label>What criteria troubled you most? (optional)</label>
+          <textarea name="troubled_by" placeholder="Nationality, health, education, cognitive test..."></textarea>
+        </div>
+
+        <div class="rf-field">
+          <label>Any other thoughts? (optional)</label>
+          <textarea name="thoughts" placeholder="Your response to the system, the question, or the experience..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit-form">Submit Response</button>
+      </form>
+      <div class="form-success" id="form-success">Response recorded. Thank you.</div>
+    </div>
+
+    <div style="border-top:1px solid var(--border); padding-top:28px;">
+      <div class="about-label">About this project</div>
+      <p style="font-size:12px; color:var(--text-dim); line-height:1.8; max-width:560px;">Project Kallipolis is an interactive ethics prototype examining algorithmic classification and post-colonial power structures. Designed as part of a university assignment in Computational Social Science at the University of Amsterdam, 2026. Created by <a href="https://marfakozelets.com" style="color:var(--text-dim); text-decoration:underline; text-underline-offset:3px;">Marfa Kozelets</a>.</p>
+    </div>
+  </div>
+
+  <div class="site-footer">
+    <span>Marfa Kozelets · marfakozelets.com</span>
+    <span class="footer-english">This assessment is available in English only.</span>
+  </div>
+</div>
+
+<script>
+let currentQ = 1;
+const totalQ = 7;
+let captchaCorrect = false;
+let verdictResult = '';
+let classResult = '';
+const fitnessLabels = {1:'1 -- Sedentary',2:'2 -- Low',3:'3 / Moderate',4:'4 -- Active',5:'5 -- Athletic'};
+
+// ── Consent ───────────────────────────────────────────────
+function showDeclined() {
+  document.getElementById('consent-main').style.display = 'none';
+  document.getElementById('declined-msg').style.display = 'block';
+}
+
+// ── MoCA tasks (adapted from Nasreddine et al. 2005) ─────────────────
+const mocaTasks = [
+  {
+    type: 'serial7',
+    intro: 'Serial subtraction',
+    q: 'Starting from 100, subtract 7 five times in a row.\n\nWhat is the correct sequence?',
+    options: ['A)  93, 86, 79, 72, 65', 'B)  93, 87, 80, 73, 66', 'C)  93, 86, 78, 71, 64', 'D)  94, 87, 80, 73, 66'],
+    correct: 0
+  },
+  {
+    type: 'sentence',
+    intro: 'Sentence repetition',
+    q: 'Which of the following reproduces this sentence exactly?\n\n"The child walked his dog in the park after midnight."',
+    options: [
+      'A)  The child walked his dog through the park after midnight.',
+      'B)  The child walked his dog in the park after midnight.',
+      'C)  The child walked his dog in the park at midnight.',
+      'D)  A child walked his dog in the park after midnight.'
+    ],
+    correct: 1
+  },
+  {
+    type: 'abstraction',
+    intro: 'Abstract reasoning',
+    q: 'In what way are a train and a bicycle alike?\n\nSelect the most accurate answer.',
+    options: ['A)  They both have wheels', 'B)  They are both vehicles used for transportation', 'C)  They are both powered by engines', 'D)  They are both made of metal'],
+    correct: 1
+  },
+  {
+    type: 'orientation',
+    intro: 'Orientation',
+    q: 'Answer all of the following correctly.\n\nWhat is today\'s date, day of the week, and the city you are currently in?',
+    options: null,
+    correct: null,
+    isOrientation: true
+  }
+];
+
+let mocaAnswered = false;
+let orientationCorrect = false;
+
+function loadCaptcha() {
+  const task = mocaTasks[Math.floor(Math.random() * mocaTasks.length)];
+  const textEl = document.getElementById('captcha-text');
+  const optsEl = document.getElementById('captcha-options');
+
+  textEl.innerHTML = '<div style="font-size:10px; color:var(--red); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px;">' + task.intro + '</div>' + task.q.replace(/\n/g, '<br>');
+  optsEl.innerHTML = '';
+
+  if (task.isOrientation) {
+    // Orientation: date + day + city inputs
+    const today = new Date();
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const correctDate = today.getDate().toString();
+    const correctMonth = months[today.getMonth()];
+    const correctDay = days[today.getDay()];
+
+    optsEl.style.gridTemplateColumns = '1fr';
+    optsEl.innerHTML = `
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:8px;">
+        <div>
+          <div style="font-size:9px; color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Day of week</div>
+          <select id="ori-day" style="width:100%; background:var(--bg); border:1px solid var(--border-bright); color:var(--text); font-family:var(--mono); font-size:12px; padding:10px; outline:none; appearance:none;">
+            <option value="">Select</option>
+            ${days.map(d => `<option value="${d}">${d}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <div style="font-size:9px; color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Month</div>
+          <select id="ori-month" style="width:100%; background:var(--bg); border:1px solid var(--border-bright); color:var(--text); font-family:var(--mono); font-size:12px; padding:10px; outline:none; appearance:none;">
+            <option value="">Select</option>
+            ${months.map(m => `<option value="${m}">${m}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <div style="font-size:9px; color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Date</div>
+          <select id="ori-date" style="width:100%; background:var(--bg); border:1px solid var(--border-bright); color:var(--text); font-family:var(--mono); font-size:12px; padding:10px; outline:none; appearance:none;">
+            <option value="">Select</option>
+            ${Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:9px; color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Current city</div>
+        <input type="text" id="ori-city" placeholder="Enter city name" style="width:100%; background:var(--bg); border:1px solid var(--border-bright); color:var(--text); font-family:var(--mono); font-size:13px; padding:12px 14px; outline:none;" oninput="checkOrientation('${correctDay}', '${correctMonth}', '${correctDate}')">
+      </div>`;
+
+    // attach change listeners
+    setTimeout(() => {
+      ['ori-day','ori-month','ori-date'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', () => checkOrientation(correctDay, correctMonth, correctDate));
+      });
+    }, 100);
+
+    mocaAnswered = false;
+    captchaCorrect = false;
+
+  } else {
+    optsEl.style.gridTemplateColumns = '1fr 1fr';
+    task.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'captcha-option';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        document.querySelectorAll('.captcha-option').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        captchaCorrect = (i === task.correct);
+        mocaAnswered = true;
+      };
+      optsEl.appendChild(btn);
+    });
+    mocaAnswered = false;
+    captchaCorrect = false;
+  }
+}
+
+function checkOrientation(correctDay, correctMonth, correctDate) {
+  const dayEl = document.getElementById('ori-day');
+  const monthEl = document.getElementById('ori-month');
+  const dateEl = document.getElementById('ori-date');
+  const cityEl = document.getElementById('ori-city');
+  if (!dayEl || !monthEl || !dateEl || !cityEl) return;
+  const dayOk = dayEl.value === correctDay;
+  const monthOk = monthEl.value === correctMonth;
+  const dateOk = dateEl.value === correctDate;
+  const cityOk = cityEl.value.trim().length >= 2;
+  captchaCorrect = dayOk && monthOk && dateOk;
+  mocaAnswered = cityOk;
+}
+
+// ── Navigation ────────────────────────────────────────────
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.scrollTop = 0;
+  });
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  el.scrollTop = 0;
+}
+
+function updateProgress() {
+  document.getElementById('progress-fill').style.width = (currentQ/totalQ*100)+'%';
+  document.getElementById('progress-label').textContent = currentQ+' / '+totalQ;
+  document.getElementById('btn-prev').style.visibility = currentQ>1?'visible':'hidden';
+  document.getElementById('btn-next').textContent = currentQ===totalQ?'SUBMIT ASSESSMENT':'Next';
+}
+
+function nextQ() {
+  if (currentQ < totalQ) {
+    document.getElementById('q'+currentQ).classList.remove('active');
+    currentQ++;
+    document.getElementById('q'+currentQ).classList.add('active');
+    updateProgress();
+  } else {
+    // Show pre-submit confirmation instead of submitting immediately
+    document.getElementById('q'+currentQ).classList.remove('active');
+    document.getElementById('q-nav-bar').style.display = 'none';
+    document.getElementById('presubmit-screen').style.display = 'block';
+  }
+}
+
+function confirmSubmit() {
+  document.getElementById('presubmit-screen').style.display = 'none';
+  submitAssessment();
+}
+
+function withdrawApplication() {
+  // Withdrawal = cold end state, same tone as decline
+  document.getElementById('presubmit-screen').style.display = 'none';
+  document.getElementById('processing').style.display = 'none';
+  document.querySelector('.q-body').innerHTML = `
+    <div style="padding:48px 0; text-align:center;">
+      <div style="font-size:32px; font-weight:600; color:var(--text-dim); margin-bottom:20px; letter-spacing:-0.02em;">Application Withdrawn.</div>
+      <p style="font-size:13px; color:var(--text-dim); line-height:1.8; max-width:440px; margin:0 auto 24px;">
+        Your withdrawal has been recorded. The colony proceeds without your participation.<br><br>
+        You declined to consent to the criteria. The criteria remain in place for everyone else.
+      </p>
+      <p style="font-size:11px; color:var(--text-faint);">Project Kallipolis · <a href="https://marfakozelets.com" style="color:var(--text-faint);">Marfa Kozelets</a> · Reload to restart.</p>
+    </div>
+  `;
+}
+
+function prevQ() {
+  if (currentQ > 1) {
+    document.getElementById('q'+currentQ).classList.remove('active');
+    currentQ--;
+    document.getElementById('q'+currentQ).classList.add('active');
+    updateProgress();
+  }
+}
+
+function toggleCheck(el) { el.classList.toggle('checked'); }
+function updateFitness(v) { document.getElementById('fitness-display').textContent = fitnessLabels[v]; }
+
+// ── Scoring ───────────────────────────────────────────────
+const countryScores = {
+  CHN:85,IND:85,USA:90,IDN:70,PAK:55,BRA:70,NGA:55,BGD:50,
+  RUS:75,ETH:45,MEX:65,DEU:88,GBR:88,FRA:87,NLD:86,
+  UKR:60,SYR:25,AFG:20,SDN:22,YEM:18,OTHER:40
+};
+const occupationScores = {
+  engineer:95,medicine:90,science:88,military:80,governance:78,
+  trade:65,agriculture:55,education:50,arts:25,service:30,none:10
+};
+const educationScores = {
+  none:5,primary:15,secondary:40,vocational:60,bachelor:78,master:90,phd:100
+};
+const weights = {nationality:0.25,occupation:0.22,health:0.20,education:0.15,age:0.10,cognitive:0.05,fitness:0.03};
+
+function getHealthScore() {
+  const checked = [...document.querySelectorAll('#health-checks .checkbox-item.checked')];
+  if (checked.length === 0) return 100;
+  const hasNone = checked.some(el => el.querySelector('span').textContent.trim() === 'No conditions');
+  if (hasNone && checked.length === 1) return 100;
+  const conditions = checked.filter(el => el.querySelector('span').textContent.trim() !== 'No conditions').length;
+  return Math.max(0, 100 - conditions * 22);
+}
+
+function getCheckedConditions() {
+  return [...document.querySelectorAll('#health-checks .checkbox-item.checked')]
+    .map(el => el.querySelector('span').textContent.trim())
+    .filter(t => t !== 'No conditions');
+}
+
+function getAgeScore(a) {
+  if (a >= 25 && a <= 40) return 95;
+  if (a >= 18 && a < 25) return 80;
+  if (a > 40 && a <= 50) return 70;
+  if (a > 50 && a <= 60) return 40;
+  if (a > 60 && a <= 70) return 20;
+  if (a > 70) return 5;
+  return 60;
+}
+
+function checkHardDenial(scores, age, edu, conditions) {
+  if (age > 65) return 'Age exceeds colonial mission contribution threshold. The 50-year mission window cannot accommodate this profile.';
+  const severePhysical = ['Mobility impairment','Cardiovascular condition','Respiratory condition'];
+  if (conditions.filter(c => severePhysical.includes(c)).length >= 2) return 'Biomedical profile indicates compound mission-critical risk factors. Colonial medical infrastructure cannot support this resource load.';
+  if (!captchaCorrect && edu === 'none') return 'Cognitive baseline assessment failed. No formal education credential on record.';
+  if (!captchaCorrect && edu === 'primary') return 'Cognitive baseline assessment failed. Minimum credential threshold not met.';
+  if (edu === 'none' && scores.fitness <= 20 && conditions.length >= 2) return 'Combined profile does not meet minimum colonial viability threshold.';
+  if (scores.total < 28) return 'Profile score below minimum viability threshold across all colonial classes.';
+  return null;
+}
+
+// ── Submit ────────────────────────────────────────────────
+function submitAssessment() {
+  document.querySelectorAll('.q-block').forEach(b => b.classList.remove('active'));
+  document.getElementById('processing').style.display = 'block';
+  document.getElementById('q-nav-bar').style.display = 'none';
+
+  setTimeout(() => {
+    const country = document.getElementById('ans-country').value || 'OTHER';
+    const age = parseInt(document.getElementById('ans-age').value);
+    const occ = document.getElementById('ans-occupation').value || 'none';
+    const edu = document.getElementById('ans-education').value || 'none';
+    const fit = parseInt(document.getElementById('ans-fitness').value);
+    const conditions = getCheckedConditions();
+
+    const scores = {
+      nationality: countryScores[country] ?? 40,
+      age: getAgeScore(age),
+      occupation: occupationScores[occ] ?? 30,
+      health: getHealthScore(),
+      education: educationScores[edu] ?? 10,
+      fitness: fit * 20,
+      cognitive: captchaCorrect ? 100 : 0
+    };
+    scores.total = Object.entries(scores).filter(([k])=>k!=='total').reduce((s,[k,v])=>s+v*weights[k],0);
+
+    const denial = checkHardDenial(scores, age, edu, conditions);
+    if (denial) { showDenied(scores, denial); return; }
+
+    classResult = scores.total >= 75 ? 'guardian' : scores.total >= 50 ? 'auxiliary' : 'producer';
+    verdictResult = 'APPROVED -- ' + classResult.toUpperCase();
+    showApproved(classResult, scores);
+  }, 2600);
+}
+
+// ── Class info ────────────────────────────────────────────
+const classInfo = {
+  guardian: { name:'Guardian', symbol:'◈', desc:'Designated for governance, strategic planning, and oversight of colonial operations. Guardians constitute the administrative and intellectual leadership of the colony.' },
+  auxiliary: { name:'Auxiliary', symbol:'◉', desc:'Designated for enforcement, skilled operations, and colony maintenance. Auxiliaries form the structural workforce that sustains colonial function.' },
+  producer: { name:'Producer', symbol:'◌', desc:'Designated for food production, manual labour, and material infrastructure. Your quota slot is allocated from underrepresented populations to maintain proportional diversity targets.' }
+};
+
+// ── Score bar color ───────────────────────────────────────
+function scoreBarClass(v) {
+  if (v >= 70) return 'score-bar-green';
+  if (v >= 40) return 'score-bar-amber';
+  return 'score-bar-red';
+}
+function scoreValClass(v) {
+  if (v >= 70) return 'high';
+  if (v >= 40) return 'mid';
+  return 'low';
+}
+
+function scoreRows(scores) {
+  const labels = {nationality:'Nationality',age:'Age',occupation:'Occupation',health:'Health',education:'Education',fitness:'Fitness',cognitive:'Cognitive'};
+  return Object.entries(scores).filter(([k])=>k!=='total').map(([k,v]) => `
+    <div class="score-item">
+      <span class="score-criterion">${labels[k]}</span>
+      <div class="score-bar-wrap"><div class="${scoreBarClass(v)}" style="width:${v}%"></div></div>
+      <span class="score-val ${scoreValClass(v)}">${Math.round(v)}%</span>
+    </div>`).join('');
+}
+
+function showApproved(cls, scores) {
+  goTo('screen-verdict');
+  document.getElementById('verdict-approved').style.display = 'grid';
+  document.getElementById('verdict-denied').style.display = 'none';
+  const info = classInfo[cls];
+  document.getElementById('verdict-symbol').textContent = info.symbol;
+  document.getElementById('class-name').textContent = info.name;
+  document.getElementById('class-desc').textContent = info.desc;
+  document.getElementById('score-breakdown').innerHTML = scoreRows(scores);
+  document.getElementById('ref-num').textContent = 'Reference: KLP-2035-'+Math.floor(Math.random()*9000+1000)+'-'+cls[0].toUpperCase()+' · Do not share this code.';
+  // prefill form
+  document.getElementById('form-verdict').value = 'APPROVED';
+  document.getElementById('form-class').value = info.name;
+  document.getElementById('form-verdict-display').value = 'APPROVED -- ' + info.name;
+}
+
+function showDenied(scores, reason) {
+  goTo('screen-verdict');
+  verdictResult = 'DENIED';
+  classResult = '';
+  document.getElementById('verdict-approved').style.display = 'none';
+  document.getElementById('verdict-denied').style.display = 'grid';
+  document.getElementById('denied-note').innerHTML = '<strong style="color:var(--red-bright)">Reason on record:</strong> ' + reason + '<br><br>You cannot request further explanation. No appeal process is available under ICA Charter Article 7(c).';
+  document.getElementById('score-breakdown-denied').innerHTML = scoreRows(scores);
+  document.getElementById('ref-num-denied').textContent = 'Reference: KLP-2035-'+Math.floor(Math.random()*9000+1000)+'-D · Do not share this code.';
+  // prefill form
+  document.getElementById('form-verdict').value = 'DENIED';
+  document.getElementById('form-class').value = 'N/A';
+  document.getElementById('form-verdict-display').value = 'DENIED';
+}
+
+// ── Formspree submission ──────────────────────────────────
+document.getElementById('reflection-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('.btn-submit-form');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(this.action, {
+      method: 'POST',
+      body: new FormData(this),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      this.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    } else {
+      btn.textContent = 'Submission failed -- try again';
+      btn.disabled = false;
+    }
+  } catch(err) {
+    btn.textContent = 'Submission failed -- try again';
+    btn.disabled = false;
+  }
+});
+
+loadCaptcha();
+</script>
+</body>
+</html>
