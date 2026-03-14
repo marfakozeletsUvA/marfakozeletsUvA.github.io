@@ -54,6 +54,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
   max-width: 700px;
   margin: 0 auto;
   width: 100%;
+  min-height: 0;
 }
 
 .consent-eyebrow { font-size: 10px; color: var(--red); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px; }
@@ -128,7 +129,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
 .intro-footer span { font-size: 11px; color: var(--text-faint); }
 .footer-english { font-style: italic; }
 
-.intro-right { padding: 52px 48px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+.intro-right { padding: 52px 48px; display: flex; flex-direction: column; justify-content: flex-start; gap: 20px; }
 
 .disclaimer-box { border: 1px solid var(--red); background: rgba(192,57,43,0.05); padding: 24px 26px; }
 .disc-header { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red-bright); margin-bottom: 14px; }
@@ -308,10 +309,10 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 
   /* consent mobile */
   #screen-consent { padding-top: 49px; }
-  .consent-body { padding: 40px 20px; }
-  .consent-title { font-size: 28px; }
+  .consent-body { padding: 32px 20px 48px; justify-content: flex-start; }
   .consent-buttons { grid-template-columns: 1fr; }
   .consent-question { font-size: 15px; padding: 18px 20px; }
+  .consent-text { font-size: 13px; }
 
   /* intro mobile */
   #screen-intro { padding-top: 49px; }
@@ -319,11 +320,11 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
   .warn-label { font-size: 9px; }
   .warn-text { font-size: 10px; }
   .intro-grid { grid-template-columns: 1fr; min-height: auto; }
-  .intro-left { padding: 28px 20px 20px; border-right: none; border-bottom: 1px solid var(--border); gap: 20px; }
+  .intro-left { padding: 28px 20px 32px; border-right: none; border-bottom: 1px solid var(--border); gap: 20px; }
   .intro-title-main { font-size: 40px; }
   .class-cards { grid-template-columns: 1fr; }
   .intro-footer { flex-direction: column; gap: 4px; align-items: flex-start; }
-  .intro-right { padding: 20px 20px 32px; justify-content: flex-start; gap: 16px; }
+  .intro-right { padding: 24px 20px 48px; justify-content: flex-start; gap: 16px; }
   .noble-lie-intro { padding: 20px; }
   .disclaimer-box p:nth-child(3) { display: none; }
   .btn-begin { padding: 16px; }
