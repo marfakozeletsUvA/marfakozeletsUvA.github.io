@@ -50,7 +50,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px 48px;
+  padding: 48px 48px;
   max-width: 700px;
   margin: 0 auto;
   width: 100%;
@@ -59,8 +59,19 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
 
 .consent-eyebrow { font-size: 10px; color: var(--red); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px; }
 
-.consent-text { font-size: 14px; color: var(--text); line-height: 1.85; margin-bottom: 32px; text-align: center; }
+.consent-text { font-size: 14px; color: var(--text); line-height: 1.85; margin-bottom: 28px; text-align: center; }
 .consent-text strong { color: #fff; font-weight: 500; }
+
+.consent-countdown {
+  border: 1px solid var(--red);
+  background: rgba(192,57,43,0.07);
+  padding: 16px 40px;
+  text-align: center;
+  margin-bottom: 28px;
+  width: 100%;
+}
+.countdown-label { font-size: 9px; letter-spacing: 0.2em; color: var(--red); text-transform: uppercase; margin-bottom: 8px; }
+.countdown-digits { font-size: 36px; font-weight: 300; color: #e74c3c; letter-spacing: 0.12em; font-variant-numeric: tabular-nums; }
 
 .consent-question {
   font-family: var(--sans);
@@ -68,19 +79,53 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
   font-weight: 300;
   color: var(--text);
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 20px;
   line-height: 1.5;
-  padding: 24px 32px;
+  padding: 20px 32px;
   border: 1px solid var(--border-bright);
+  width: 100%;
 }
 
-.consent-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
-.btn-accept { padding: 18px; background: var(--red); color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s; }
-.btn-accept:hover { background: var(--red-bright); }
-.btn-decline { padding: 18px; background: none; color: var(--text-dim); font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--border-bright); cursor: pointer; transition: all 0.2s; }
-.btn-decline:hover { border-color: var(--text-dim); color: var(--text); }
+.consent-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-bottom: 0; }
 
-.consent-footer { text-align: center; margin-top: 20px; font-size: 10px; color: var(--text-faint); }
+.btn-accept {
+  padding: 20px 18px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-align: center;
+  line-height: 1;
+}
+.btn-accept:hover { background: var(--red-bright); }
+.btn-accept .btn-main-label { display: block; margin-bottom: 10px; font-size: 13px; }
+.btn-accept .btn-consequence { display: block; font-size: 10px; color: rgba(255,255,255,0.65); line-height: 1.6; text-transform: none; letter-spacing: 0.03em; font-weight: 300; }
+
+.btn-decline {
+  padding: 20px 18px;
+  background: none;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-bright);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  line-height: 1;
+}
+.btn-decline:hover { border-color: var(--text-dim); color: var(--text); }
+.btn-decline .btn-main-label { display: block; margin-bottom: 10px; font-size: 13px; }
+.btn-decline .btn-consequence { display: block; font-size: 10px; color: var(--text-faint); line-height: 1.6; text-transform: none; letter-spacing: 0.03em; font-weight: 300; }
+
+.consent-footer { text-align: center; margin-top: 16px; font-size: 10px; color: var(--text-faint); }
 
 /* declined state */
 .declined-msg { text-align: center; padding: 48px 32px; }
@@ -309,10 +354,12 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 
   /* consent mobile */
   #screen-consent { padding-top: 49px; }
-  .consent-body { padding: 32px 20px 48px; justify-content: flex-start; }
+  .consent-body { padding: 24px 20px 40px; justify-content: flex-start; }
   .consent-buttons { grid-template-columns: 1fr; }
   .consent-question { font-size: 15px; padding: 18px 20px; }
   .consent-text { font-size: 13px; }
+  .countdown-digits { font-size: 28px; }
+  .consent-countdown { padding: 14px 20px; }
 
   /* intro mobile */
   #screen-intro { padding-top: 49px; }
@@ -389,18 +436,27 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 
     <p class="consent-text">
       It is 2035. Earth is no longer viable. The Mars Colonial Programme is humanity's only remaining exit.<br><br>
-      Passage is not guaranteed. It is allocated by algorithm — structured on Plato's model of the just city. Three classes. Assigned, not chosen. Permanent.<br><br>
-      <strong>If you participate, you may survive. You will do so inside a system built on criteria you did not choose, reflecting a world order you did not create.</strong><br><br>
-      If you decline, you remain. The colony leaves without you.
+      Passage is not guaranteed. It is allocated by algorithm — structured on Plato's model of the just city. Three classes. Assigned, not chosen. Permanent.
     </p>
+
+    <div class="consent-countdown">
+      <div class="countdown-label">Registration window closes in</div>
+      <div class="countdown-digits" id="countdown-display">11:47:22</div>
+    </div>
 
     <div class="consent-question">
       Is a flawed system that offers survival better than no system at all?
     </div>
 
     <div class="consent-buttons">
-      <button class="btn-accept" onclick="goTo('screen-intro')">Accept and proceed</button>
-      <button class="btn-decline" onclick="showDeclined()">Decline passage</button>
+      <button class="btn-accept" onclick="goTo('screen-intro')">
+        <span class="btn-main-label">Accept and proceed</span>
+        <span class="btn-consequence">You may survive. You will do so inside a system built on criteria you did not choose, reflecting a world order you did not create.</span>
+      </button>
+      <button class="btn-decline" onclick="showDeclined()">
+        <span class="btn-main-label">Decline passage</span>
+        <span class="btn-consequence">You remain. The colony leaves without you. No appeal. No second window.</span>
+      </button>
     </div>
 
     <div class="consent-footer">Your response is logged under ICA Charter Article 7(c)</div>
@@ -1191,6 +1247,32 @@ document.getElementById('reflection-form').addEventListener('submit', async func
     btn.disabled = false;
   }
 });
+
+// ── Countdown timer ───────────────────────────────────────
+(function() {
+  const KEY = 'klp_countdown_end';
+  let endTime = localStorage.getItem(KEY);
+  if (!endTime) {
+    endTime = Date.now() + 12 * 60 * 60 * 1000;
+    localStorage.setItem(KEY, endTime);
+  }
+  endTime = parseInt(endTime);
+
+  function fmt(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    const el = document.getElementById('countdown-display');
+    if (!el) return;
+    const diff = Math.max(0, endTime - Date.now());
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    el.textContent = fmt(h) + ':' + fmt(m) + ':' + fmt(s);
+    if (diff === 0) el.textContent = '00:00:00';
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
 
 loadCaptcha();
 </script>
