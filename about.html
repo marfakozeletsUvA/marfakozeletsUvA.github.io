@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Marfa Kozelets</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root { --accent: var(--blue); }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .cv-btn-wrap {
+      flex-shrink: 0;
+      margin-top: 12px;
+    }
+
+    #cv-btn-canvas {
+      display: block;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    #cv-btn-canvas:hover { opacity: 0.7; }
+
+    .skills-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    @media (max-width: 600px) {
+      .skills-row { grid-template-columns: 1fr; gap: 24px; }
+      .header-inner { flex-direction: column; gap: 20px; }
+    }
+  </style>
+</head>
+<body style="--accent: var(--blue);">
+
+  <nav>
+    <a class="nav-logo" href="index.html">marfa kozelets<span class="colon">:</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">home</a></li>
+      <li><a href="research.html">research</a></li>
+      <li><a href="projects.html">projects</a></li>
+      <li><a href="about.html" class="active">about</a></li>
+      <li><a href="contact.html">contact</a></li>
+    </ul>
+    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="index.html">home</a>
+    <a href="research.html">research</a>
+    <a href="projects.html">projects</a>
+    <a href="about.html">about</a>
+    <a href="contact.html">contact</a>
+  </div>
+
+  <div class="page-header" style="--accent: var(--blue);">
+    <div class="header-inner">
+      <div>
+        <span class="page-header-meta">about</span>
+        <h1>Marfa</h1>
+        <p>BSc CSS @ UvA. Philosophy background. Interested in what data reveals and what it's trained to ignore.</p>
+      </div>
+      <div class="cv-btn-wrap">
+        <canvas id="cv-btn-canvas" width="300" height="100" title="Download CV"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="skills-row">
+      <div>
+        <span class="section-label">skills</span>
+        <p style="font-size:13px; line-height:2.2; color:#444;">
+          Python · R · ABM · NLP<br>
+          Network Analysis · GeoPandas<br>
+          Critical Theory · Philosophy<br>
+          Qualitative Methods · Atlas.ti<br>
+          Scikit-learn · BERTopic · NetworkX
+        </p>
+      </div>
+      <div style="border-left: 0.5px solid var(--rule); padding-left: 40px;">
+        <span class="section-label">languages</span>
+        <p style="font-size:13px; line-height:2.2; color:#444;">
+          English (full proficiency)<br>
+          Russian (native)<br>
+          Belarusian (native)<br>
+          Swedish (elementary)<br>
+          Dutch (basic)
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">education</span>
+
+    <div class="cv-block">
+      <div>
+        <div class="cv-block-title">BSc Computational Social Science</div>
+        <div class="cv-block-sub">University of Amsterdam</div>
+      </div>
+      <div class="cv-block-year">2024–2027</div>
+    </div>
+
+    <div class="cv-block">
+      <div>
+        <div class="cv-block-title">BA Philosophy (Year 1 completed)</div>
+        <div class="cv-block-sub">University of Nottingham</div>
+      </div>
+      <div class="cv-block-year">2023–2024</div>
+    </div>
+
+    <div class="cv-block">
+      <div>
+        <div class="cv-block-title">International Baccalaureate Diploma</div>
+        <div class="cv-block-sub">Sigtunaskolan Humanistiska Läroverket (SSHL), Sweden</div>
+      </div>
+      <div class="cv-block-year">2021–2023</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="section-label">experience</span>
+
+    <div class="cv-block">
+      <div>
+        <div class="cv-block-title">Research — UvA x Tapp Smart Architecture</div>
+        <div class="cv-block-sub">Cycling safety ABM. Presented at Innovation Centre Amsterdam and Kobe University.</div>
+      </div>
+      <div class="cv-block-year">2025–2026</div>
+    </div>
+
+    <div class="cv-block">
+      <div>
+        <div class="cv-block-title">President — SSHL ThinkTank</div>
+        <div class="cv-block-sub">AI in K-12 research. Presented to Swedish Ministry of Education.</div>
+      </div>
+      <div class="cv-block-year">2022–2023</div>
+    </div>
+
+    <div class="cv-block">
+      <div>
+        <div class="cv-block-title">Freelance Tutor — Philosophy and English</div>
+        <div class="cv-block-sub">IB students, online</div>
+      </div>
+      <div class="cv-block-year">2023–2024</div>
+    </div>
+  </div>
+
+  <div class="section" style="border-bottom:none;">
+    <span class="section-label">extracurricular</span>
+    <div class="cv-block">
+      <div>
+        <div class="cv-block-title">Competitive Ballroom Dancer</div>
+        <div class="cv-block-sub">National level, Belarus — 11 years</div>
+      </div>
+      <div class="cv-block-year">2009–2020</div>
+    </div>
+  </div>
+
+  <footer>
+    <span>© Marfa Kozelets</span>
+    <span style="display:flex; gap:24px;">
+      <a href="mailto:marfa.kozelets@student.uva.nl">email</a>
+      <a href="https://www.linkedin.com/in/marfa-petrovna-kozelets/" target="_blank">linkedin</a>
+      <a href="https://github.com/marfakozeletsUvA" target="_blank">github</a>
+    </span>
+  </footer>
+
+  <script>
+    function toggleDrawer() {
+      document.getElementById('mobileDrawer').classList.toggle('open');
+    }
+
+    // Handwritten Download CV button
+    const cvCanvas = document.getElementById('cv-btn-canvas');
+    const cvCtx = cvCanvas.getContext('2d');
+    const cvImg = new Image();
+    cvImg.src = 'download-cv.png';
+    cvImg.onload = () => {
+      cvCanvas.width = cvImg.naturalWidth;
+      cvCanvas.height = cvImg.naturalHeight;
+      cvCtx.drawImage(cvImg, 0, 0);
+      const id = cvCtx.getImageData(0, 0, cvCanvas.width, cvCanvas.height);
+      const d = id.data;
+      for (let i = 0; i < d.length; i += 4) {
+        if (d[i] < 40 && d[i+1] < 40 && d[i+2] < 40) d[i+3] = 0;
+      }
+      cvCtx.putImageData(id, 0, 0);
+    };
+
+    cvCanvas.addEventListener('click', () => {
+      window.open('Marfa_Kozelets_Academic_CV_v1_2page.pdf', '_blank');
+    });
+  </script>
+</body>
+</html>

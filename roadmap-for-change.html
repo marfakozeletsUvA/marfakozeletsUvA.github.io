@@ -1,714 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roadmap for Change — Marfa Kozelets</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --chalk: #EEECEA;
-  --navy: #0F1623;
-  --navy-mid: #1a2235;
-  --navy-light: #243048;
-  --blue: #2563EB;
-  --amber: #F59E0B;
-  --red: #EF4444;
-  --green: #22C55E;
-  --mono: 'IBM Plex Mono', monospace;
-  --sans: 'Syne', sans-serif;
-  --serif: 'Cormorant', serif;
-}
-html { scroll-behavior: smooth; }
-body { background: var(--navy); color: var(--chalk); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; }
-
-/* ── FADE IN ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-
-/* ── NAV ── */
-nav#nav {
-  position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; z-index: 1000 !important;
-  display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important;
-  padding: 1.25rem 3rem !important;
-  background: rgba(15,22,35,0.95) !important; backdrop-filter: blur(14px) !important;
-  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
-  transition: padding 0.3s !important;
-  width: 100% !important; height: auto !important;
-}
-nav#nav.scrolled { padding: 0.9rem 3rem !important; }
-nav#nav .logo { font-family: var(--mono) !important; font-size: 0.8rem !important; color: rgba(238,236,234,0.5) !important; text-decoration: none !important; letter-spacing: 0.05em !important; transition: color 0.2s !important; display: inline !important; }
-nav#nav .logo:hover { color: var(--chalk) !important; }
-nav#nav .logo span { color: var(--blue) !important; }
-nav#nav .nav-links { display: flex !important; flex-direction: row !important; gap: 2rem !important; list-style: none !important; margin: 0 !important; padding: 0 !important; }
-nav#nav .nav-links li { display: inline !important; }
-nav#nav .nav-links a { font-family: var(--mono) !important; font-size: 0.72rem !important; color: rgba(238,236,234,0.4) !important; text-decoration: none !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; transition: color 0.2s !important; display: inline !important; }
-nav#nav .nav-links a:hover { color: var(--chalk) !important; }
-
-/* ── HERO ── */
-.hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
-.hero-left { display: flex; flex-direction: column; justify-content: center; padding: 7rem 4rem 4rem 5rem; position: relative; z-index: 2; }
-.hero-tag {
-  font-family: var(--mono); font-size: 0.72rem; color: var(--amber);
-  letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem;
-  animation: fadeUp 0.8s ease 0.2s both;
-}
-.hero-title {
-  font-family: var(--serif); font-size: clamp(3.5rem, 6vw, 5.5rem);
-  font-weight: 600; line-height: 1.05; margin-bottom: 1rem;
-  animation: fadeUp 0.8s ease 0.35s both;
-}
-.hero-subtitle {
-  font-family: var(--serif); font-style: italic; font-size: 1.25rem;
-  color: rgba(238,236,234,0.6); max-width: 420px; margin-bottom: 3rem; line-height: 1.55;
-  animation: fadeUp 0.8s ease 0.5s both;
-}
-.hero-meta {
-  display: flex; flex-direction: column; gap: 0.4rem;
-  border-left: 2px solid var(--amber); padding-left: 1.25rem;
-  animation: fadeUp 0.8s ease 0.65s both;
-}
-.hero-meta span { font-family: var(--mono); font-size: 0.72rem; color: rgba(238,236,234,0.4); letter-spacing: 0.05em; }
-.hero-meta span strong { color: rgba(238,236,234,0.8); font-weight: 500; }
-
-.hero-right { position: relative; overflow: hidden; }
-.hero-right::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(rgba(37,99,235,0.07) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(37,99,235,0.07) 1px, transparent 1px);
-  background-size: 40px 40px; background-color: #080f1c;
-}
-.hero-right::after {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 40% 50%, rgba(37,99,235,0.12) 0%, transparent 65%);
-}
-.route-svg { width: 100%; height: 100%; position: absolute; inset: 0; z-index: 1; }
-
-.stat-overlay {
-  position: absolute; bottom: 4rem; left: 3rem; z-index: 3;
-  background: rgba(15,22,35,0.85); border: 1px solid rgba(37,99,235,0.25);
-  backdrop-filter: blur(10px); padding: 1.25rem 1.75rem; border-radius: 3px;
-  animation: fadeUp 0.8s ease 0.9s both;
-}
-.stat-overlay .big-num { font-family: var(--mono); font-size: 2.4rem; font-weight: 500; color: var(--amber); line-height: 1; margin-bottom: 0.35rem; }
-.stat-overlay .big-label { font-family: var(--mono); font-size: 0.62rem; color: rgba(238,236,234,0.45); letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.5; }
-
-.hero-scroll {
-  position: absolute; bottom: 2.5rem; left: 5rem;
-  font-family: var(--mono); font-size: 0.62rem; color: rgba(238,236,234,0.2);
-  letter-spacing: 0.15em; text-transform: uppercase;
-  display: flex; align-items: center; gap: 0.75rem; z-index: 5;
-  animation: fadeIn 1s ease 1.2s both;
-}
-.hero-scroll::before { content: ''; display: block; width: 36px; height: 1px; background: rgba(238,236,234,0.15); }
-
-/* ── SHARED ── */
-.section-label { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 1rem; }
-.section-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.1; margin-bottom: 2rem; }
-.section-divider { height: 1px; background: rgba(255,255,255,0.05); max-width: 1400px; margin: 0 auto; }
-
-/* ── PROBLEM ── */
-.problem-section { padding: 7rem 5rem; max-width: 1400px; margin: 0 auto; }
-.problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-.body-text { font-family: var(--serif); font-size: 1.12rem; color: rgba(238,236,234,0.72); line-height: 1.85; margin-bottom: 1.5rem; }
-.body-text em { color: var(--chalk); font-style: normal; font-weight: 600; }
-.problem-right { display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.08); }
-.stat-row { display: flex; justify-content: space-between; align-items: baseline; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); gap: 2rem; }
-.stat-row .stat-num { font-family: var(--mono); font-size: 2.1rem; font-weight: 500; color: var(--chalk); white-space: nowrap; }
-.stat-row .stat-num.danger { color: var(--red); }
-.stat-row .stat-num.dim { color: rgba(238,236,234,0.25); font-size: 1.3rem; letter-spacing: 0.1em; }
-.stat-row .stat-desc { font-family: var(--serif); font-size: 0.98rem; color: rgba(238,236,234,0.5); line-height: 1.55; text-align: right; }
-.reactive-flow { margin-top: 2.5rem; display: flex; align-items: center; gap: 0; }
-.flow-box { padding: 0.75rem 1.4rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(238,236,234,0.45); white-space: nowrap; }
-.flow-box.highlight { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.28); color: var(--red); }
-.flow-arrow { font-family: var(--mono); font-size: 0.8rem; color: rgba(255,255,255,0.15); padding: 0 0.6rem; }
-
-/* ── APPROACH ── */
-.approach-section { padding: 0 5rem 7rem; max-width: 1400px; margin: 0 auto; }
-.approach-pipeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,0.05); margin-top: 3rem; }
-.pipeline-step { background: var(--navy); padding: 2.5rem 2rem; position: relative; transition: background 0.25s; }
-.pipeline-step:hover { background: var(--navy-mid); }
-.pipeline-num { font-family: var(--mono); font-size: 0.63rem; color: var(--amber); letter-spacing: 0.15em; margin-bottom: 1rem; }
-.pipeline-title { font-family: var(--sans); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: 0.02em; }
-.pipeline-desc { font-family: var(--serif); font-size: 0.95rem; color: rgba(238,236,234,0.48); line-height: 1.65; }
-.pipeline-step::after { content: '→'; position: absolute; right: -12px; top: 50%; transform: translateY(-50%); font-family: var(--mono); color: rgba(255,255,255,0.12); font-size: 1rem; z-index: 2; }
-.pipeline-step:last-child::after { display: none; }
-
-/* ── ABM ── */
-.abm-section { padding: 7rem 5rem; background: #080e1a; position: relative; overflow: hidden; }
-.abm-section::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
-  background-size: 60px 60px; pointer-events: none;
-}
-.abm-inner { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
-.abm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 3.5rem; align-items: start; }
-.abm-explainer { font-family: var(--serif); font-size: 1.1rem; color: rgba(238,236,234,0.68); line-height: 1.9; margin-bottom: 1.5rem; }
-.abm-explainer em { color: var(--chalk); font-style: italic; }
-
-/* STATE DIAGRAM */
-.state-diagram { display: flex; align-items: stretch; margin: 2.5rem 0; }
-.state-box {
-  flex: 1; padding: 1rem 0.5rem; font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
-  letter-spacing: 0.08em; border: 1px solid; text-align: center;
-  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.3rem;
-}
-.state-box.safe   { color: var(--green); border-color: rgba(34,197,94,0.35);  background: rgba(34,197,94,0.07);  }
-.state-box.risk   { color: var(--amber); border-color: rgba(245,158,11,0.35); background: rgba(245,158,11,0.07); }
-.state-box.unsafe { color: var(--red);   border-color: rgba(239,68,68,0.35);  background: rgba(239,68,68,0.07);  }
-.state-connector { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 0.7rem; gap: 0.2rem; }
-.state-connector .arr { font-family: var(--mono); font-size: 1rem; color: rgba(255,255,255,0.2); }
-.state-connector .lbl { font-family: var(--mono); font-size: 0.5rem; color: rgba(255,255,255,0.28); letter-spacing: 0.04em; white-space: nowrap; }
-
-.threshold-card { background: rgba(37,99,235,0.07); border: 1px solid rgba(37,99,235,0.18); padding: 1.75rem; margin-top: 2rem; }
-.threshold-card .label { font-family: var(--mono); font-size: 0.63rem; color: var(--blue); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; }
-.threshold-card .value { font-family: var(--mono); font-size: 1.9rem; font-weight: 500; color: var(--chalk); margin-bottom: 0.5rem; }
-.threshold-card .desc { font-family: var(--serif); font-size: 0.92rem; color: rgba(238,236,234,0.48); font-style: italic; line-height: 1.6; }
-
-/* ACCELERATION CHART */
-.accel-chart-wrap { background: #050b14; border: 1px solid rgba(255,255,255,0.05); padding: 1.75rem; border-radius: 2px; }
-.accel-chart-title { font-family: var(--mono); font-size: 0.58rem; color: rgba(255,255,255,0.28); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.25rem; line-height: 1.6; }
-.accel-bar { flex: 1; border-radius: 1px 1px 0 0; }
-.accel-bar.normal { background: rgba(37,99,235,0.55); }
-.accel-bar.danger { background: rgba(239,68,68,0.65); }
-.accel-axis { display: flex; justify-content: space-between; margin-top: 0.6rem; }
-.accel-axis span { font-family: var(--mono); font-size: 0.53rem; color: rgba(255,255,255,0.2); letter-spacing: 0.05em; }
-.accel-legend { display: flex; gap: 1.5rem; margin-top: 1rem; }
-.accel-legend-item { display: flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.57rem; color: rgba(255,255,255,0.32); letter-spacing: 0.06em; }
-.accel-legend-dot { width: 8px; height: 8px; border-radius: 1px; flex-shrink: 0; }
-
-/* ── FINDINGS ── */
-.findings-section { padding: 7rem 5rem; max-width: 1400px; margin: 0 auto; }
-.findings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(255,255,255,0.04); margin-top: 3.5rem; }
-.finding-card { background: var(--navy); padding: 3rem; display: flex; flex-direction: column; gap: 0.85rem; transition: background 0.25s; }
-.finding-card:hover { background: var(--navy-mid); }
-.finding-num { font-family: var(--mono); font-size: 0.6rem; color: var(--amber); letter-spacing: 0.22em; text-transform: uppercase; }
-.finding-stat { font-family: var(--mono); font-size: 3rem; font-weight: 500; line-height: 1; }
-.finding-stat.red { color: var(--red); }
-.finding-stat.amber { color: var(--amber); }
-.finding-title { font-family: var(--sans); font-size: 0.92rem; font-weight: 600; letter-spacing: 0.03em; line-height: 1.45; }
-.finding-desc { font-family: var(--serif); font-size: 0.98rem; color: rgba(238,236,234,0.52); line-height: 1.75; }
-
-/* F1 compare */
-.f1-compare { display: flex; align-items: center; gap: 1.5rem; margin-top: 0.5rem; padding: 1.5rem; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); }
-.f1-num-block { flex: 1; text-align: center; }
-.f1-num-block .num { font-family: var(--mono); font-size: 2rem; font-weight: 500; line-height: 1; }
-.f1-num-block .lbl { font-family: var(--mono); font-size: 0.54rem; color: rgba(238,236,234,0.28); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.4rem; line-height: 1.6; }
-.f1-vs { font-family: var(--mono); font-size: 0.75rem; color: rgba(255,255,255,0.12); }
-
-/* F2 bars */
-.f2-bar-wrap { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
-.f2-bar-row { display: flex; align-items: center; gap: 0.75rem; }
-.f2-bar-label { font-family: var(--mono); font-size: 0.57rem; color: rgba(238,236,234,0.38); letter-spacing: 0.05em; width: 100px; flex-shrink: 0; text-align: right; }
-.f2-bar-outer { flex: 1; height: 22px; background: rgba(255,255,255,0.04); border-radius: 1px; display: flex; align-items: center; }
-.f2-bar-fill { height: 100%; border-radius: 1px; flex-shrink: 0; }
-.f2-bar-val { font-family: var(--mono); font-size: 0.6rem; color: rgba(238,236,234,0.5); margin-left: 7px; white-space: nowrap; }
-
-/* F3 bars */
-.f3-chart { margin-top: 0.5rem; padding: 1.25rem; background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.05); }
-.f3-chart-title { font-family: var(--mono); font-size: 0.54rem; color: rgba(255,255,255,0.22); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; line-height: 1.6; }
-.f3-bar-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
-.f3-bar-label { font-family: var(--mono); font-size: 0.57rem; color: rgba(238,236,234,0.38); letter-spacing: 0.04em; width: 80px; flex-shrink: 0; text-align: right; }
-.f3-bar-outer { flex: 1; height: 20px; background: rgba(255,255,255,0.04); border-radius: 1px; display: flex; align-items: center; }
-.f3-bar-fill { height: 100%; border-radius: 1px; flex-shrink: 0; }
-.f3-bar-val { font-family: var(--mono); font-size: 0.58rem; color: rgba(238,236,234,0.5); margin-left: 7px; white-space: nowrap; }
-
-/* F4 map */
-.f4-map { margin-top: 0.5rem; height: 200px; background: #050b14; border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; border-radius: 2px; }
-.f4-map::before { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(37,99,235,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.05) 1px, transparent 1px); background-size: 18px 18px; }
-.f4-map-note { position: absolute; bottom: 0.6rem; right: 0.75rem; font-family: var(--mono); font-size: 0.48rem; color: rgba(255,255,255,0.14); letter-spacing: 0.06em; }
-.hotspot-ring { position: absolute; border-radius: 50%; border: 1px solid; }
-
-/* ── SO WHAT ── */
-.sowhat-section { padding: 7rem 5rem; background: #080e1a; position: relative; }
-.sowhat-inner { max-width: 1400px; margin: 0 auto; }
-.sowhat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 3.5rem; align-items: start; }
-.quote-block { border-left: 2px solid var(--amber); padding: 2rem 2.5rem; background: rgba(245,158,11,0.03); }
-.quote-text { font-family: var(--serif); font-style: italic; font-size: 1.3rem; line-height: 1.65; color: rgba(238,236,234,0.82); margin-bottom: 1.25rem; }
-.quote-source { font-family: var(--mono); font-size: 0.63rem; color: rgba(238,236,234,0.28); letter-spacing: 0.1em; text-transform: uppercase; }
-.sowhat-body { font-family: var(--serif); font-size: 1.05rem; color: rgba(238,236,234,0.58); line-height: 1.85; margin-top: 2rem; }
-.implication-list { display: flex; flex-direction: column; }
-.impl-item { display: flex; gap: 1.5rem; padding: 1.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); align-items: flex-start; }
-.impl-icon { font-family: var(--mono); font-size: 0.62rem; color: var(--amber); padding-top: 0.15rem; white-space: nowrap; letter-spacing: 0.05em; }
-.impl-title { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; margin-bottom: 0.4rem; letter-spacing: 0.03em; }
-.impl-desc { font-family: var(--serif); font-size: 0.93rem; color: rgba(238,236,234,0.48); line-height: 1.65; }
-
-/* ── FOOTER ── */
-.project-footer { padding: 4rem 5rem; border-top: 1px solid rgba(255,255,255,0.05); max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; }
-.project-credit { font-family: var(--mono); font-size: 0.66rem; color: rgba(238,236,234,0.28); letter-spacing: 0.07em; line-height: 2.1; }
-.footer-links { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
-.footer-link { font-family: var(--mono); font-size: 0.7rem; color: rgba(238,236,234,0.38); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid rgba(238,236,234,0.12); padding-bottom: 2px; transition: color 0.2s, border-color 0.2s; white-space: nowrap; }
-.footer-link:hover { color: var(--chalk); border-color: var(--amber); }
-.footer-link.contact-note { color: rgba(245,158,11,0.6); border-color: rgba(245,158,11,0.2); cursor: default; font-size: 0.63rem; }
-
-/* ══════════════════════════════
-   MOBILE
-══════════════════════════════ */
-@media (max-width: 768px) {
-  nav#nav { padding: 1rem 1.5rem !important; }
-  nav#nav .nav-links { gap: 1.25rem !important; }
-  nav#nav .nav-links li:nth-child(1),
-  nav#nav .nav-links li:nth-child(4) { display: none !important; }
-  .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 5rem; }
-  .hero-right { display: none; }
-  .hero-left { padding: 3rem 1.5rem 4rem; }
-  .hero-title { font-size: 2.8rem; }
-  .hero-subtitle { font-size: 1.1rem; max-width: 100%; }
-  .hero-scroll { display: none; }
-  .problem-section, .findings-section { padding: 4rem 1.5rem; }
-  .problem-grid { grid-template-columns: 1fr; gap: 3rem; }
-  .reactive-flow { display: none; }
-  .approach-section { padding: 0 1.5rem 4rem; }
-  .approach-pipeline { grid-template-columns: 1fr; }
-  .pipeline-step::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -12px; transform: translateX(-50%); }
-  .pipeline-step:last-child::after { display: none; }
-  .abm-section { padding: 4rem 1.5rem; }
-  .abm-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .abm-chart-col { display: none; }
-  .findings-grid { grid-template-columns: 1fr; }
-  .finding-card { padding: 2rem 1.5rem; }
-  .finding-stat { font-size: 2.4rem; }
-  .f1-compare { flex-direction: column; gap: 0.75rem; }
-  .f2-bar-wrap, .f3-chart { display: none; }
-  .finding-mobile-note { display: block; }
-  .sowhat-section { padding: 4rem 1.5rem; }
-  .sowhat-grid { grid-template-columns: 1fr; gap: 3rem; }
-  .project-footer { padding: 3rem 1.5rem; flex-direction: column; gap: 2rem; align-items: flex-start; }
-}
-.finding-mobile-note { display: none; font-family: var(--mono); font-size: 0.63rem; color: rgba(238,236,234,0.28); letter-spacing: 0.06em; line-height: 1.9; padding: 0.75rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); margin-top: 0.5rem; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roadmap for Change — Marfa Kozelets</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root { --accent: var(--yellow); }
+  </style>
 </head>
-<body>
+<body style="--accent: var(--yellow);">
 
-<!-- NAV -->
-<nav id="nav">
-  <a href="/" class="logo">marfa<span>.</span>kozelets</a>
-  <ul class="nav-links">
-    <li><a href="/research">Research</a></li>
-    <li><a href="/projects">Projects</a></li>
-    <li><a href="/writing">Writing</a></li>
-    <li><a href="/contact">Contact</a></li>
-  </ul>
-</nav>
+  <nav>
+    <a class="nav-logo" href="index.html">marfa kozelets<span class="colon">:</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">home</a></li>
+      <li><a href="research.html">research</a></li>
+      <li><a href="projects.html" class="active">projects</a></li>
+      <li><a href="about.html">about</a></li>
+      <li><a href="contact.html">contact</a></li>
+    </ul>
+    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-<!-- 1. HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <p class="hero-tag">// project — computational social science</p>
-    <h1 class="hero-title">Roadmap<br>for Change</h1>
-    <p class="hero-subtitle">Using agent-based simulation to identify unsafe cycling infrastructure in Amsterdam — before accidents happen.</p>
-    <div class="hero-meta">
-      <span><strong>University of Amsterdam × Tapp</strong></span>
-      <span>January 2026</span>
-      <span>ABM · Sensor Data · Urban Mobility</span>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="index.html">home</a>
+    <a href="research.html">research</a>
+    <a href="projects.html">projects</a>
+    <a href="about.html">about</a>
+    <a href="contact.html">contact</a>
+  </div>
+
+  <a class="back-link" href="projects.html">← Projects</a>
+
+  <div class="page-header" style="--accent: var(--yellow); margin-top: 16px;">
+    <span class="page-header-meta">UvA x Tapp Smart Architecture, 2025–2026</span>
+    <h1>Roadmap for Change</h1>
+    <p>Agent-based model identifying unsafe cycling infrastructure in Amsterdam before accidents happen.</p>
+    <div style="margin-top: 16px;">
+      <span class="tag">ABM</span>
+      <span class="tag">Mesa</span>
+      <span class="tag">GeoPandas</span>
+      <span class="tag">sensor data</span>
+      <span class="tag">urban mobility</span>
     </div>
   </div>
-  <div class="hero-right">
-    <svg class="route-svg" viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice">
-      <path d="M 50 200 Q 150 180 250 220 T 450 200 T 620 190" stroke="rgba(34,197,94,0.45)" stroke-width="2" fill="none"/>
-      <path d="M 0 310 Q 100 290 200 315 T 420 300 T 620 310" stroke="rgba(34,197,94,0.35)" stroke-width="1.5" fill="none"/>
-      <path d="M 100 80 L 100 400 Q 100 422 122 432 L 520 432" stroke="rgba(37,99,235,0.38)" stroke-width="2" fill="none"/>
-      <path d="M 300 40 L 300 360 Q 300 382 322 392 L 620 392" stroke="rgba(37,99,235,0.28)" stroke-width="1.5" fill="none"/>
-      <path d="M 0 460 Q 200 448 310 465 T 620 458" stroke="rgba(245,158,11,0.25)" stroke-width="1.5" fill="none"/>
-      <path d="M 480 0 L 480 700" stroke="rgba(37,99,235,0.08)" stroke-width="1" fill="none"/>
-      <!-- Hotspot cluster -->
-      <circle cx="315" cy="315" r="38" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.2)" stroke-width="1"/>
-      <circle cx="315" cy="315" r="18" fill="rgba(239,68,68,0.12)"/>
-      <circle cx="315" cy="315" r="6" fill="rgba(239,68,68,0.9)"/>
-      <circle cx="346" cy="298" r="3.5" fill="rgba(239,68,68,0.55)"/>
-      <circle cx="296" cy="333" r="3" fill="rgba(239,68,68,0.45)"/>
-      <circle cx="152" cy="222" r="2" fill="rgba(245,158,11,0.4)"/>
-      <circle cx="425" cy="203" r="2" fill="rgba(245,158,11,0.35)"/>
-      <circle cx="505" cy="432" r="2.5" fill="rgba(239,68,68,0.45)"/>
-      <circle cx="118" cy="432" r="1.8" fill="rgba(245,158,11,0.3)"/>
-    </svg>
-    <div class="stat-overlay">
-      <div class="big-num">93.9%</div>
-      <div class="big-label">of hard braking away from<br>traffic signals</div>
-    </div>
-  </div>
-  <div class="hero-scroll">scroll to explore</div>
-</section>
 
-<!-- 2. PROBLEM -->
-<div class="section-divider"></div>
-<section class="problem-section">
-  <p class="section-label reveal">// 01 — the problem</p>
-  <div class="problem-grid">
-    <div>
-      <h2 class="section-title reveal reveal-delay-1">Amsterdam's cycling system is reactive by design.</h2>
-      <p class="body-text reveal reveal-delay-2">Despite its reputation as a global cycling capital, Amsterdam identifies dangerous infrastructure <em>only after harm has occurred</em>. The current system relies on accident reports and citizen complaints — a location must accumulate enough injuries before it enters the improvement queue.</p>
-      <p class="body-text reveal reveal-delay-2">For every fatal accident, thousands of <em>near-misses go unrecorded</em>. Braking events, swerves, close calls — the daily friction of cycling — remain invisible to planners.</p>
-      <div class="reactive-flow reveal reveal-delay-3">
-        <div class="flow-box highlight">Accident</div>
-        <span class="flow-arrow">&#8594;</span>
-        <div class="flow-box">Investigate</div>
-        <span class="flow-arrow">&#8594;</span>
-        <div class="flow-box">Fix</div>
-      </div>
-    </div>
-    <div class="problem-right reveal reveal-delay-2">
-      <div class="stat-row">
-        <span class="stat-num danger">270</span>
-        <span class="stat-desc">cyclist deaths across<br>the Netherlands in 2023</span>
-      </div>
-      <div class="stat-row">
-        <span class="stat-num">2,507</span>
-        <span class="stat-desc">ambulance calls in Amsterdam<br>in 2022 alone</span>
-      </div>
-      <div class="stat-row">
-        <span class="stat-num">+2,507</span>
-        <span class="stat-desc">estimated serious accidents<br>with no ambulance involved</span>
-      </div>
-      <div class="stat-row">
-        <span class="stat-num dim">untracked</span>
-        <span class="stat-desc">minor incidents and near-misses<br>entirely undocumented</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 3. APPROACH -->
-<div class="section-divider"></div>
-<section class="approach-section">
-  <p class="section-label reveal">// 02 — the approach</p>
-  <h2 class="section-title reveal reveal-delay-1">From sensor to insight.</h2>
-  <div class="approach-pipeline">
-    <div class="pipeline-step reveal reveal-delay-1">
-      <div class="pipeline-num">01</div>
-      <div class="pipeline-title">Sensor Data</div>
-      <p class="pipeline-desc">Bike-mounted sensors collected GPS, acceleration, and speed every second across 110 trips through Amsterdam.</p>
-    </div>
-    <div class="pipeline-step reveal reveal-delay-2">
-      <div class="pipeline-num">02</div>
-      <div class="pipeline-title">ABM Simulation</div>
-      <p class="pipeline-desc">Each trip becomes an agent. Hard braking events trigger probabilistic state transitions from SAFE to AT_RISK to UNSAFE.</p>
-    </div>
-    <div class="pipeline-step reveal reveal-delay-3">
-      <div class="pipeline-num">03</div>
-      <div class="pipeline-title">Infrastructure Overlay</div>
-      <p class="pipeline-desc">Braking events are mapped against traffic lights, road surface type, and facility type to isolate infrastructure-driven risk.</p>
-    </div>
-    <div class="pipeline-step reveal reveal-delay-4">
-      <div class="pipeline-num">04</div>
-      <div class="pipeline-title">Hotspot Identification</div>
-      <p class="pipeline-desc">Clusters of unexpected braking away from signals point to structural failures before accidents occur.</p>
-    </div>
-  </div>
-</section>
-
-<!-- 4. ABM -->
-<div class="section-divider"></div>
-<section class="abm-section">
-  <div class="abm-inner">
-    <p class="section-label reveal">// 03 — the model</p>
-    <h2 class="section-title reveal reveal-delay-1">Agent-Based Modelling</h2>
-    <div class="abm-grid">
-      <div>
-        <p class="abm-explainer reveal reveal-delay-1">Each of the 110 recorded cycling trips is initialised as an independent agent navigating the Amsterdam road network. The environment is built from GPS coordinates overlaid with municipal infrastructure data — traffic lights, road surfaces, facility types.</p>
-        <p class="abm-explainer reveal reveal-delay-2">At every step, an agent occupies one of three states. <em>Hard braking</em> — defined as acceleration below −2.0g — triggers a probabilistic transition to a worse state. Recovery is possible only through a sustained window of smooth cycling.</p>
-        <div class="state-diagram reveal reveal-delay-2">
-          <div class="state-box safe">SAFE</div>
-          <div class="state-connector">
-            <span class="arr">&#8594;</span>
-            <span class="lbl">acc &lt; -2.0g</span>
-            <span class="lbl">p = 0.033</span>
-          </div>
-          <div class="state-box risk">AT RISK</div>
-          <div class="state-connector">
-            <span class="arr">&#8594;</span>
-            <span class="lbl">absorbing</span>
-          </div>
-          <div class="state-box unsafe">UNSAFE</div>
-        </div>
-        <div class="threshold-card reveal reveal-delay-3">
-          <div class="label">Hard braking threshold</div>
-          <div class="value">acc &lt; −2.0g</div>
-          <div class="desc">Calibrated from the acceleration distribution across 718,303 sensor readings. Captures unexpected, sudden braking — a behavioural signal of infrastructure stress.</div>
-        </div>
-      </div>
-
-      <div class="abm-chart-col reveal reveal-delay-2">
-        <div class="accel-chart-wrap">
-          <div class="accel-chart-title">Distribution of acceleration values (n = 718,303)</div>
-          <div style="display:flex; align-items:flex-end; height:200px; gap:0;">
-            <!-- Danger tail — left, grows toward threshold -->
-            <div style="display:flex; align-items:flex-end; gap:2px; width:76px; flex-shrink:0; padding-right:4px; height:200px;">
-              <div class="accel-bar danger" style="height:3%"></div>
-              <div class="accel-bar danger" style="height:5%"></div>
-              <div class="accel-bar danger" style="height:8%"></div>
-              <div class="accel-bar danger" style="height:14%"></div>
-              <div class="accel-bar danger" style="height:24%"></div>
-              <div class="accel-bar danger" style="height:40%"></div>
-              <div class="accel-bar danger" style="height:62%"></div>
-            </div>
-            <!-- Vertical threshold line -->
-            <div style="width:2px; height:200px; background:rgba(239,68,68,0.85); flex-shrink:0; position:relative;">
-              <div style="position:absolute; top:8px; left:6px; font-family:var(--mono); font-size:0.52rem; color:rgba(239,68,68,0.9); white-space:nowrap; background:rgba(5,11,20,0.92); padding:2px 5px; letter-spacing:0.04em;">-2.0g</div>
-            </div>
-            <!-- Normal distribution — right -->
-            <div style="display:flex; align-items:flex-end; gap:2px; flex:1; height:200px; padding-left:4px;">
-              <div class="accel-bar normal" style="height:4%"></div>
-              <div class="accel-bar normal" style="height:7%"></div>
-              <div class="accel-bar normal" style="height:11%"></div>
-              <div class="accel-bar normal" style="height:20%"></div>
-              <div class="accel-bar normal" style="height:36%"></div>
-              <div class="accel-bar normal" style="height:55%"></div>
-              <div class="accel-bar normal" style="height:75%"></div>
-              <div class="accel-bar normal" style="height:92%"></div>
-              <div class="accel-bar normal" style="height:100%"></div>
-              <div class="accel-bar normal" style="height:90%"></div>
-              <div class="accel-bar normal" style="height:70%"></div>
-              <div class="accel-bar normal" style="height:50%"></div>
-              <div class="accel-bar normal" style="height:33%"></div>
-              <div class="accel-bar normal" style="height:22%"></div>
-              <div class="accel-bar normal" style="height:15%"></div>
-              <div class="accel-bar normal" style="height:11%"></div>
-              <div class="accel-bar normal" style="height:8%"></div>
-              <div class="accel-bar normal" style="height:6%"></div>
-              <div class="accel-bar normal" style="height:5%"></div>
-              <div class="accel-bar normal" style="height:4%"></div>
-              <div class="accel-bar normal" style="height:3%"></div>
-            </div>
-          </div>
-          <div class="accel-axis">
-            <span>-12g (hard braking)</span>
-            <span>0g (normal)</span>
-            <span>+15g</span>
-          </div>
-          <div class="accel-legend">
-            <div class="accel-legend-item"><div class="accel-legend-dot" style="background:rgba(239,68,68,0.65)"></div>Hard braking events</div>
-            <div class="accel-legend-item"><div class="accel-legend-dot" style="background:rgba(37,99,235,0.55)"></div>Normal cycling</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 5. FINDINGS -->
-<div class="section-divider"></div>
-<section class="findings-section">
-  <p class="section-label reveal">// 04 — key findings</p>
-  <h2 class="section-title reveal reveal-delay-1">What the model revealed.</h2>
-  <div class="findings-grid">
-
-    <!-- F1 -->
-    <div class="finding-card reveal reveal-delay-1">
-      <div class="finding-num">Finding 01</div>
-      <div class="finding-stat red">55.5%</div>
-      <div class="finding-title">of simulated trips ended in an UNSAFE state</div>
-      <p class="finding-desc">Unsafe trips accumulated on average 730 hard braking events compared to just 97 for safe trips. A 7x difference pointing to systemic, route-level risk rather than isolated incidents.</p>
-      <div class="f1-compare">
-        <div class="f1-num-block">
-          <div class="num" style="color:var(--red)">730</div>
-          <div class="lbl">unsafe avg<br>braking events</div>
-        </div>
-        <div class="f1-vs">vs</div>
-        <div class="f1-num-block">
-          <div class="num" style="color:var(--green)">97</div>
-          <div class="lbl">safe avg<br>braking events</div>
-        </div>
-      </div>
-      <p class="finding-mobile-note">Unsafe avg: 730 braking events · Safe avg: 97</p>
-    </div>
-
-    <!-- F2 -->
-    <div class="finding-card reveal reveal-delay-2">
-      <div class="finding-num">Finding 02</div>
-      <div class="finding-stat amber">93.9%</div>
-      <div class="finding-title">of hard braking occurs away from traffic lights</div>
-      <p class="finding-desc">Traffic signals account for only 6.1% of all hard braking. The danger is in the infrastructure between stops — surfaces, lane width, mixed-use paths.</p>
-      <div class="f2-bar-wrap">
-        <div class="f2-bar-row">
-          <span class="f2-bar-label">Away from signals</span>
-          <div class="f2-bar-outer">
-            <div class="f2-bar-fill" style="width:93.9%; background:rgba(239,68,68,0.5);"></div>
-            <span class="f2-bar-val">93.9%</span>
-          </div>
-        </div>
-        <div class="f2-bar-row">
-          <span class="f2-bar-label">Near signals</span>
-          <div class="f2-bar-outer">
-            <div class="f2-bar-fill" style="width:6.1%; background:rgba(34,197,94,0.45);"></div>
-            <span class="f2-bar-val">6.1%</span>
-          </div>
-        </div>
-      </div>
-      <p class="finding-mobile-note">93.9% away from signals · 6.1% near signals</p>
-    </div>
-
-    <!-- F3 -->
-    <div class="finding-card reveal reveal-delay-3">
-      <div class="finding-num">Finding 03</div>
-      <div class="finding-stat">3-4x</div>
-      <div class="finding-title">more braking per km on brick and tile surfaces</div>
-      <p class="finding-desc">When normalised by distance, brick pavers produce 30 braking events per km versus 8-9.5 on asphalt. Amsterdam's historic surfaces are a structural safety hazard.</p>
-      <div class="f3-chart">
-        <div class="f3-chart-title">Danger rate by road surface — braking events per km</div>
-        <div class="f3-bar-row">
-          <span class="f3-bar-label">Brick pavers</span>
-          <div class="f3-bar-outer">
-            <div class="f3-bar-fill" style="width:46%; background:rgba(239,68,68,0.52);"></div>
-            <span class="f3-bar-val">30 / km</span>
-          </div>
-        </div>
-        <div class="f3-bar-row">
-          <span class="f3-bar-label">Tiles</span>
-          <div class="f3-bar-outer">
-            <div class="f3-bar-fill" style="width:43%; background:rgba(239,68,68,0.42);"></div>
-            <span class="f3-bar-val">28 / km</span>
-          </div>
-        </div>
-        <div class="f3-bar-row">
-          <span class="f3-bar-label">Asphalt (red)</span>
-          <div class="f3-bar-outer">
-            <div class="f3-bar-fill" style="width:14.6%; background:rgba(37,99,235,0.5);"></div>
-            <span class="f3-bar-val">9.5 / km</span>
-          </div>
-        </div>
-        <div class="f3-bar-row">
-          <span class="f3-bar-label">Asphalt (gray)</span>
-          <div class="f3-bar-outer">
-            <div class="f3-bar-fill" style="width:12.3%; background:rgba(37,99,235,0.42);"></div>
-            <span class="f3-bar-val">8.0 / km</span>
-          </div>
-        </div>
-      </div>
-      <p class="finding-mobile-note">Brick: 30/km · Tiles: 28/km · Asphalt: 8-9.5/km</p>
-    </div>
-
-    <!-- F4 -->
-    <div class="finding-card reveal reveal-delay-4">
-      <div class="finding-num">Finding 04</div>
-      <div class="finding-stat red">Centraal</div>
-      <div class="finding-title">Amsterdam Central emerges as the primary danger hotspot</div>
-      <p class="finding-desc">Braking clusters concentrate around Amsterdam Centraal even after removing signal-adjacent events, pointing to mixed infrastructure, high pedestrian density, and legacy surface materials.</p>
-      <div class="f4-map">
-        <div class="hotspot-ring" style="width:90px;height:90px;top:calc(42% - 45px);left:calc(50% - 45px);border-color:rgba(239,68,68,0.11);background:rgba(239,68,68,0.04);"></div>
-        <div class="hotspot-ring" style="width:54px;height:54px;top:calc(42% - 27px);left:calc(50% - 27px);border-color:rgba(239,68,68,0.22);background:rgba(239,68,68,0.08);"></div>
-        <div class="hotspot-ring" style="width:26px;height:26px;top:calc(42% - 13px);left:calc(50% - 13px);border-color:rgba(239,68,68,0.5);background:rgba(239,68,68,0.22);"></div>
-        <div style="position:absolute;width:10px;height:10px;border-radius:50%;background:var(--red);top:calc(42% - 5px);left:calc(50% - 5px);box-shadow:0 0 14px rgba(239,68,68,0.85);"></div>
-        <div style="position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(239,68,68,0.55);top:28%;left:36%;"></div>
-        <div style="position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(245,158,11,0.5);top:66%;left:28%;"></div>
-        <div style="position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(245,158,11,0.4);top:24%;left:70%;"></div>
-        <div style="position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(245,158,11,0.32);top:72%;left:66%;"></div>
-        <div style="position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(239,68,68,0.38);top:56%;left:76%;"></div>
-        <div style="position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(239,68,68,0.3);top:82%;left:44%;"></div>
-        <div style="position:absolute;bottom:1.75rem;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:0.56rem;color:rgba(255,255,255,0.42);letter-spacing:0.1em;white-space:nowrap;border-bottom:1px solid rgba(239,68,68,0.28);padding-bottom:3px;">Amsterdam Centraal</div>
-        <div class="f4-map-note">ABM output — dangerous braking hotspots</div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- 6. SO WHAT -->
-<div class="section-divider"></div>
-<section class="sowhat-section">
-  <div class="sowhat-inner">
-    <p class="section-label reveal">// 05 — implications</p>
-    <h2 class="section-title reveal reveal-delay-1">Proactive, not reactive.</h2>
-    <div class="sowhat-grid">
-      <div>
-        <div class="quote-block reveal reveal-delay-1">
-          <p class="quote-text">"The model can highlight materials and design contexts correlated with cyclist stress before those problems become visible in accident statistics."</p>
-          <span class="quote-source">Roadmap for Change, Jan 2026</span>
-        </div>
-        <p class="sowhat-body reveal reveal-delay-2">
-          The ABM establishes a reproducible, behaviour-based baseline for any city to assess cycling infrastructure. By monitoring hard braking patterns continuously, municipalities can identify danger hotspots before they accumulate injuries and evaluate whether infrastructure changes actually improve safety over time.
-        </p>
-      </div>
-      <div class="implication-list reveal reveal-delay-2">
-        <div class="impl-item">
-          <span class="impl-icon">LOCAL</span>
-          <div>
-            <div class="impl-title">Evidence-based infrastructure prioritisation</div>
-            <p class="impl-desc">Identify which surfaces, crossings, and routes to repair first based on behavioural data, not waiting lists.</p>
-          </div>
-        </div>
-        <div class="impl-item">
-          <span class="impl-icon">LOCAL</span>
-          <div>
-            <div class="impl-title">Pre/post monitoring of interventions</div>
-            <p class="impl-desc">Compare braking frequency before and after a fix to measure whether it actually worked.</p>
-          </div>
-        </div>
-        <div class="impl-item">
-          <span class="impl-icon">SCALE</span>
-          <div>
-            <div class="impl-title">Adaptable to other vehicles and cities</div>
-            <p class="impl-desc">The sensor + ABM pipeline works for e-bikes, fatbikes, scooters, wheelchairs and for any city willing to collect data.</p>
-          </div>
-        </div>
-        <div class="impl-item">
-          <span class="impl-icon">EQUITY</span>
-          <div>
-            <div class="impl-title">Distributes safety improvements fairly</div>
-            <p class="impl-desc">The complaints-based system favours those who know how to complain. Sensor data captures everyone's experience.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<div class="section-divider"></div>
-<footer class="project-footer">
-  <div class="footer-left">
-    <p class="project-credit">
-      Group project — UvA Computational Social Science<br>
-      ABM design &amp; implementation: Marfa Kozelets<br>
-      Team: M. Balancier, K. Hänni, C. Xia
+  <div class="section">
+    <span class="section-label">the problem</span>
+    <p style="font-size:14px; color:#444; line-height:1.7; max-width:640px; margin-bottom:24px;">
+      Amsterdam identifies dangerous infrastructure only after harm occurs. Near-misses go unrecorded. The model detects risk before it becomes an accident.
     </p>
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-cell-num">270</div>
+        <div class="stat-cell-label">cyclist deaths across the Netherlands, 2023</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-cell-num">2,507</div>
+        <div class="stat-cell-label">ambulance calls in Amsterdam, 2022</div>
+      </div>
+    </div>
   </div>
-  <div class="footer-links">
-    <a href="https://github.com/marfakozeletsUvA/tapp-out-" target="_blank" class="footer-link">GitHub &#8599;</a>
-    <span class="footer-link contact-note">report available on request</span>
-    <a href="/projects" class="footer-link">&#8592; All Projects</a>
+
+  <div class="section">
+    <span class="section-label">approach</span>
+    <div class="step-row">
+      <span class="step-num">01</span>
+      <div>
+        <div class="step-title">Sensor data</div>
+        <div class="step-body">Bike-mounted sensors collected GPS and acceleration every second across 110 trips through Amsterdam. 718,303 total readings.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <span class="step-num">02</span>
+      <div>
+        <div class="step-title">ABM simulation</div>
+        <div class="step-body">Each trip becomes an agent navigating the Amsterdam road network. Hard braking (below -2.0g) triggers probabilistic state transitions: SAFE to AT RISK to UNSAFE.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <span class="step-num">03</span>
+      <div>
+        <div class="step-title">Infrastructure overlay</div>
+        <div class="step-body">Braking events mapped against traffic lights, road surface type, and facility type to isolate infrastructure-driven risk from behavioural noise.</div>
+      </div>
+    </div>
   </div>
-</footer>
 
-<script>
-  // Nav scroll shrink
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-  });
+  <div class="section">
+    <span class="section-label">key findings</span>
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-cell-num">93.9%</div>
+        <div class="stat-cell-label">of hard braking occurs away from traffic lights</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-cell-num">55.5%</div>
+        <div class="stat-cell-label">of simulated trips ended in an UNSAFE state</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-cell-num">7x</div>
+        <div class="stat-cell-label">more braking events on unsafe vs safe trips (730 vs 97)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-cell-num">3-4x</div>
+        <div class="stat-cell-label">more braking per km on brick and tile vs asphalt</div>
+      </div>
+    </div>
+  </div>
 
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  reveals.forEach(el => observer.observe(el));
-</script>
+  <div class="section">
+    <span class="section-label">visualisations</span>
+    <div class="graph-block">acceleration distribution across 718,303 sensor readings — existing chart</div>
+    <div class="graph-block">braking events per km by road surface type — existing chart</div>
+    <div class="graph-block">hard braking hotspot map — Amsterdam Centraal cluster — existing chart</div>
+  </div>
+
+  <div class="section" style="border-bottom:none;">
+    <span class="section-label">team</span>
+    <p style="font-size:13px; color:#444; line-height:2;">
+      ABM design and implementation: Marfa Kozelets<br>
+      Team: M. Balancier, K. Hänni, C. Xia<br>
+      UvA Computational Social Science
+    </p>
+    <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+      <a href="https://github.com/marfakozeletsUvA/tapp-out-" target="_blank"
+         style="background:var(--black); color:var(--white); padding:10px 20px; font-size:11px; font-weight:700; text-decoration:none; letter-spacing:0.06em; text-transform:uppercase;">
+        GitHub
+      </a>
+      <span style="border:1px solid var(--rule); color:var(--grey); padding:10px 20px; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;">
+        report on request
+      </span>
+    </div>
+  </div>
+
+  <footer>
+    <span>© Marfa Kozelets</span>
+    <span style="display:flex; gap:24px;">
+      <a href="mailto:marfa.kozelets@student.uva.nl">email</a>
+      <a href="https://www.linkedin.com/in/marfa-petrovna-kozelets/" target="_blank">linkedin</a>
+      <a href="https://github.com/marfakozeletsUvA" target="_blank">github</a>
+    </span>
+  </footer>
+
+  <script>
+    function toggleDrawer() {
+      document.getElementById('mobileDrawer').classList.toggle('open');
+    }
+  </script>
 </body>
 </html>

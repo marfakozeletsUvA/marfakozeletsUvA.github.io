@@ -4,469 +4,116 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact — Marfa Kozelets</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="style.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --accent: var(--green); }
 
-    :root {
-      --chalk:  #EEECEA;
-      --navy:   #0F1623;
-      --blue:   #2563EB;
-      --ink:    #1A1A1A;
-      --muted:  #6B7280;
-      --border: rgba(15,22,35,0.12);
-    }
-
-    html, body {
-      height: 100%;
-    }
-
-    body {
-      font-family: 'Cormorant', serif;
-      background: var(--chalk);
-      color: var(--ink);
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--chalk);
-      border-bottom: 1px solid var(--border);
-      padding: 0 52px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }
-
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink);
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 40px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--ink); }
-    .nav-links a.active { color: var(--blue); }
-
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 4px;
-    }
-
-    .nav-hamburger span {
-      display: block;
-      width: 22px;
-      height: 1.5px;
-      background: var(--ink);
-    }
-
-    .mobile-nav-drawer {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 0; right: 0;
-      background: var(--chalk);
-      border-bottom: 1px solid var(--border);
-      padding: 28px;
-      z-index: 99;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .mobile-nav-drawer.open { display: flex; }
-
-    .mobile-nav-drawer a {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--ink);
-      text-decoration: none;
-    }
-
-    /* ── CONTACT MAIN ── */
-    .contact-main {
-      flex: 1;
+    .contact-body {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: calc(100vh - 60px - 69px);
-    }
-
-    /* Left — text */
-    .contact-left {
-      padding: 88px 64px 88px 52px;
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .contact-eyebrow {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--blue);
-      display: block;
-      margin-bottom: 20px;
-    }
-
-    .contact-heading {
-      font-family: 'Cormorant', serif;
-      font-size: clamp(52px, 6vw, 88px);
-      font-weight: 300;
-      line-height: 0.95;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      margin-bottom: 32px;
-    }
-
-    .contact-heading em {
-      font-style: italic;
-    }
-
-    .contact-text {
-      font-family: 'Cormorant', serif;
-      font-size: 18px;
-      font-weight: 300;
-      line-height: 1.8;
-      color: #4B5563;
-      max-width: 400px;
-    }
-
-    /* Right — links */
-    .contact-right {
-      padding: 88px 52px 88px 64px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0;
-    }
-
-    .contact-links-label {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--muted);
-      margin-bottom: 28px;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: end;
+      padding: 56px;
     }
 
     .contact-link {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 16px;
+      padding: 20px 0;
+      border-top: 1.5px solid var(--black);
       text-decoration: none;
-      color: var(--ink);
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
-      transition: padding-left 0.25s ease;
-      position: relative;
-      overflow: hidden;
+      color: var(--black);
+      transition: opacity 0.15s;
     }
 
-    .contact-link::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 0;
-      background: var(--blue);
-      opacity: 0.06;
-      transition: width 0.3s ease;
-    }
+    .contact-link:last-child { border-bottom: 1.5px solid var(--black); }
+    .contact-link:hover { opacity: 0.6; }
 
-    .contact-link:first-of-type {
-      border-top: 1px solid var(--border);
-    }
-
-    .contact-link:hover {
-      padding-left: 12px;
-    }
-
-    .contact-link:hover::before {
-      width: 100%;
-    }
-
-    .link-icon {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px;
+    .contact-link-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--blue);
-      width: 72px;
-      flex-shrink: 0;
+      color: var(--green);
+      min-width: 80px;
     }
 
-    .link-value {
-      font-family: 'Cormorant', serif;
-      font-size: 20px;
-      font-weight: 300;
-      color: var(--ink);
-      flex: 1;
-      line-height: 1;
-    }
-
-    .link-arrow {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 14px;
-      color: var(--muted);
-      transition: color 0.2s, transform 0.2s;
-      flex-shrink: 0;
-    }
-
-    .contact-link:hover .link-arrow {
-      color: var(--blue);
-      transform: translateX(5px);
-    }
-
-    /* availability note */
-    .availability {
-      margin-top: 40px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .availability-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #22C55E;
-      flex-shrink: 0;
-      animation: pulse 2.5s ease infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.85); }
-    }
-
-    .availability-text {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--navy);
-      padding: 28px 52px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .footer-copy {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      color: rgba(255,255,255,0.3);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 28px;
-    }
-
-    .footer-links a {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      color: rgba(255,255,255,0.3);
-      text-decoration: none;
-      letter-spacing: 0.08em;
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover { color: var(--blue); }
-
-    /* usage note */
-    .usage-note {
-      margin-top: 36px;
-      padding-top: 36px;
-      border-top: 1px solid var(--border);
-    }
-
-    .usage-title {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--blue);
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .usage-text {
-      font-family: 'Cormorant', serif;
+    .contact-link-value {
       font-size: 15px;
-      font-weight: 300;
-      line-height: 1.8;
-      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
 
-    /* ── ANIMATIONS ── */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .fade-up:nth-child(2) { transition-delay: 0.1s; }
-    .fade-up:nth-child(3) { transition-delay: 0.2s; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .contact-main {
-        grid-template-columns: 1fr;
-        min-height: auto;
-      }
-
-      .contact-left {
-        padding: 64px 52px 48px;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .contact-right {
-        padding: 48px 52px 72px;
-      }
+    .girl-wrap {
+      flex-shrink: 0;
+      width: 180px;
+      align-self: flex-end;
     }
 
     @media (max-width: 768px) {
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-
-      .contact-left { padding: 48px 24px 40px; }
-      .contact-right { padding: 40px 24px 64px; }
-      footer { padding: 24px; }
-
-      .link-value { font-size: 17px; }
+      .contact-body { grid-template-columns: 1fr; padding: 40px 20px; }
+      .girl-wrap { display: none; }
     }
   </style>
 </head>
-<body>
+<body style="--accent: var(--green);">
 
-  <!-- NAV -->
   <nav>
-    <a href="index.html" class="nav-logo">M. Kozelets</a>
+    <a class="nav-logo" href="index.html">marfa kozelets<span class="colon">:</span></a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="research.html">Research</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="writing.html">Writing</a></li>
-      <li><a href="contact.html" class="active">Contact</a></li>
+      <li><a href="index.html">home</a></li>
+      <li><a href="research.html">research</a></li>
+      <li><a href="projects.html">projects</a></li>
+      <li><a href="about.html">about</a></li>
+      <li><a href="contact.html" class="active">contact</a></li>
     </ul>
     <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </nav>
 
-  <div class="mobile-nav-drawer" id="mobileDrawer">
-    <a href="index.html">Home</a>
-    <a href="research.html">Research</a>
-    <a href="projects.html">Projects</a>
-    <a href="writing.html">Writing</a>
-    <a href="contact.html">Contact</a>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="index.html">home</a>
+    <a href="research.html">research</a>
+    <a href="projects.html">projects</a>
+    <a href="about.html">about</a>
+    <a href="contact.html">contact</a>
   </div>
 
-  <!-- CONTACT MAIN -->
-  <div class="contact-main">
-
-    <!-- LEFT: heading + text -->
-    <div class="contact-left">
-      <span class="contact-eyebrow fade-up">Get in touch</span>
-      <h1 class="contact-heading fade-up">Let's<br><em>talk.</em></h1>
-      <p class="contact-text fade-up">
-        Whether you're interested in my research, want to discuss a project,
-        or think our work could intersect — I'd like to hear from you.
-      </p>
-    </div>
-
-    <!-- RIGHT: links -->
-    <div class="contact-right">
-      <p class="contact-links-label">Reach me at</p>
-
-      <a href="mailto:marfa.kozelets@student.uva.nl" class="contact-link fade-up">
-        <span class="link-icon">Email</span>
-        <span class="link-value">marfa.kozelets@student.uva.nl</span>
-        <span class="link-arrow">→</span>
-      </a>
-
-      <a href="https://linkedin.com/in/marfa-petrovna-kozelets" target="_blank" rel="noopener" class="contact-link fade-up">
-        <span class="link-icon">LinkedIn</span>
-        <span class="link-value">marfa-petrovna-kozelets</span>
-        <span class="link-arrow">→</span>
-      </a>
-
-      <div class="availability fade-up">
-        <span class="availability-dot"></span>
-        <span class="availability-text">Available for internships &amp; research collaborations</span>
-      </div>
-
-      <div class="usage-note fade-up">
-        <span class="usage-title">Using my work?</span>
-        <p class="usage-text">
-          You're welcome to draw on my research and writing — all I ask is proper citation,
-          and that you send me the final result. I'd genuinely love to see where it ends up.
-        </p>
-      </div>
-    </div>
-
+  <div class="page-header" style="--accent: var(--green);">
+    <span class="page-header-meta">get in touch</span>
+    <h1>Let's talk.</h1>
+    <p>Research, collaboration, internships.</p>
   </div>
 
-  <!-- FOOTER -->
+  <div class="contact-body">
+    <div>
+      <a class="contact-link" href="mailto:marfa.kozelets@student.uva.nl">
+        <span class="contact-link-label">email</span>
+        <span class="contact-link-value">marfa.kozelets@student.uva.nl</span>
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/marfa-petrovna-kozelets/" target="_blank">
+        <span class="contact-link-label">linkedin</span>
+        <span class="contact-link-value">marfa-petrovna-kozelets</span>
+      </a>
+      <a class="contact-link" href="https://github.com/marfakozeletsUvA" target="_blank">
+        <span class="contact-link-label">github</span>
+        <span class="contact-link-value">marfakozeletsUvA</span>
+      </a>
+    </div>
+    <div class="girl-wrap">
+      <canvas id="girl-canvas" class="doodle" style="width:180px;"></canvas>
+    </div>
+  </div>
+
   <footer>
-    <span class="footer-copy">© Marfa Kozelets — marfakozelets.com</span>
-    <div class="footer-links">
-      <a href="mailto:marfa.kozelets@student.uva.nl">Email</a>
-      <a href="https://linkedin.com/in/marfa-petrovna-kozelets" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="#">GitHub</a>
-    </div>
+    <span>© Marfa Kozelets</span>
+    <span style="display:flex; gap:24px;">
+      <a href="mailto:marfa.kozelets@student.uva.nl">email</a>
+      <a href="https://www.linkedin.com/in/marfa-petrovna-kozelets/" target="_blank">linkedin</a>
+      <a href="https://github.com/marfakozeletsUvA" target="_blank">github</a>
+    </span>
   </footer>
 
   <script>
@@ -474,17 +121,21 @@
       document.getElementById('mobileDrawer').classList.toggle('open');
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), 60);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.05 });
-
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    const gc = document.getElementById('girl-canvas');
+    const gctx = gc.getContext('2d');
+    const gi = new Image();
+    gi.src = 'girl.png';
+    gi.onload = () => {
+      gc.width = gi.naturalWidth;
+      gc.height = gi.naturalHeight;
+      gctx.drawImage(gi, 0, 0);
+      const id = gctx.getImageData(0, 0, gc.width, gc.height);
+      const d = id.data;
+      for (let i = 0; i < d.length; i += 4) {
+        if (d[i] < 40 && d[i+1] < 40 && d[i+2] < 40) d[i+3] = 0;
+      }
+      gctx.putImageData(id, 0, 0);
+    };
   </script>
-
 </body>
 </html>
