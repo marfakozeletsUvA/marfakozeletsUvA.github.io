@@ -7,30 +7,14 @@
   <link rel="stylesheet" href="style.css">
   <style>
     :root { --accent: var(--yellow); }
-
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-
-    .doodle-wrap {
-      flex-shrink: 0;
-      width: 140px;
-      opacity: 0.85;
-    }
-
-    .card-link {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
+    .header-inner { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; }
+    .doodle-wrap { flex-shrink: 0; width: 130px; }
+    .doodle-wrap canvas { width: 130px; height: 130px; display: block; }
+    .card-link { text-decoration: none; color: inherit; display: block; }
     .card-link:hover h2 { text-decoration: underline; text-underline-offset: 3px; }
   </style>
 </head>
 <body style="--accent: var(--yellow);">
-
   <nav>
     <a class="nav-logo" href="index.html">marfa kozelets<span class="colon">:</span></a>
     <ul class="nav-links">
@@ -40,17 +24,10 @@
       <li><a href="about.html">about</a></li>
       <li><a href="contact.html">contact</a></li>
     </ul>
-    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
-
   <div class="mobile-drawer" id="mobileDrawer">
-    <a href="index.html">home</a>
-    <a href="research.html">research</a>
-    <a href="projects.html">projects</a>
-    <a href="about.html">about</a>
-    <a href="contact.html">contact</a>
+    <a href="index.html">home</a><a href="research.html">research</a><a href="projects.html">projects</a><a href="about.html">about</a><a href="contact.html">contact</a>
   </div>
 
   <div class="page-header" style="--accent: var(--yellow);">
@@ -61,13 +38,12 @@
         <p>Methodology made public.</p>
       </div>
       <div class="doodle-wrap">
-        <canvas id="doodle-canvas" class="doodle" style="width:140px; height:140px;"></canvas>
+        <canvas id="doodle"></canvas>
       </div>
     </div>
   </div>
 
   <div class="section">
-
     <a class="card-link" href="roadmap-for-change.html">
       <div class="card">
         <div class="card-top">
@@ -76,10 +52,7 @@
         </div>
         <div class="stat-num">93.9%</div>
         <p class="body">of hard braking occurs away from traffic lights. Agent-based model of 110 sensor-recorded cyclist trips across Amsterdam identifying unsafe infrastructure before accidents happen.</p>
-        <span class="tag">ABM</span>
-        <span class="tag">Mesa</span>
-        <span class="tag">GeoPandas</span>
-        <span class="tag">sensor data</span>
+        <span class="tag">ABM</span><span class="tag">Mesa</span><span class="tag">GeoPandas</span><span class="tag">sensor data</span>
       </div>
     </a>
 
@@ -89,22 +62,17 @@
         <span class="badge">in progress</span>
       </div>
       <p class="body">Predicting state instability and journalist killings via post-colonial power proxies. 10 datasets modelling how legacy colonial relationships shape contemporary governance failure.</p>
-      <span class="tag">python</span>
-      <span class="tag">network analysis</span>
-      <span class="tag">regression</span>
+      <span class="tag">python</span><span class="tag">network analysis</span><span class="tag">regression</span>
     </div>
 
     <a class="card-link" href="kallipolis.html">
       <div class="card">
         <div class="card-top">
           <h2>Project Kallipolis</h2>
-          <span class="badge">2026</span>
+          <span class="badge">in progress</span>
         </div>
         <p class="body">Interactive ethics prototype exploring algorithmic justice, grounded in Plato's Republic. Examines how sorting systems encode normative assumptions.</p>
-        <span class="tag">JS</span>
-        <span class="tag">ethics</span>
-        <span class="tag">interactive</span>
-        <span class="tag">political philosophy</span>
+        <span class="tag">JS</span><span class="tag">ethics</span><span class="tag">interactive</span><span class="tag">political philosophy</span>
       </div>
     </a>
 
@@ -114,9 +82,7 @@
         <span class="badge">completed</span>
       </div>
       <p class="body">Data-driven platform for European policymakers advocating 30km/h speed limits. Stakeholder analysis, focus group interviews with Amsterdam municipality officials, narrative persuasion survey experiment.</p>
-      <span class="tag">policy</span>
-      <span class="tag">survey design</span>
-      <span class="tag">UvA x Tapp</span>
+      <span class="tag">policy</span><span class="tag">survey design</span><span class="tag">UvA x Tapp</span>
     </div>
 
     <div class="card">
@@ -125,11 +91,8 @@
         <span class="badge">completed</span>
       </div>
       <p class="body">Qualitative study on microplastic filter adoption across Amsterdam. 8 interviews, thematic coding and network analysis in Atlas.ti.</p>
-      <span class="tag">qualitative</span>
-      <span class="tag">Atlas.ti</span>
-      <span class="tag">environmental</span>
+      <span class="tag">qualitative</span><span class="tag">Atlas.ti</span><span class="tag">environmental</span>
     </div>
-
   </div>
 
   <footer>
@@ -142,25 +105,24 @@
   </footer>
 
   <script>
-    function toggleDrawer() {
-      document.getElementById('mobileDrawer').classList.toggle('open');
+    function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
+    function loadDoodle(id, src) {
+      const c = document.getElementById(id);
+      const cx = c.getContext('2d');
+      const img = new Image();
+      img.onload = () => {
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        cx.drawImage(img, 0, 0);
+        const id2 = cx.getImageData(0, 0, c.width, c.height);
+        const d = id2.data;
+        for (let i = 0; i < d.length; i += 4) {
+          if (d[i] < 45 && d[i+1] < 45 && d[i+2] < 45) d[i+3] = 0;
+        }
+        cx.putImageData(id2, 0, 0);
+      };
+      img.src = src;
     }
-
-    const dc = document.getElementById('doodle-canvas');
-    const dctx = dc.getContext('2d');
-    const di = new Image();
-    di.src = 'laptop.png';
-    di.onload = () => {
-      dc.width = di.naturalWidth;
-      dc.height = di.naturalHeight;
-      dctx.drawImage(di, 0, 0);
-      const id = dctx.getImageData(0, 0, dc.width, dc.height);
-      const d = id.data;
-      for (let i = 0; i < d.length; i += 4) {
-        if (d[i] < 40 && d[i+1] < 40 && d[i+2] < 40) d[i+3] = 0;
-      }
-      dctx.putImageData(id, 0, 0);
-    };
+    loadDoodle('doodle', 'laptop.png');
   </script>
 </body>
 </html>

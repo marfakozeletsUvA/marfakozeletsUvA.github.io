@@ -7,10 +7,74 @@
   <link rel="stylesheet" href="style.css">
   <style>
     :root { --accent: var(--yellow); }
+
+    .abm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .state-diagram { display: flex; align-items: center; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
+    .state-box { padding: 8px 14px; border-radius: 2px; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; }
+    .state-box.safe { background: #d4edda; color: #1a5c2a; }
+    .state-box.risk { background: #fff3cd; color: #856404; }
+    .state-box.unsafe { background: #f8d7da; color: #721c24; }
+    .state-connector { display: flex; flex-direction: column; align-items: center; font-size: 9px; color: var(--grey); gap: 2px; }
+    .state-connector .arr { font-size: 16px; color: var(--black); line-height: 1; }
+
+    .threshold-card { background: #F8F8F8; border: 0.5px solid var(--rule); border-left: 3px solid var(--yellow); padding: 16px; border-radius: 0 4px 4px 0; margin: 16px 0; }
+    .threshold-card .label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 4px; }
+    .threshold-card .value { font-size: 20px; font-weight: 900; color: var(--black); margin-bottom: 6px; }
+    .threshold-card .desc { font-size: 12px; color: var(--grey); line-height: 1.6; }
+
+    /* Acceleration chart */
+    .accel-chart-wrap { background: #F8F8F8; border: 0.5px solid var(--rule); padding: 20px; border-radius: 4px; }
+    .accel-chart-title { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--grey); margin-bottom: 12px; }
+    .accel-bar { flex: 1; min-width: 4px; border-radius: 1px 1px 0 0; }
+    .accel-bar.danger { background: rgba(239,68,68,0.6); }
+    .accel-bar.normal { background: rgba(37,99,235,0.45); }
+    .accel-axis { display: flex; justify-content: space-between; font-size: 9px; color: var(--grey); margin-top: 6px; }
+    .accel-legend { display: flex; gap: 16px; margin-top: 10px; }
+    .accel-legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--grey); }
+    .accel-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Findings grid */
+    .findings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .finding-card { border: 1px solid var(--rule); border-radius: 4px; padding: 20px; }
+    .finding-num { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 8px; }
+    .finding-stat { font-size: 40px; font-weight: 900; letter-spacing: -0.04em; color: var(--yellow); line-height: 1; margin-bottom: 6px; }
+    .finding-stat.red { color: #EF4444; }
+    .finding-stat.amber { color: #F59E0B; }
+    .finding-title { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 8px; line-height: 1.4; }
+    .finding-desc { font-size: 12px; color: var(--grey); line-height: 1.6; margin-bottom: 12px; }
+
+    .f1-compare { display: flex; align-items: center; gap: 12px; margin: 12px 0; }
+    .f1-num-block { text-align: center; }
+    .f1-num-block .num { font-size: 28px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+    .f1-num-block .lbl { font-size: 10px; color: var(--grey); margin-top: 3px; line-height: 1.3; }
+    .f1-vs { font-size: 11px; font-weight: 700; color: var(--grey); }
+
+    .f2-bar-wrap, .f3-chart { margin: 12px 0; }
+    .f2-bar-row, .f3-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .f2-bar-label, .f3-bar-label { font-size: 10px; color: var(--grey); min-width: 100px; }
+    .f2-bar-outer, .f3-bar-outer { flex: 1; background: #F0F0F0; border-radius: 2px; height: 20px; position: relative; display: flex; align-items: center; }
+    .f2-bar-fill, .f3-bar-fill { height: 100%; border-radius: 2px; }
+    .f2-bar-val, .f3-bar-val { font-size: 10px; font-weight: 700; color: var(--black); margin-left: 6px; white-space: nowrap; }
+    .f3-chart-title { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--grey); margin-bottom: 10px; }
+
+    /* Hotspot map */
+    .f4-map { position: relative; height: 180px; background: #F8F8F8; border-radius: 4px; margin: 12px 0; overflow: hidden; border: 0.5px solid var(--rule); }
+    .hotspot-ring { position: absolute; border-radius: 50%; border: 1px solid; }
+    .f4-map-note { position: absolute; bottom: 8px; right: 8px; font-size: 9px; color: var(--grey); font-style: italic; }
+
+    /* Reactive flow */
+    .reactive-flow { display: flex; align-items: center; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
+    .flow-box { padding: 6px 12px; border: 1px solid var(--rule); border-radius: 2px; font-size: 11px; font-weight: 700; color: var(--black); }
+    .flow-box.highlight { background: var(--yellow); border-color: var(--yellow); }
+    .flow-arrow { font-size: 14px; color: var(--grey); }
+
+    @media (max-width: 768px) {
+      .abm-grid { grid-template-columns: 1fr; }
+      .findings-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body style="--accent: var(--yellow);">
-
   <nav>
     <a class="nav-logo" href="index.html">marfa kozelets<span class="colon">:</span></a>
     <ul class="nav-links">
@@ -20,17 +84,10 @@
       <li><a href="about.html">about</a></li>
       <li><a href="contact.html">contact</a></li>
     </ul>
-    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
-
   <div class="mobile-drawer" id="mobileDrawer">
-    <a href="index.html">home</a>
-    <a href="research.html">research</a>
-    <a href="projects.html">projects</a>
-    <a href="about.html">about</a>
-    <a href="contact.html">contact</a>
+    <a href="index.html">home</a><a href="research.html">research</a><a href="projects.html">projects</a><a href="about.html">about</a><a href="contact.html">contact</a>
   </div>
 
   <a class="back-link" href="projects.html">← Projects</a>
@@ -40,85 +97,177 @@
     <h1>Roadmap for Change</h1>
     <p>Agent-based model identifying unsafe cycling infrastructure in Amsterdam before accidents happen.</p>
     <div style="margin-top: 16px;">
-      <span class="tag">ABM</span>
-      <span class="tag">Mesa</span>
-      <span class="tag">GeoPandas</span>
-      <span class="tag">sensor data</span>
-      <span class="tag">urban mobility</span>
+      <span class="tag">ABM</span><span class="tag">Mesa</span><span class="tag">GeoPandas</span><span class="tag">sensor data</span><span class="tag">urban mobility</span>
     </div>
   </div>
 
+  <!-- THE PROBLEM -->
   <div class="section">
     <span class="section-label">the problem</span>
-    <p style="font-size:14px; color:#444; line-height:1.7; max-width:640px; margin-bottom:24px;">
-      Amsterdam identifies dangerous infrastructure only after harm occurs. Near-misses go unrecorded. The model detects risk before it becomes an accident.
-    </p>
-    <div class="stat-grid">
-      <div class="stat-cell">
-        <div class="stat-cell-num">270</div>
-        <div class="stat-cell-label">cyclist deaths across the Netherlands, 2023</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-cell-num">2,507</div>
-        <div class="stat-cell-label">ambulance calls in Amsterdam, 2022</div>
-      </div>
+    <p style="font-size:14px; color:#444; line-height:1.7; max-width:640px; margin-bottom:20px;">Despite its reputation as a global cycling capital, Amsterdam identifies dangerous infrastructure only after harm has occurred. The current system relies on accident reports and citizen complaints. Near-misses, braking events, swerves — remain invisible to planners.</p>
+    <div class="reactive-flow">
+      <div class="flow-box highlight">Accident</div>
+      <span class="flow-arrow">&#8594;</span>
+      <div class="flow-box">Investigate</div>
+      <span class="flow-arrow">&#8594;</span>
+      <div class="flow-box">Fix</div>
+    </div>
+    <div class="stat-grid" style="margin-top:20px;">
+      <div class="stat-cell"><div class="stat-cell-num">270</div><div class="stat-cell-label">cyclist deaths across the Netherlands, 2023</div></div>
+      <div class="stat-cell"><div class="stat-cell-num">2,507</div><div class="stat-cell-label">ambulance calls in Amsterdam, 2022</div></div>
+      <div class="stat-cell"><div class="stat-cell-num">+2,507</div><div class="stat-cell-label">estimated serious accidents with no ambulance involved</div></div>
+      <div class="stat-cell"><div class="stat-cell-num" style="font-size:20px;">untracked</div><div class="stat-cell-label">minor incidents and near-misses entirely undocumented</div></div>
     </div>
   </div>
 
+  <!-- APPROACH -->
   <div class="section">
     <span class="section-label">approach</span>
-    <div class="step-row">
-      <span class="step-num">01</span>
+    <div class="step-row"><span class="step-num">01</span><div><div class="step-title">Sensor data</div><div class="step-body">Bike-mounted sensors collected GPS, acceleration, and speed every second across 110 trips through Amsterdam. 718,303 total readings.</div></div></div>
+    <div class="step-row"><span class="step-num">02</span><div><div class="step-title">ABM simulation</div><div class="step-body">Each trip becomes an agent navigating the Amsterdam road network. Hard braking events trigger probabilistic state transitions from SAFE to AT_RISK to UNSAFE.</div></div></div>
+    <div class="step-row"><span class="step-num">03</span><div><div class="step-title">Infrastructure overlay</div><div class="step-body">Braking events mapped against traffic lights, road surface type, and facility type to isolate infrastructure-driven risk.</div></div></div>
+    <div class="step-row"><span class="step-num">04</span><div><div class="step-title">Hotspot identification</div><div class="step-body">Clusters of unexpected braking away from signals point to structural failures before accidents occur.</div></div></div>
+  </div>
+
+  <!-- THE MODEL -->
+  <div class="section">
+    <span class="section-label">the model</span>
+    <div class="abm-grid">
       <div>
-        <div class="step-title">Sensor data</div>
-        <div class="step-body">Bike-mounted sensors collected GPS and acceleration every second across 110 trips through Amsterdam. 718,303 total readings.</div>
+        <p style="font-size:13px; color:#444; line-height:1.7; margin-bottom:14px;">Each of the 110 recorded cycling trips is initialised as an independent agent. At every step, an agent occupies one of three states. Hard braking — defined as acceleration below -2.0g — triggers a probabilistic transition to a worse state.</p>
+        <div class="state-diagram">
+          <div class="state-box safe">SAFE</div>
+          <div class="state-connector"><span class="arr">&#8594;</span><span>acc &lt; -2.0g</span><span>p = 0.033</span></div>
+          <div class="state-box risk">AT RISK</div>
+          <div class="state-connector"><span class="arr">&#8594;</span><span>absorbing</span></div>
+          <div class="state-box unsafe">UNSAFE</div>
+        </div>
+        <div class="threshold-card">
+          <div class="label">Hard braking threshold</div>
+          <div class="value">acc &lt; -2.0g</div>
+          <div class="desc">Calibrated from the acceleration distribution across 718,303 sensor readings. Captures unexpected, sudden braking — a behavioural signal of infrastructure stress.</div>
+        </div>
       </div>
-    </div>
-    <div class="step-row">
-      <span class="step-num">02</span>
       <div>
-        <div class="step-title">ABM simulation</div>
-        <div class="step-body">Each trip becomes an agent navigating the Amsterdam road network. Hard braking (below -2.0g) triggers probabilistic state transitions: SAFE to AT RISK to UNSAFE.</div>
-      </div>
-    </div>
-    <div class="step-row">
-      <span class="step-num">03</span>
-      <div>
-        <div class="step-title">Infrastructure overlay</div>
-        <div class="step-body">Braking events mapped against traffic lights, road surface type, and facility type to isolate infrastructure-driven risk from behavioural noise.</div>
+        <div class="accel-chart-wrap">
+          <div class="accel-chart-title">Distribution of acceleration values (n = 718,303)</div>
+          <div style="display:flex; align-items:flex-end; height:180px; gap:0;">
+            <div style="display:flex; align-items:flex-end; gap:2px; width:72px; flex-shrink:0; padding-right:4px; height:180px;">
+              <div class="accel-bar danger" style="height:3%"></div>
+              <div class="accel-bar danger" style="height:5%"></div>
+              <div class="accel-bar danger" style="height:8%"></div>
+              <div class="accel-bar danger" style="height:14%"></div>
+              <div class="accel-bar danger" style="height:24%"></div>
+              <div class="accel-bar danger" style="height:40%"></div>
+              <div class="accel-bar danger" style="height:62%"></div>
+            </div>
+            <div style="width:2px; height:180px; background:rgba(239,68,68,0.85); flex-shrink:0; position:relative;">
+              <div style="position:absolute; top:6px; left:5px; font-size:9px; color:rgba(239,68,68,0.9); white-space:nowrap; background:#fff; padding:1px 4px; border:0.5px solid rgba(239,68,68,0.3);">-2.0g</div>
+            </div>
+            <div style="display:flex; align-items:flex-end; gap:2px; flex:1; height:180px; padding-left:4px;">
+              <div class="accel-bar normal" style="height:4%"></div>
+              <div class="accel-bar normal" style="height:7%"></div>
+              <div class="accel-bar normal" style="height:11%"></div>
+              <div class="accel-bar normal" style="height:20%"></div>
+              <div class="accel-bar normal" style="height:36%"></div>
+              <div class="accel-bar normal" style="height:55%"></div>
+              <div class="accel-bar normal" style="height:75%"></div>
+              <div class="accel-bar normal" style="height:92%"></div>
+              <div class="accel-bar normal" style="height:100%"></div>
+              <div class="accel-bar normal" style="height:90%"></div>
+              <div class="accel-bar normal" style="height:70%"></div>
+              <div class="accel-bar normal" style="height:50%"></div>
+              <div class="accel-bar normal" style="height:33%"></div>
+              <div class="accel-bar normal" style="height:22%"></div>
+              <div class="accel-bar normal" style="height:15%"></div>
+              <div class="accel-bar normal" style="height:11%"></div>
+              <div class="accel-bar normal" style="height:8%"></div>
+              <div class="accel-bar normal" style="height:6%"></div>
+              <div class="accel-bar normal" style="height:5%"></div>
+              <div class="accel-bar normal" style="height:4%"></div>
+              <div class="accel-bar normal" style="height:3%"></div>
+            </div>
+          </div>
+          <div class="accel-axis"><span>-12g (hard braking)</span><span>0g</span><span>+15g</span></div>
+          <div class="accel-legend">
+            <div class="accel-legend-item"><div class="accel-legend-dot" style="background:rgba(239,68,68,0.6)"></div>Hard braking</div>
+            <div class="accel-legend-item"><div class="accel-legend-dot" style="background:rgba(37,99,235,0.45)"></div>Normal cycling</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- KEY FINDINGS -->
   <div class="section">
     <span class="section-label">key findings</span>
-    <div class="stat-grid">
-      <div class="stat-cell">
-        <div class="stat-cell-num">93.9%</div>
-        <div class="stat-cell-label">of hard braking occurs away from traffic lights</div>
+    <div class="findings-grid">
+
+      <div class="finding-card">
+        <div class="finding-num">Finding 01</div>
+        <div class="finding-stat red">55.5%</div>
+        <div class="finding-title">of simulated trips ended in an UNSAFE state</div>
+        <p class="finding-desc">Unsafe trips accumulated on average 730 hard braking events compared to just 97 for safe trips. A 7x difference pointing to systemic, route-level risk.</p>
+        <div class="f1-compare">
+          <div class="f1-num-block"><div class="num" style="color:#EF4444">730</div><div class="lbl">unsafe avg<br>braking events</div></div>
+          <div class="f1-vs">vs</div>
+          <div class="f1-num-block"><div class="num" style="color:#22C55E">97</div><div class="lbl">safe avg<br>braking events</div></div>
+        </div>
       </div>
-      <div class="stat-cell">
-        <div class="stat-cell-num">55.5%</div>
-        <div class="stat-cell-label">of simulated trips ended in an UNSAFE state</div>
+
+      <div class="finding-card">
+        <div class="finding-num">Finding 02</div>
+        <div class="finding-stat amber">93.9%</div>
+        <div class="finding-title">of hard braking occurs away from traffic lights</div>
+        <p class="finding-desc">Traffic signals account for only 6.1% of all hard braking. The danger is in the infrastructure between stops — surfaces, lane width, mixed-use paths.</p>
+        <div class="f2-bar-wrap">
+          <div class="f2-bar-row">
+            <span class="f2-bar-label">Away from signals</span>
+            <div class="f2-bar-outer"><div class="f2-bar-fill" style="width:93.9%; background:rgba(239,68,68,0.5);"></div><span class="f2-bar-val">93.9%</span></div>
+          </div>
+          <div class="f2-bar-row">
+            <span class="f2-bar-label">Near signals</span>
+            <div class="f2-bar-outer"><div class="f2-bar-fill" style="width:6.1%; background:rgba(34,197,94,0.45);"></div><span class="f2-bar-val">6.1%</span></div>
+          </div>
+        </div>
       </div>
-      <div class="stat-cell">
-        <div class="stat-cell-num">7x</div>
-        <div class="stat-cell-label">more braking events on unsafe vs safe trips (730 vs 97)</div>
+
+      <div class="finding-card">
+        <div class="finding-num">Finding 03</div>
+        <div class="finding-stat">3-4x</div>
+        <div class="finding-title">more braking per km on brick and tile surfaces</div>
+        <p class="finding-desc">Brick pavers produce 30 braking events per km versus 8-9.5 on asphalt. Amsterdam's historic surfaces are a structural safety hazard.</p>
+        <div class="f3-chart">
+          <div class="f3-chart-title">Braking events per km by road surface</div>
+          <div class="f3-bar-row"><span class="f3-bar-label">Brick pavers</span><div class="f3-bar-outer"><div class="f3-bar-fill" style="width:46%; background:rgba(239,68,68,0.52);"></div><span class="f3-bar-val">30 / km</span></div></div>
+          <div class="f3-bar-row"><span class="f3-bar-label">Tiles</span><div class="f3-bar-outer"><div class="f3-bar-fill" style="width:43%; background:rgba(239,68,68,0.42);"></div><span class="f3-bar-val">28 / km</span></div></div>
+          <div class="f3-bar-row"><span class="f3-bar-label">Asphalt (red)</span><div class="f3-bar-outer"><div class="f3-bar-fill" style="width:14.6%; background:rgba(37,99,235,0.5);"></div><span class="f3-bar-val">9.5 / km</span></div></div>
+          <div class="f3-bar-row"><span class="f3-bar-label">Asphalt (gray)</span><div class="f3-bar-outer"><div class="f3-bar-fill" style="width:12.3%; background:rgba(37,99,235,0.42);"></div><span class="f3-bar-val">8.0 / km</span></div></div>
+        </div>
       </div>
-      <div class="stat-cell">
-        <div class="stat-cell-num">3-4x</div>
-        <div class="stat-cell-label">more braking per km on brick and tile vs asphalt</div>
+
+      <div class="finding-card">
+        <div class="finding-num">Finding 04</div>
+        <div class="finding-stat red">Centraal</div>
+        <div class="finding-title">Amsterdam Central emerges as the primary danger hotspot</div>
+        <p class="finding-desc">Braking clusters concentrate around Amsterdam Centraal even after removing signal-adjacent events, pointing to mixed infrastructure and legacy surface materials.</p>
+        <div class="f4-map">
+          <div class="hotspot-ring" style="width:90px;height:90px;top:calc(42% - 45px);left:calc(50% - 45px);border-color:rgba(239,68,68,0.15);background:rgba(239,68,68,0.04);"></div>
+          <div class="hotspot-ring" style="width:54px;height:54px;top:calc(42% - 27px);left:calc(50% - 27px);border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.09);"></div>
+          <div class="hotspot-ring" style="width:26px;height:26px;top:calc(42% - 13px);left:calc(50% - 13px);border-color:rgba(239,68,68,0.6);background:rgba(239,68,68,0.2);"></div>
+          <div style="position:absolute;width:10px;height:10px;border-radius:50%;background:#EF4444;top:calc(42% - 5px);left:calc(50% - 5px);box-shadow:0 0 10px rgba(239,68,68,0.7);"></div>
+          <div style="position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(239,68,68,0.5);top:28%;left:36%;"></div>
+          <div style="position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(245,158,11,0.5);top:66%;left:28%;"></div>
+          <div style="position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(245,158,11,0.4);top:24%;left:70%;"></div>
+          <div style="position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(239,68,68,0.4);top:72%;left:66%;"></div>
+          <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:9px;color:#888;white-space:nowrap;">Amsterdam Centraal — ABM hotspot output</div>
+        </div>
       </div>
+
     </div>
   </div>
 
-  <div class="section">
-    <span class="section-label">visualisations</span>
-    <div class="graph-block">acceleration distribution across 718,303 sensor readings — existing chart</div>
-    <div class="graph-block">braking events per km by road surface type — existing chart</div>
-    <div class="graph-block">hard braking hotspot map — Amsterdam Centraal cluster — existing chart</div>
-  </div>
-
+  <!-- TEAM -->
   <div class="section" style="border-bottom:none;">
     <span class="section-label">team</span>
     <p style="font-size:13px; color:#444; line-height:2;">
@@ -127,13 +276,8 @@
       UvA Computational Social Science
     </p>
     <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
-      <a href="https://github.com/marfakozeletsUvA/tapp-out-" target="_blank"
-         style="background:var(--black); color:var(--white); padding:10px 20px; font-size:11px; font-weight:700; text-decoration:none; letter-spacing:0.06em; text-transform:uppercase;">
-        GitHub
-      </a>
-      <span style="border:1px solid var(--rule); color:var(--grey); padding:10px 20px; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;">
-        report on request
-      </span>
+      <a href="https://github.com/marfakozeletsUvA/tapp-out-" target="_blank" style="background:var(--black);color:#fff;padding:10px 20px;font-size:11px;font-weight:700;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;">GitHub</a>
+      <span style="border:1px solid var(--rule);color:var(--grey);padding:10px 20px;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">report on request</span>
     </div>
   </div>
 
@@ -145,11 +289,8 @@
       <a href="https://github.com/marfakozeletsUvA" target="_blank">github</a>
     </span>
   </footer>
-
   <script>
-    function toggleDrawer() {
-      document.getElementById('mobileDrawer').classList.toggle('open');
-    }
+    function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
   </script>
 </body>
 </html>

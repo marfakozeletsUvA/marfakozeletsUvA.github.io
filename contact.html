@@ -7,58 +7,18 @@
   <link rel="stylesheet" href="style.css">
   <style>
     :root { --accent: var(--green); }
-
-    .contact-body {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 48px;
-      align-items: end;
-      padding: 56px;
-    }
-
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 20px 0;
-      border-top: 1.5px solid var(--black);
-      text-decoration: none;
-      color: var(--black);
-      transition: opacity 0.15s;
-    }
-
+    .contact-body { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end; padding: 56px; }
+    .contact-link { display: flex; align-items: center; gap: 16px; padding: 20px 0; border-top: 1.5px solid var(--black); text-decoration: none; color: var(--black); transition: opacity 0.15s; }
     .contact-link:last-child { border-bottom: 1.5px solid var(--black); }
-    .contact-link:hover { opacity: 0.6; }
-
-    .contact-link-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--green);
-      min-width: 80px;
-    }
-
-    .contact-link-value {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .girl-wrap {
-      flex-shrink: 0;
-      width: 180px;
-      align-self: flex-end;
-    }
-
-    @media (max-width: 768px) {
-      .contact-body { grid-template-columns: 1fr; padding: 40px 20px; }
-      .girl-wrap { display: none; }
-    }
+    .contact-link:hover { opacity: 0.55; }
+    .contact-link-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); min-width: 80px; }
+    .contact-link-value { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+    .girl-wrap { flex-shrink: 0; width: 160px; }
+    .girl-wrap canvas { width: 160px; display: block; }
+    @media (max-width: 768px) { .contact-body { grid-template-columns: 1fr; padding: 40px 20px; } .girl-wrap { display: none; } }
   </style>
 </head>
 <body style="--accent: var(--green);">
-
   <nav>
     <a class="nav-logo" href="index.html">marfa kozelets<span class="colon">:</span></a>
     <ul class="nav-links">
@@ -68,23 +28,23 @@
       <li><a href="about.html">about</a></li>
       <li><a href="contact.html" class="active">contact</a></li>
     </ul>
-    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
-
   <div class="mobile-drawer" id="mobileDrawer">
-    <a href="index.html">home</a>
-    <a href="research.html">research</a>
-    <a href="projects.html">projects</a>
-    <a href="about.html">about</a>
-    <a href="contact.html">contact</a>
+    <a href="index.html">home</a><a href="research.html">research</a><a href="projects.html">projects</a><a href="about.html">about</a><a href="contact.html">contact</a>
   </div>
 
   <div class="page-header" style="--accent: var(--green);">
-    <span class="page-header-meta">get in touch</span>
-    <h1>Let's talk.</h1>
-    <p>Research, collaboration, internships.</p>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <div>
+        <span class="page-header-meta">get in touch</span>
+        <h1>Let's talk.</h1>
+        <p>Research, collaboration, internships.</p>
+      </div>
+      <div class="girl-wrap">
+        <canvas id="girl"></canvas>
+      </div>
+    </div>
   </div>
 
   <div class="contact-body">
@@ -102,9 +62,6 @@
         <span class="contact-link-value">marfakozeletsUvA</span>
       </a>
     </div>
-    <div class="girl-wrap">
-      <canvas id="girl-canvas" class="doodle" style="width:180px;"></canvas>
-    </div>
   </div>
 
   <footer>
@@ -117,25 +74,21 @@
   </footer>
 
   <script>
-    function toggleDrawer() {
-      document.getElementById('mobileDrawer').classList.toggle('open');
-    }
-
-    const gc = document.getElementById('girl-canvas');
+    function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
+    const gc = document.getElementById('girl');
     const gctx = gc.getContext('2d');
     const gi = new Image();
-    gi.src = 'girl.png';
     gi.onload = () => {
-      gc.width = gi.naturalWidth;
-      gc.height = gi.naturalHeight;
+      gc.width = gi.naturalWidth; gc.height = gi.naturalHeight;
       gctx.drawImage(gi, 0, 0);
       const id = gctx.getImageData(0, 0, gc.width, gc.height);
       const d = id.data;
       for (let i = 0; i < d.length; i += 4) {
-        if (d[i] < 40 && d[i+1] < 40 && d[i+2] < 40) d[i+3] = 0;
+        if (d[i] < 45 && d[i+1] < 45 && d[i+2] < 45) d[i+3] = 0;
       }
       gctx.putImageData(id, 0, 0);
     };
+    gi.src = 'girl.png';
   </script>
 </body>
 </html>

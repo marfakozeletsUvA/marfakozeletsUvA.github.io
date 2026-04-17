@@ -7,22 +7,12 @@
   <link rel="stylesheet" href="style.css">
   <style>
     :root { --accent: var(--pink); }
-
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-
-    .doodle-wrap {
-      flex-shrink: 0;
-      width: 140px;
-      opacity: 0.85;
-    }
+    .header-inner { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; }
+    .doodle-wrap { flex-shrink: 0; width: 130px; }
+    .doodle-wrap canvas { width: 130px; height: 130px; display: block; }
   </style>
 </head>
 <body style="--accent: var(--pink);">
-
   <nav>
     <a class="nav-logo" href="index.html">marfa kozelets<span class="colon">:</span></a>
     <ul class="nav-links">
@@ -32,17 +22,10 @@
       <li><a href="about.html">about</a></li>
       <li><a href="contact.html">contact</a></li>
     </ul>
-    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
-
   <div class="mobile-drawer" id="mobileDrawer">
-    <a href="index.html">home</a>
-    <a href="research.html">research</a>
-    <a href="projects.html">projects</a>
-    <a href="about.html">about</a>
-    <a href="contact.html">contact</a>
+    <a href="index.html">home</a><a href="research.html">research</a><a href="projects.html">projects</a><a href="about.html">about</a><a href="contact.html">contact</a>
   </div>
 
   <div class="page-header" style="--accent: var(--pink);">
@@ -50,44 +33,36 @@
       <div>
         <span class="page-header-meta">academic work</span>
         <h1>Research</h1>
-        <p>What computational methods reveal and conceal about power.</p>
+        <p>Exploring intersection of computational methods and social science.</p>
       </div>
       <div class="doodle-wrap">
-        <canvas id="doodle-canvas" class="doodle" style="width:140px; height:140px;"></canvas>
+        <canvas id="doodle"></canvas>
       </div>
     </div>
   </div>
 
   <div class="section">
     <span class="section-label">papers in progress</span>
-
     <div class="card">
       <div class="card-top">
         <h2>Neo-Colonial Networks</h2>
         <span class="badge">in progress</span>
       </div>
       <p class="body">Predictive analysis of state instability and journalist killings via post-colonial power proxies. Using 10 datasets to model how legacy colonial relationships continue to shape contemporary governance failure.</p>
-      <span class="tag">python</span>
-      <span class="tag">network analysis</span>
-      <span class="tag">regression</span>
-      <span class="tag">post-colonial theory</span>
+      <span class="tag">python</span><span class="tag">network analysis</span><span class="tag">regression</span><span class="tag">post-colonial theory</span>
     </div>
-
     <div class="card">
       <div class="card-top">
         <h2>E-Mobility Policy NL</h2>
-        <span class="badge">under review</span>
+        <span class="badge">in progress</span>
       </div>
       <p class="body">How e-bikes, fat bikes, and other electrically powered mobility devices reshape urban infrastructure, regulation, and social equity in Dutch cities.</p>
-      <span class="tag">urban mobility</span>
-      <span class="tag">policy</span>
-      <span class="tag">UvA x Brunel</span>
+      <span class="tag">urban mobility</span><span class="tag">policy</span><span class="tag">UvA x Brunel</span>
     </div>
   </div>
 
   <div class="section">
     <span class="section-label">presentations</span>
-
     <div class="cv-block">
       <div>
         <div class="cv-block-title">Innovation Centre Amsterdam</div>
@@ -95,7 +70,6 @@
       </div>
       <div class="cv-block-year">2026</div>
     </div>
-
     <div class="cv-block">
       <div>
         <div class="cv-block-title">Kobe University</div>
@@ -103,7 +77,6 @@
       </div>
       <div class="cv-block-year">2026</div>
     </div>
-
     <div class="cv-block">
       <div>
         <div class="cv-block-title">Swedish Ministry of Education</div>
@@ -123,26 +96,24 @@
   </footer>
 
   <script>
-    function toggleDrawer() {
-      document.getElementById('mobileDrawer').classList.toggle('open');
+    function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
+    function loadDoodle(id, src) {
+      const c = document.getElementById(id);
+      const cx = c.getContext('2d');
+      const img = new Image();
+      img.onload = () => {
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        cx.drawImage(img, 0, 0);
+        const id2 = cx.getImageData(0, 0, c.width, c.height);
+        const d = id2.data;
+        for (let i = 0; i < d.length; i += 4) {
+          if (d[i] < 45 && d[i+1] < 45 && d[i+2] < 45) d[i+3] = 0;
+        }
+        cx.putImageData(id2, 0, 0);
+      };
+      img.src = src;
     }
-
-    // Draw scroll doodle with black bg removed
-    const dc = document.getElementById('doodle-canvas');
-    const dctx = dc.getContext('2d');
-    const di = new Image();
-    di.src = 'scroll.png';
-    di.onload = () => {
-      dc.width = di.naturalWidth;
-      dc.height = di.naturalHeight;
-      dctx.drawImage(di, 0, 0);
-      const id = dctx.getImageData(0, 0, dc.width, dc.height);
-      const d = id.data;
-      for (let i = 0; i < d.length; i += 4) {
-        if (d[i] < 40 && d[i+1] < 40 && d[i+2] < 40) d[i+3] = 0;
-      }
-      dctx.putImageData(id, 0, 0);
-    };
+    loadDoodle('doodle', 'scroll.png');
   </script>
 </body>
 </html>

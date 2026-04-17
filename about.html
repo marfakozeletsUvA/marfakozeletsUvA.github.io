@@ -7,40 +7,19 @@
   <link rel="stylesheet" href="style.css">
   <style>
     :root { --accent: var(--blue); }
-
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-
-    .cv-btn-wrap {
-      flex-shrink: 0;
-      margin-top: 12px;
-    }
-
-    #cv-btn-canvas {
-      display: block;
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
-
-    #cv-btn-canvas:hover { opacity: 0.7; }
-
-    .skills-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-    }
-
+    .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .cv-btn-wrap { flex-shrink: 0; }
+    #cv-btn { display: block; cursor: pointer; width: 220px; transition: opacity 0.15s; }
+    #cv-btn:hover { opacity: 0.65; }
+    .skills-row { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .libs-row { margin-top: 20px; padding-top: 16px; border-top: 0.5px solid var(--rule); }
     @media (max-width: 600px) {
       .skills-row { grid-template-columns: 1fr; gap: 24px; }
-      .header-inner { flex-direction: column; gap: 20px; }
+      .header-inner { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body style="--accent: var(--blue);">
-
   <nav>
     <a class="nav-logo" href="index.html">marfa kozelets<span class="colon">:</span></a>
     <ul class="nav-links">
@@ -50,28 +29,20 @@
       <li><a href="about.html" class="active">about</a></li>
       <li><a href="contact.html">contact</a></li>
     </ul>
-    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
-
   <div class="mobile-drawer" id="mobileDrawer">
-    <a href="index.html">home</a>
-    <a href="research.html">research</a>
-    <a href="projects.html">projects</a>
-    <a href="about.html">about</a>
-    <a href="contact.html">contact</a>
+    <a href="index.html">home</a><a href="research.html">research</a><a href="projects.html">projects</a><a href="about.html">about</a><a href="contact.html">contact</a>
   </div>
 
-  <div class="page-header" style="--accent: var(--blue);">
+  <div class="page-header" style="--accent: var(--blue); padding-bottom: 28px;">
     <div class="header-inner">
       <div>
         <span class="page-header-meta">about</span>
-        <h1>Marfa</h1>
-        <p>BSc CSS @ UvA. Philosophy background. Interested in what data reveals and what it's trained to ignore.</p>
+        <h1>Meet Marfa</h1>
       </div>
       <div class="cv-btn-wrap">
-        <canvas id="cv-btn-canvas" width="300" height="100" title="Download CV"></canvas>
+        <canvas id="cv-btn" title="Download CV"></canvas>
       </div>
     </div>
   </div>
@@ -80,22 +51,26 @@
     <div class="skills-row">
       <div>
         <span class="section-label">skills</span>
-        <p style="font-size:13px; line-height:2.2; color:#444;">
-          Python · R · ABM · NLP<br>
-          Network Analysis · GeoPandas<br>
-          Critical Theory · Philosophy<br>
-          Qualitative Methods · Atlas.ti<br>
-          Scikit-learn · BERTopic · NetworkX
+        <p style="font-size:13px; line-height:2.3; color:#444;">
+          Python · ML · ABM · NLP · SNA · GeoPandas<br>
+          BERTopic · Regressions · Critical Theory<br>
+          Philosophy · Sociology · Qual methods · Quant methods
         </p>
+        <div class="libs-row">
+          <span class="section-label">python libraries</span>
+          <p style="font-size:13px; line-height:2.3; color:#888;">
+            Scikit-learn · NetworkX · Mesa · Pandas<br>
+            NumPy · Seaborn · Matplotlib · NLTK · Shapely
+          </p>
+        </div>
       </div>
       <div style="border-left: 0.5px solid var(--rule); padding-left: 40px;">
         <span class="section-label">languages</span>
-        <p style="font-size:13px; line-height:2.2; color:#444;">
+        <p style="font-size:13px; line-height:2.3; color:#444;">
           English (full proficiency)<br>
           Russian (native)<br>
           Belarusian (native)<br>
-          Swedish (elementary)<br>
-          Dutch (basic)
+          Swedish (elementary)
         </p>
       </div>
     </div>
@@ -103,7 +78,6 @@
 
   <div class="section">
     <span class="section-label">education</span>
-
     <div class="cv-block">
       <div>
         <div class="cv-block-title">BSc Computational Social Science</div>
@@ -111,15 +85,13 @@
       </div>
       <div class="cv-block-year">2024–2027</div>
     </div>
-
     <div class="cv-block">
       <div>
-        <div class="cv-block-title">BA Philosophy (Year 1 completed)</div>
+        <div class="cv-block-title">Undergraduate Certificate in Philosophy</div>
         <div class="cv-block-sub">University of Nottingham</div>
       </div>
       <div class="cv-block-year">2023–2024</div>
     </div>
-
     <div class="cv-block">
       <div>
         <div class="cv-block-title">International Baccalaureate Diploma</div>
@@ -131,7 +103,6 @@
 
   <div class="section">
     <span class="section-label">experience</span>
-
     <div class="cv-block">
       <div>
         <div class="cv-block-title">Research — UvA x Tapp Smart Architecture</div>
@@ -139,7 +110,13 @@
       </div>
       <div class="cv-block-year">2025–2026</div>
     </div>
-
+    <div class="cv-block">
+      <div>
+        <div class="cv-block-title">Barista — CoffeeStar NL</div>
+        <div class="cv-block-sub">Amsterdam</div>
+      </div>
+      <div class="cv-block-year">2025–present</div>
+    </div>
     <div class="cv-block">
       <div>
         <div class="cv-block-title">President — SSHL ThinkTank</div>
@@ -147,7 +124,6 @@
       </div>
       <div class="cv-block-year">2022–2023</div>
     </div>
-
     <div class="cv-block">
       <div>
         <div class="cv-block-title">Freelance Tutor — Philosophy and English</div>
@@ -178,15 +154,11 @@
   </footer>
 
   <script>
-    function toggleDrawer() {
-      document.getElementById('mobileDrawer').classList.toggle('open');
-    }
+    function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
 
-    // Handwritten Download CV button
-    const cvCanvas = document.getElementById('cv-btn-canvas');
+    const cvCanvas = document.getElementById('cv-btn');
     const cvCtx = cvCanvas.getContext('2d');
     const cvImg = new Image();
-    cvImg.src = 'download-cv.png';
     cvImg.onload = () => {
       cvCanvas.width = cvImg.naturalWidth;
       cvCanvas.height = cvImg.naturalHeight;
@@ -194,14 +166,12 @@
       const id = cvCtx.getImageData(0, 0, cvCanvas.width, cvCanvas.height);
       const d = id.data;
       for (let i = 0; i < d.length; i += 4) {
-        if (d[i] < 40 && d[i+1] < 40 && d[i+2] < 40) d[i+3] = 0;
+        if (d[i] < 45 && d[i+1] < 45 && d[i+2] < 45) d[i+3] = 0;
       }
       cvCtx.putImageData(id, 0, 0);
     };
-
-    cvCanvas.addEventListener('click', () => {
-      window.open('Marfa_Kozelets_Academic_CV_v1_2page.pdf', '_blank');
-    });
+    cvImg.src = 'download-cv.png';
+    cvCanvas.addEventListener('click', () => window.open('Marfa_Kozelets_Academic_CV_v1_2page.pdf', '_blank'));
   </script>
 </body>
 </html>
