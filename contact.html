@@ -42,7 +42,7 @@
         <p>Research, collaboration, internships.</p>
       </div>
       <div class="girl-wrap">
-        <canvas id="girl"></canvas>
+        <img src="girl.png" class="doodle" style="width:160px;">
       </div>
     </div>
   </div>
@@ -74,21 +74,7 @@
   </footer>
 
   <script>
-    function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
-    const gc = document.getElementById('girl');
-    const gctx = gc.getContext('2d');
-    const gi = new Image();
-    gi.onload = () => {
-      gc.width = gi.naturalWidth; gc.height = gi.naturalHeight;
-      gctx.drawImage(gi, 0, 0);
-      const id = gctx.getImageData(0, 0, gc.width, gc.height);
-      const d = id.data;
-      for (let i = 0; i < d.length; i += 4) {
-        if (d[i] < 45 && d[i+1] < 45 && d[i+2] < 45) d[i+3] = 0;
-      }
-      gctx.putImageData(id, 0, 0);
-    };
-    gi.src = 'girl.png';
-  </script>
+      function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
+    </script>
 </body>
 </html>

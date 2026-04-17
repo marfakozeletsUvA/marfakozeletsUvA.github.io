@@ -42,7 +42,7 @@
         <h1>Meet Marfa</h1>
       </div>
       <div class="cv-btn-wrap">
-        <canvas id="cv-btn" title="Download CV"></canvas>
+        <img src="download-cv.png" class="doodle" style="width:220px; cursor:pointer;" onclick="window.open('Marfa_Kozelets_Academic_CV_v1_2page.pdf','_blank')">
       </div>
     </div>
   </div>
@@ -154,24 +154,7 @@
   </footer>
 
   <script>
-    function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
-
-    const cvCanvas = document.getElementById('cv-btn');
-    const cvCtx = cvCanvas.getContext('2d');
-    const cvImg = new Image();
-    cvImg.onload = () => {
-      cvCanvas.width = cvImg.naturalWidth;
-      cvCanvas.height = cvImg.naturalHeight;
-      cvCtx.drawImage(cvImg, 0, 0);
-      const id = cvCtx.getImageData(0, 0, cvCanvas.width, cvCanvas.height);
-      const d = id.data;
-      for (let i = 0; i < d.length; i += 4) {
-        if (d[i] < 45 && d[i+1] < 45 && d[i+2] < 45) d[i+3] = 0;
-      }
-      cvCtx.putImageData(id, 0, 0);
-    };
-    cvImg.src = 'download-cv.png';
-    cvCanvas.addEventListener('click', () => window.open('Marfa_Kozelets_Academic_CV_v1_2page.pdf', '_blank'));
-  </script>
+      function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
+    </script>
 </body>
 </html>

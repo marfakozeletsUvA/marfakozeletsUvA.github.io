@@ -38,7 +38,7 @@
         <p>Methodology made public.</p>
       </div>
       <div class="doodle-wrap">
-        <canvas id="doodle"></canvas>
+        <img src="laptop.png" class="doodle" style="width:130px; height:130px;">
       </div>
     </div>
   </div>
@@ -105,24 +105,7 @@
   </footer>
 
   <script>
-    function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
-    function loadDoodle(id, src) {
-      const c = document.getElementById(id);
-      const cx = c.getContext('2d');
-      const img = new Image();
-      img.onload = () => {
-        c.width = img.naturalWidth; c.height = img.naturalHeight;
-        cx.drawImage(img, 0, 0);
-        const id2 = cx.getImageData(0, 0, c.width, c.height);
-        const d = id2.data;
-        for (let i = 0; i < d.length; i += 4) {
-          if (d[i] < 45 && d[i+1] < 45 && d[i+2] < 45) d[i+3] = 0;
-        }
-        cx.putImageData(id2, 0, 0);
-      };
-      img.src = src;
-    }
-    loadDoodle('doodle', 'laptop.png');
-  </script>
+      function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
+    </script>
 </body>
 </html>

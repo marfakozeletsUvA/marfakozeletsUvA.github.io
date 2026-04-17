@@ -11,11 +11,73 @@
     .hero-left { padding: 64px 56px; display: flex; flex-direction: column; justify-content: center; border-right: 1.5px solid var(--black); }
     .hero-left h1 { font-size: clamp(20px, 2.4vw, 28px); font-weight: 800; line-height: 1.7; letter-spacing: -0.02em; color: var(--black); }
     .hero-left h1 .accent { color: var(--purple); }
-    .hero-right { display: flex; align-items: center; justify-content: center; padding: 40px; position: relative; background: #FAFAFA; }
+    .hero-right { display: flex; align-items: center; justify-content: center; padding: 40px; background: #FAFAFA; position: relative; }
     #brain-wrap { position: relative; width: 100%; max-width: 580px; }
-    #brain-canvas { display: block; width: 100%; height: auto; cursor: default; }
-    #brain-tooltip { position: absolute; font-size: 13px; font-weight: 800; padding: 8px 16px; border-radius: 2px; pointer-events: none; opacity: 0; transition: opacity 0.1s; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; transform: translate(-50%, -130%); }
+
+    /* Full brain display image — black bg removed via multiply */
+    #brain-display {
+      display: block;
+      width: 100%;
+      height: auto;
+      mix-blend-mode: multiply;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Lobe hit-test images — stacked exactly over brain, invisible, used only for JS hit detection */
+    .lobe-img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: auto;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Highlight overlay — shown on hover, multiply removes black */
+    #lobe-highlight {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: auto;
+      mix-blend-mode: multiply;
+      opacity: 0;
+      transition: opacity 0.12s;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Dim layer shown on hover to fade non-active lobes */
+    #brain-dim {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: auto;
+      opacity: 0;
+      transition: opacity 0.12s;
+      z-index: 0;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    #brain-tooltip {
+      position: absolute;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 8px 16px;
+      border-radius: 2px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.1s;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      transform: translate(-50%, -130%);
+      z-index: 10;
+    }
     #brain-hint { text-align: center; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #aaa; margin-top: 10px; }
+    #brain-hitarea { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: default; z-index: 5; }
+
     .mobile-nav { display: none; padding: 32px 20px; border-bottom: 1.5px solid var(--black); }
     .mobile-nav a { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 0.5px solid var(--rule); text-decoration: none; font-size: 16px; font-weight: 800; color: var(--black); }
     .mobile-nav a .dot { width: 12px; height: 12px; border-radius: 50%; }
@@ -42,24 +104,42 @@
   <div class="mobile-drawer" id="mobileDrawer">
     <a href="index.html">home</a><a href="research.html">research</a><a href="projects.html">projects</a><a href="about.html">about</a><a href="contact.html">contact</a>
   </div>
+
   <div class="hero">
     <div class="hero-left">
       <h1>Marfa Kozelets<br>Computational Social Science<br>Background in Philosophy<br><span class="accent">Interested in what data conceals</span></h1>
     </div>
     <div class="hero-right">
       <div id="brain-wrap">
-        <canvas id="brain-canvas" width="800" height="800"></canvas>
+        <!-- Full brain always visible, black removed by multiply -->
+        <img id="brain-display" src="brain.png" alt="Brain illustration">
+
+        <!-- Invisible lobe images for hit detection via canvas -->
+        <img class="lobe-img" id="lobe-research" src="frontal-research.png" alt="">
+        <img class="lobe-img" id="lobe-projects" src="parietal-projects.png" alt="">
+        <img class="lobe-img" id="lobe-about"    src="temporal-about.png" alt="">
+        <img class="lobe-img" id="lobe-contact"  src="occipital-contact.png" alt="">
+        <img class="lobe-img" id="lobe-home"     src="cerebellum-home.png" alt="">
+
+        <!-- Highlight overlay — src swapped on hover -->
+        <img id="lobe-highlight" src="" alt="">
+
+        <!-- Transparent hit area canvas -->
+        <canvas id="brain-hitarea"></canvas>
+
         <div id="brain-tooltip"></div>
         <div id="brain-hint">hover a region</div>
       </div>
     </div>
   </div>
+
   <div class="mobile-nav">
     <a href="research.html"><span>Research</span><span class="dot" style="background:#E8829A;"></span></a>
     <a href="projects.html"><span>Projects</span><span class="dot" style="background:#F0A030;"></span></a>
     <a href="about.html"><span>About</span><span class="dot" style="background:#50C8D0;"></span></a>
     <a href="contact.html"><span>Contact</span><span class="dot" style="background:#9DC87A;"></span></a>
   </div>
+
   <footer>
     <span>© Marfa Kozelets</span>
     <span style="display:flex; gap:24px;">
@@ -68,102 +148,102 @@
       <a href="https://github.com/marfakozeletsUvA" target="_blank">github</a>
     </span>
   </footer>
+
   <script>
     function toggleDrawer() { document.getElementById('mobileDrawer').classList.toggle('open'); }
 
-    const canvas = document.getElementById('brain-canvas');
-    const ctx = canvas.getContext('2d');
-    const tooltip = document.getElementById('brain-tooltip');
-
     const LOBES = [
-      { name: 'Research', color: '#E8829A', rgb: [232,130,154], href: 'research.html' },
-      { name: 'Projects', color: '#F0A030', rgb: [240,160,48],  href: 'projects.html' },
-      { name: 'About',    color: '#50C8D0', rgb: [80,200,208],  href: 'about.html' },
-      { name: 'Contact',  color: '#9DC87A', rgb: [157,200,122], href: 'contact.html' },
-      { name: 'Home',     color: '#9B7EC8', rgb: [155,126,200], href: 'index.html' },
+      { id: 'lobe-research', name: 'Research', color: '#E8829A', href: 'research.html' },
+      { id: 'lobe-projects', name: 'Projects',  color: '#F0A030', href: 'projects.html' },
+      { id: 'lobe-about',    name: 'About',     color: '#50C8D0', href: 'about.html' },
+      { id: 'lobe-contact',  name: 'Contact',   color: '#9DC87A', href: 'contact.html' },
+      { id: 'lobe-home',     name: 'Home',      color: '#9B7EC8', href: 'index.html' },
     ];
 
-    const img = new Image();
-    img.src = 'brain.png';
-    const lobeMasks = [];
-    let cleanOff = null;
+    const hitCanvas = document.getElementById('brain-hitarea');
+    const hitCtx = hitCanvas.getContext('2d', { willReadFrequently: true });
+    const tooltip = document.getElementById('brain-tooltip');
+    const highlight = document.getElementById('lobe-highlight');
+    const brainDisplay = document.getElementById('brain-display');
 
-    function mkCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+    // Build offscreen canvases for each lobe for hit testing
+    const lobeData = [];
+    let loadedCount = 0;
+    const totalLobes = LOBES.length;
 
-    img.onload = () => {
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const w = canvas.width, h = canvas.height;
+    LOBES.forEach(lobe => {
+      const img = document.getElementById(lobe.id);
+      const off = document.createElement('canvas');
+      const entry = { lobe, img, off, ctx: null };
+      lobeData.push(entry);
 
-      // Clean (black bg removed)
-      cleanOff = mkCanvas(w, h);
-      const cc = cleanOff.getContext('2d');
-      cc.drawImage(img, 0, 0);
-      const cid = cc.getImageData(0, 0, w, h);
-      strip(cid.data, null);
-      cc.putImageData(cid, 0, 0);
-
-      // Per-lobe masks
-      LOBES.forEach(lobe => {
-        const off = mkCanvas(w, h);
-        const oc = off.getContext('2d');
-        oc.drawImage(img, 0, 0);
-        const id = oc.getImageData(0, 0, w, h);
-        strip(id.data, lobe.rgb);
-        oc.putImageData(id, 0, 0);
-        lobeMasks.push({ lobe, off });
-      });
-
-      drawBrain(null);
-    };
-
-    function strip(d, targetRgb) {
-      for (let i = 0; i < d.length; i += 4) {
-        const r = d[i], g = d[i+1], b = d[i+2];
-        // Remove black background
-        if (r < 45 && g < 45 && b < 45) { d[i+3] = 0; continue; }
-        // If a target colour is given, also remove pixels far from it
-        if (targetRgb) {
-          const dist = Math.sqrt((r-targetRgb[0])**2 + (g-targetRgb[1])**2 + (b-targetRgb[2])**2);
-          if (dist > 95) d[i+3] = 0;
-        }
+      function onLoad() {
+        off.width = img.naturalWidth;
+        off.height = img.naturalHeight;
+        const c = off.getContext('2d', { willReadFrequently: true });
+        c.drawImage(img, 0, 0);
+        entry.ctx = c;
+        loadedCount++;
+        if (loadedCount === totalLobes) onAllLoaded();
       }
+
+      if (img.complete && img.naturalWidth > 0) onLoad();
+      else img.addEventListener('load', onLoad);
+    });
+
+    function onAllLoaded() {
+      // Size hit canvas to match display
+      const w = brainDisplay.naturalWidth;
+      const h = brainDisplay.naturalHeight;
+      hitCanvas.width = w;
+      hitCanvas.height = h;
+      hitCanvas.style.width = '100%';
+      hitCanvas.style.height = 'auto';
     }
 
     function getLobeAt(mx, my) {
-      if (!lobeMasks.length) return null;
-      const rect = canvas.getBoundingClientRect();
-      const cx = Math.floor(mx * canvas.width / rect.width);
-      const cy = Math.floor(my * canvas.height / rect.height);
-      if (cx < 0 || cy < 0 || cx >= canvas.width || cy >= canvas.height) return null;
-      for (const { lobe, off } of lobeMasks) {
-        if (off.getContext('2d').getImageData(cx, cy, 1, 1).data[3] > 80) return lobe;
+      const rect = hitCanvas.getBoundingClientRect();
+      const scaleX = hitCanvas.width / rect.width;
+      const scaleY = hitCanvas.height / rect.height;
+      const cx = Math.floor(mx * scaleX);
+      const cy = Math.floor(my * scaleY);
+      if (cx < 0 || cy < 0 || cx >= hitCanvas.width || cy >= hitCanvas.height) return null;
+
+      for (const { lobe, off, ctx } of lobeData) {
+        if (!ctx) continue;
+        // Sample pixel from this lobe's offscreen canvas
+        const pixel = ctx.getImageData(cx, cy, 1, 1).data;
+        // Lobe is here if pixel is not black background (r>50 OR g>50 OR b>50) and alpha > 0
+        if (pixel[3] > 20 && (pixel[0] > 50 || pixel[1] > 50 || pixel[2] > 50)) {
+          return lobe;
+        }
       }
       return null;
     }
 
-    function drawBrain(active) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (!cleanOff) return;
-      if (!active) {
-        ctx.drawImage(cleanOff, 0, 0);
-      } else {
-        ctx.globalAlpha = 0.25;
-        ctx.drawImage(cleanOff, 0, 0);
-        ctx.globalAlpha = 1;
-        const m = lobeMasks.find(l => l.lobe.name === active.name);
-        if (m) ctx.drawImage(m.off, 0, 0);
-      }
-    }
+    let currentLobe = null;
 
-    let cur = null;
-    canvas.addEventListener('mousemove', e => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    hitCanvas.addEventListener('mousemove', e => {
+      const rect = hitCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
       const lobe = getLobeAt(x, y);
-      if (lobe !== cur) { cur = lobe; drawBrain(lobe); }
+
+      if (lobe !== currentLobe) {
+        currentLobe = lobe;
+        if (lobe) {
+          // Show the lobe highlight image (with multiply it removes black bg)
+          highlight.src = document.getElementById(lobe.id).src;
+          highlight.style.opacity = '1';
+          brainDisplay.style.opacity = '0.3';
+        } else {
+          highlight.style.opacity = '0';
+          brainDisplay.style.opacity = '1';
+        }
+      }
+
       if (lobe) {
-        canvas.style.cursor = 'pointer';
+        hitCanvas.style.cursor = 'pointer';
         tooltip.style.opacity = '1';
         tooltip.style.left = x + 'px';
         tooltip.style.top = y + 'px';
@@ -171,13 +251,21 @@
         tooltip.style.background = lobe.color;
         tooltip.style.color = '#1A1A1A';
       } else {
-        canvas.style.cursor = 'default';
+        hitCanvas.style.cursor = 'default';
         tooltip.style.opacity = '0';
       }
     });
-    canvas.addEventListener('mouseleave', () => { cur = null; tooltip.style.opacity = '0'; canvas.style.cursor = 'default'; drawBrain(null); });
-    canvas.addEventListener('click', e => {
-      const rect = canvas.getBoundingClientRect();
+
+    hitCanvas.addEventListener('mouseleave', () => {
+      currentLobe = null;
+      highlight.style.opacity = '0';
+      brainDisplay.style.opacity = '1';
+      tooltip.style.opacity = '0';
+      hitCanvas.style.cursor = 'default';
+    });
+
+    hitCanvas.addEventListener('click', e => {
+      const rect = hitCanvas.getBoundingClientRect();
       const lobe = getLobeAt(e.clientX - rect.left, e.clientY - rect.top);
       if (lobe) window.location.href = lobe.href;
     });
