@@ -300,7 +300,6 @@ nav {
   display: block;
   pointer-events: none;
   user-select: none;
-  mix-blend-mode: multiply;
 }
 
 /* ── FOOTER ── */

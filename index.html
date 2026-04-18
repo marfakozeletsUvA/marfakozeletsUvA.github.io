@@ -19,7 +19,6 @@
       display: block;
       width: 100%;
       height: auto;
-      mix-blend-mode: multiply;
       position: relative;
       z-index: 1;
     }
@@ -40,7 +39,6 @@
       top: 0; left: 0;
       width: 100%;
       height: auto;
-      mix-blend-mode: multiply;
       opacity: 0;
       transition: opacity 0.12s;
       z-index: 2;
@@ -57,7 +55,6 @@
       transition: opacity 0.12s;
       z-index: 0;
       pointer-events: none;
-      mix-blend-mode: multiply;
     }
 
     #brain-tooltip {
@@ -115,11 +112,11 @@
         <img id="brain-display" src="brain.png" alt="Brain illustration">
 
         <!-- Invisible lobe images for hit detection via canvas -->
-        <img class="lobe-img" id="lobe-research" src="frontal-research.png" alt="">
-        <img class="lobe-img" id="lobe-projects" src="parietal-projects.png" alt="">
-        <img class="lobe-img" id="lobe-about"    src="temporal-about.png" alt="">
-        <img class="lobe-img" id="lobe-contact"  src="occipital-contact.png" alt="">
-        <img class="lobe-img" id="lobe-home"     src="cerebellum-home.png" alt="">
+        <img class="lobe-img" id="lobe-research" src="frontal-brain.png" alt="">
+        <img class="lobe-img" id="lobe-projects" src="parietal-brain.png" alt="">
+        <img class="lobe-img" id="lobe-about"    src="temporal-brain.png" alt="">
+        <img class="lobe-img" id="lobe-contact"  src="occipital-brain.png" alt="">
+        <img class="lobe-img" id="lobe-home"     src="cerebellum-brain.png" alt="">
 
         <!-- Highlight overlay — src swapped on hover -->
         <img id="lobe-highlight" src="" alt="">
@@ -134,6 +131,7 @@
   </div>
 
   <div class="mobile-nav">
+    <img src="mobile-brain.png" alt="Brain illustration" style="display:block; width:100%; max-width:320px; margin: 0 auto 24px;">
     <a href="research.html"><span>Research</span><span class="dot" style="background:#E8829A;"></span></a>
     <a href="projects.html"><span>Projects</span><span class="dot" style="background:#F0A030;"></span></a>
     <a href="about.html"><span>About</span><span class="dot" style="background:#50C8D0;"></span></a>
