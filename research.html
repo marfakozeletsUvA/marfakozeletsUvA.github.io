@@ -10,6 +10,10 @@
     .header-inner { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; }
     .doodle-wrap { flex-shrink: 0; width: 130px; }
     .doodle-wrap canvas { width: 130px; height: 130px; display: block; }
+    @media (max-width: 768px) {
+      .doodle-wrap { width: 72px; }
+      .doodle-wrap img { width: 72px !important; height: 72px !important; }
+    }
   </style>
 </head>
 <body style="--accent: var(--pink);">
@@ -36,7 +40,7 @@
         <p>Exploring intersection of computational methods and social science.</p>
       </div>
       <div class="doodle-wrap">
-        <img src="scroll.png" class="doodle" style="width:130px; height:130px;">
+        <img src="book.png" class="doodle" style="width:130px; height:130px;">
       </div>
     </div>
   </div>

@@ -7,15 +7,18 @@
   <link rel="stylesheet" href="style.css">
   <style>
     :root { --accent: var(--green); }
-    .contact-body { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end; padding: 56px; }
+    .contact-body { padding: 56px; }
     .contact-link { display: flex; align-items: center; gap: 16px; padding: 20px 0; border-top: 1.5px solid var(--black); text-decoration: none; color: var(--black); transition: opacity 0.15s; }
     .contact-link:last-child { border-bottom: 1.5px solid var(--black); }
     .contact-link:hover { opacity: 0.55; }
     .contact-link-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); min-width: 80px; }
     .contact-link-value { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
     .girl-wrap { flex-shrink: 0; width: 160px; }
-    .girl-wrap canvas { width: 160px; display: block; }
-    @media (max-width: 768px) { .contact-body { grid-template-columns: 1fr; padding: 40px 20px; } .girl-wrap { display: none; } }
+    @media (max-width: 768px) {
+      .contact-body { padding: 40px 20px; }
+      .girl-wrap { display: none; }
+      .contact-link-value { font-size: 13px; word-break: break-all; }
+    }
   </style>
 </head>
 <body style="--accent: var(--green);">
