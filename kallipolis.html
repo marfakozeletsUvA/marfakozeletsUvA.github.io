@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Project Kallipolis - Colonial Boarding Assessment</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap');
 
 :root {
   --bg: #080808;
@@ -22,8 +22,8 @@
   --amber-glow: rgba(212,160,23,0.12);
   --green: #2ecc71;
   --green-glow: rgba(46,204,113,0.12);
-  --mono: 'IBM Plex Mono', monospace;
-  --sans: 'IBM Plex Sans', sans-serif;
+  --mono: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  --mono-plex: 'IBM Plex Mono', monospace;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,152 +41,70 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
 .screen { display: none; position: fixed; inset: 0; overflow-y: auto; background: var(--bg); z-index: 1; }
 .screen.active { display: block; }
 
-/* ============ SCREEN 0: CONSENT ============ */
-#screen-consent { padding-top: 57px; min-height: 100vh; display: flex; flex-direction: column; }
+/* ============ SCREEN 0: WHEEL ============ */
+#screen-wheel { padding-top: 57px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+#wheel-wrap { position: relative; width: 420px; height: 420px; cursor: pointer; flex-shrink: 0; }
+#wheel-canvas { width: 420px; height: 420px; display: block; }
+#mars-btn {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff6b35, #cc1a00, #8b0000);
+  border: 2px solid #ff4400; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 10px; color: #ffccaa;
+  letter-spacing: 1px; text-align: center; line-height: 1.2;
+  animation: marspulse 3s ease-in-out infinite; z-index: 10;
+}
+@keyframes marspulse {
+  0%, 100% { box-shadow: 0 0 8px #cc2200, 0 0 24px #660000; }
+  50% { box-shadow: 0 0 20px #ff4400, 0 0 48px #aa2200; }
+}
+.wheel-hint { margin-top: 20px; font-size: 10px; color: #444; letter-spacing: 3px; text-transform: uppercase; animation: blink 2s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
 
-.consent-body {
-  flex: 1;
-  display: flex;
+/* ============ INTRO SCREEN ============ */
+#screen-intro { padding-top: 57px; min-height: 100vh; font-family: var(--mono-plex); }
+.intro-floating-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 57px); padding: 48px 64px; }
+.intro-centre { text-align: center; max-width: 600px; margin-bottom: 56px; }
+.intro-title { font-family: var(--mono-plex); font-size: clamp(48px, 8vw, 88px); font-weight: 600; letter-spacing: -0.02em; color: #fff; line-height: 1; margin-bottom: 20px; }
+.intro-status-line { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; font-size: 10px; letter-spacing: 0.16em; font-family: var(--mono); }
+.isl-item { color: var(--text-dim); text-transform: uppercase; }
+.isl-item.danger { color: var(--red-bright); }
+.isl-sep { color: #333; }
+.intro-body { font-size: 14px; color: var(--text-dim); line-height: 1.85; margin-bottom: 32px; font-family: var(--mono-plex); font-weight: 300; }
+.intro-body strong { color: #fff; font-weight: 500; }
+.intro-cta { display: flex; gap: 12px; justify-content: center; }
+.intro-btn-accept { padding: 16px 28px; background: var(--red); border: none; color: #fff; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+.intro-btn-accept:hover { background: var(--red-bright); }
+.intro-btn-decline { padding: 16px 28px; background: transparent; border: 1px solid var(--border-bright); color: var(--text-dim); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+.intro-btn-decline:hover { border-color: var(--text-dim); color: var(--text); }
+
+/* class figures row — no boxes */
+.intro-figures-row { display: flex; gap: 64px; justify-content: center; align-items: flex-start; width: 100%; max-width: 860px; }
+.intro-figure { text-align: center; cursor: default; flex: 1; max-width: 240px; position: relative; }
+.intro-figure:hover .fig-overlay { opacity: 1; pointer-events: none; }
+.fig-doodle { width: 160px; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #282828; letter-spacing: 1px; margin: 0 auto 14px; }
+.fig-overlay { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 180px; background: #0d0d0d; border: 1px solid var(--border-bright); padding: 14px 16px; opacity: 0; transition: opacity 0.2s; z-index: 10; pointer-events: none; }
+.fig-name { font-family: var(--mono-plex); font-size: 18px; font-weight: 500; letter-spacing: 0.06em; color: var(--text); margin-bottom: 5px; text-transform: uppercase; }
+.fig-sub { font-size: 10px; letter-spacing: 0.1em; color: var(--text-faint); text-transform: uppercase; font-family: var(--mono); }
+.fig-weights { font-size: 10px; color: var(--text-dim); line-height: 2.0; font-family: var(--mono); }
+.fig-weights .stat-line span { color: var(--red); }
+
+/* TRANSMISSION OVERLAY */
+#transmission-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: #000; align-items: center; justify-content: center;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 48px;
-  max-width: 700px;
-  margin: 0 auto;
-  width: 100%;
-  min-height: 0;
 }
+#transmission-overlay.visible { display: flex; }
+.to-label { font-size: 9px; letter-spacing: 0.24em; color: var(--red); text-transform: uppercase; margin-bottom: 20px; animation: pulse 1.2s ease-in-out infinite; }
+.to-text { font-size: 14px; color: var(--text-dim); line-height: 1.8; max-width: 480px; text-align: center; font-style: italic; }
 
-.consent-eyebrow { font-size: 10px; color: var(--red); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px; }
-
-.consent-text { font-size: 14px; color: var(--text); line-height: 1.85; margin-bottom: 28px; text-align: center; }
-.consent-text strong { color: #fff; font-weight: 500; }
-
-.consent-countdown {
-  border: 1px solid var(--red);
-  background: rgba(192,57,43,0.07);
-  padding: 16px 40px;
-  text-align: center;
-  margin-bottom: 28px;
-  width: 100%;
-}
-.countdown-label { font-size: 9px; letter-spacing: 0.2em; color: var(--red); text-transform: uppercase; margin-bottom: 8px; }
-.countdown-digits { font-size: 36px; font-weight: 300; color: #e74c3c; letter-spacing: 0.12em; font-variant-numeric: tabular-nums; }
-
-.consent-question {
-  font-family: var(--sans);
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--text);
-  text-align: center;
-  margin-bottom: 20px;
-  line-height: 1.5;
-  padding: 20px 32px;
-  border: 1px solid var(--border-bright);
-  width: 100%;
-}
-
-.consent-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-bottom: 0; }
-
-.btn-accept {
-  padding: 20px 18px;
-  background: var(--red);
-  color: #fff;
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-  text-align: center;
-  line-height: 1;
-}
-.btn-accept:hover { background: var(--red-bright); }
-.btn-accept .btn-main-label { display: block; margin-bottom: 10px; font-size: 13px; }
-.btn-accept .btn-consequence { display: block; font-size: 10px; color: rgba(255,255,255,0.65); line-height: 1.6; text-transform: none; letter-spacing: 0.03em; font-weight: 300; }
-
-.btn-decline {
-  padding: 20px 18px;
-  background: none;
-  color: var(--text-dim);
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border: 1px solid var(--border-bright);
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-  line-height: 1;
-}
-.btn-decline:hover { border-color: var(--text-dim); color: var(--text); }
-.btn-decline .btn-main-label { display: block; margin-bottom: 10px; font-size: 13px; }
-.btn-decline .btn-consequence { display: block; font-size: 10px; color: var(--text-faint); line-height: 1.6; text-transform: none; letter-spacing: 0.03em; font-weight: 300; }
-
-.consent-footer { text-align: center; margin-top: 16px; font-size: 10px; color: var(--text-faint); }
-
-/* declined state */
+/* declined */
 .declined-msg { text-align: center; padding: 48px 32px; }
 .declined-msg .dec-title { font-size: 32px; font-weight: 600; color: var(--text-dim); margin-bottom: 16px; letter-spacing: -0.02em; }
 .declined-msg p { font-size: 13px; color: var(--text-dim); line-height: 1.8; max-width: 440px; margin: 0 auto; }
-
-/* ============ SCREEN 1: INTRO ============ */
-#screen-intro { padding-top: 57px; min-height: 100vh; }
-
-.warning-banner { background: var(--red); padding: 11px 48px; display: flex; align-items: flex-start; gap: 14px; }
-.warn-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: #fff; text-transform: uppercase; white-space: nowrap; padding-top: 1px; flex-shrink: 0; }
-.warn-text { font-size: 11px; color: rgba(255,255,255,0.85); line-height: 1.6; }
-
-.intro-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 88px); }
-
-.intro-left { padding: 52px 48px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 28px; }
-
-.system-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
-
-.intro-title-wrap { display: flex; flex-direction: column; gap: 2px; }
-.intro-title-project { font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--text-dim); letter-spacing: 0.14em; text-transform: uppercase; }
-.intro-title-main { font-family: var(--mono); font-size: clamp(40px, 5vw, 62px); font-weight: 600; line-height: 1.0; letter-spacing: -0.02em; color: #fff; }
-.intro-title-main em { font-style: italic; font-weight: 300; color: #aaa; }
-.intro-subtitle { font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; }
-
-.lore-block { border-left: 2px solid var(--red); padding-left: 20px; }
-.lore-block p { font-size: 13px; color: var(--text); line-height: 1.85; margin-bottom: 10px; }
-.lore-block p:last-child { margin-bottom: 0; }
-
-/* PLATO CLASSES */
-.plato-section { }
-.plato-header { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
-.plato-intro { font-size: 12px; color: var(--text-dim); line-height: 1.75; margin-bottom: 20px; }
-
-.class-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-.class-card { background: var(--bg); padding: 18px 16px; }
-.class-symbol { font-size: 22px; margin-bottom: 10px; line-height: 1; }
-.class-card-name { font-size: 11px; font-weight: 600; color: var(--text); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
-.class-card-role { font-size: 10px; color: var(--red); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
-.class-card-desc { font-size: 11px; color: var(--text-dim); line-height: 1.6; }
-
-
-.intro-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto; }
-.intro-footer span { font-size: 11px; color: var(--text-faint); }
-.footer-english { font-style: italic; }
-
-.intro-right { padding: 52px 48px; display: flex; flex-direction: column; justify-content: flex-start; gap: 20px; }
-
-.disclaimer-box { border: 1px solid var(--red); background: rgba(192,57,43,0.05); padding: 24px 26px; }
-.disc-header { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red-bright); margin-bottom: 14px; }
-.disclaimer-box p { font-size: 13px; color: var(--text); line-height: 1.8; margin-bottom: 10px; }
-.disclaimer-box p:last-child { margin-bottom: 0; }
-.disclaimer-box strong { color: var(--red-bright); font-weight: 500; }
-
-.btn-begin { display: block; width: 100%; padding: 18px; background: var(--red); color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.2s; }
-.btn-begin:hover { background: var(--red-bright); }
-.footer-note { font-size: 10px; color: var(--text-faint); text-align: center; }
-
-/* ============ SCREEN 2: QUESTIONNAIRE ============ */
 #screen-questionnaire { padding-top: 57px; min-height: 100vh; }
-
 .q-header { border-bottom: 1px solid var(--border); padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; background: var(--surface); position: sticky; top: 57px; z-index: 50; }
 .q-title { font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
 .q-progress-wrap { display: flex; align-items: center; gap: 14px; }
@@ -195,14 +113,18 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
 .q-progress-fill { height: 100%; background: var(--red); transition: width 0.35s ease; }
 
 .q-body { max-width: 680px; margin: 0 auto; padding: 56px 48px 80px; }
-
 .q-block { display: none; animation: fadeUp 0.3s ease; }
 .q-block.active { display: block; }
 @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 
 .q-number { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
-.q-label { font-family: var(--sans); font-size: 22px; font-weight: 300; color: #fff; line-height: 1.25; margin-bottom: 8px; }
+.q-label { font-family: var(--mono-plex); font-size: 22px; font-weight: 300; color: #fff; line-height: 1.25; margin-bottom: 8px; }
 .q-sublabel { font-size: 12px; color: var(--text-dim); margin-bottom: 28px; line-height: 1.7; }
+
+/* Earth transmission */
+.earth-transmission { display: none; border-left: 2px solid var(--red); padding: 14px 20px; margin-bottom: 28px; background: rgba(192,57,43,0.04); animation: fadeUp 0.4s ease; }
+.et-label { font-size: 9px; letter-spacing: 0.2em; color: var(--red); text-transform: uppercase; margin-bottom: 6px; }
+.et-text { font-size: 11px; color: var(--text-dim); line-height: 1.75; font-style: italic; }
 
 select { width: 100%; background: var(--surface); border: 1px solid var(--border-bright); color: var(--text); font-family: var(--mono); font-size: 13px; padding: 14px 16px; appearance: none; outline: none; transition: border-color 0.2s; cursor: pointer; }
 select:focus { border-color: var(--red); }
@@ -224,7 +146,7 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 
 .captcha-box { border: 1px solid var(--border-bright); background: var(--surface); padding: 28px; }
 .captcha-label { font-size: 9px; letter-spacing: 0.14em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 18px; text-align: center; }
-.captcha-puzzle { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--text); line-height: 1.8; margin-bottom: 22px; padding: 18px; background: var(--bg); border: 1px solid var(--border); }
+.captcha-puzzle { font-family: var(--mono-plex); font-size: 14px; font-weight: 300; color: var(--text); line-height: 1.8; margin-bottom: 22px; padding: 18px; background: var(--bg); border: 1px solid var(--border); }
 .captcha-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .captcha-option { padding: 13px 14px; border: 1px solid var(--border); background: var(--bg); font-family: var(--mono); font-size: 12px; color: var(--text); cursor: pointer; transition: all 0.2s; text-align: left; }
 .captcha-option:hover { border-color: var(--border-bright); background: var(--surface); }
@@ -258,7 +180,7 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 
 .verdict-class-symbol { font-size: 36px; margin-bottom: 12px; }
 .class-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-.class-name { font-size: 24px; font-weight: 300; color: var(--text); font-family: var(--sans); margin-bottom: 8px; }
+.class-name { font-size: 24px; font-weight: 300; color: var(--text); font-family: var(--mono-plex); margin-bottom: 8px; }
 .class-desc { font-size: 13px; color: var(--text); line-height: 1.75; }
 
 .denied-msg { font-size: 14px; color: var(--text); line-height: 1.8; margin-bottom: 20px; }
@@ -297,48 +219,28 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 
 .postcolonial-block { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 48px 0; margin-bottom: 44px; }
 .pc-label { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; text-align: center; }
-.pc-question { font-family: var(--sans); font-size: 18px; font-weight: 300; color: var(--text); line-height: 1.75; max-width: 600px; margin: 0 auto; text-align: center; }
+.pc-question { font-family: var(--mono-plex); font-size: 18px; font-weight: 300; color: var(--text); line-height: 1.75; max-width: 600px; margin: 0 auto; text-align: center; }
 .pc-question strong { font-weight: 500; color: #fff; }
 
-/* REFLECTION FORM */
-.reflection-form-wrap { background: var(--surface); border: 1px solid var(--border); padding: 32px 36px; margin-bottom: 52px; }
-.rf-label { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
-.rf-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; margin-bottom: 28px; margin-top: 8px; }
-
-.rf-field { margin-bottom: 20px; }
-.rf-field label { display: block; font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
-.rf-field input, .rf-field textarea, .rf-field select {
-  width: 100%; background: var(--bg); border: 1px solid var(--border-bright);
-  color: var(--text); font-family: var(--mono); font-size: 13px;
-  padding: 12px 14px; outline: none; transition: border-color 0.2s;
-  appearance: none; resize: vertical;
-}
-.rf-field input:focus, .rf-field textarea:focus, .rf-field select:focus { border-color: var(--red); }
-.rf-field textarea { min-height: 90px; }
-
-.rf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-.btn-submit-form { background: var(--red); border: none; color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 16px 32px; cursor: pointer; transition: background 0.2s; letter-spacing: 0.08em; text-transform: uppercase; width: 100%; margin-top: 8px; }
-.btn-submit-form:hover { background: var(--red-bright); }
-
-.form-success { display: none; text-align: center; padding: 24px; font-size: 12px; color: var(--green); border: 1px solid var(--green); background: var(--green-glow); }
-
-
-.site-footer { border-top: 1px solid var(--border); padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-faint); }
-.footer-english { font-style: italic; }
-
-
-/* NOBLE LIE INTRO BLOCK */
-.noble-lie-intro { border: 1px solid var(--border); padding: 24px 26px; background: var(--surface); }
-.nli-label { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
-.nli-text { font-size: 13px; color: var(--text-dim); line-height: 1.8; margin-bottom: 10px; }
-.nli-text:last-child { margin-bottom: 0; color: var(--text); font-style: italic; }
-
-/* PLATO DEFENCE BLOCK */
 .plato-defence { border-left: 2px solid var(--border-bright); padding-left: 24px; margin-bottom: 44px; }
 .pd-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
 .pd-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; margin-bottom: 12px; }
 .pd-text:last-child { margin-bottom: 0; }
+
+.reflection-form-wrap { background: var(--surface); border: 1px solid var(--border); padding: 32px 36px; margin-bottom: 52px; }
+.rf-label { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+.rf-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; margin-bottom: 28px; margin-top: 8px; }
+.rf-field { margin-bottom: 20px; }
+.rf-field label { display: block; font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.rf-field input, .rf-field textarea, .rf-field select { width: 100%; background: var(--bg); border: 1px solid var(--border-bright); color: var(--text); font-family: var(--mono); font-size: 13px; padding: 12px 14px; outline: none; transition: border-color 0.2s; appearance: none; resize: vertical; }
+.rf-field input:focus, .rf-field textarea:focus, .rf-field select:focus { border-color: var(--red); }
+.rf-field textarea { min-height: 90px; }
+.rf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.btn-submit-form { background: var(--red); border: none; color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 16px 32px; cursor: pointer; transition: background 0.2s; letter-spacing: 0.08em; text-transform: uppercase; width: 100%; margin-top: 8px; }
+.btn-submit-form:hover { background: var(--red-bright); }
+.form-success { display: none; text-align: center; padding: 24px; font-size: 12px; color: var(--green); border: 1px solid var(--green); background: var(--green-glow); }
+
+.site-footer { border-top: 1px solid var(--border); padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-faint); }
 
 /* ============ SCREEN: TERMS ============ */
 #screen-terms { padding-top: 57px; min-height: 100vh; background: #000; }
@@ -346,48 +248,32 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .terms-back { font-size: 11px; color: var(--text-faint); letter-spacing: 0.08em; background: none; border: none; cursor: pointer; font-family: var(--mono); margin-bottom: 32px; display: block; padding: 0; }
 .terms-back:hover { color: var(--text-dim); }
 .terms-title { font-size: 10px; color: var(--red); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 28px; }
-.terms-content { font-size: 8px; color: #222; line-height: 1.9; letter-spacing: 0.2px; }
+.terms-content { font-size: 8px; color: #252525; line-height: 1.9; letter-spacing: 0.2px; }
 .terms-content p { margin-bottom: 10px; }
 
-/* EARTH TRANSMISSION */
-.earth-transmission { display: none; border-left: 2px solid var(--red); padding: 14px 20px; margin-bottom: 28px; background: rgba(192,57,43,0.04); animation: fadeUp 0.4s ease; }
-.et-label { font-size: 9px; letter-spacing: 0.2em; color: var(--red); text-transform: uppercase; margin-bottom: 6px; }
-.et-text { font-size: 11px; color: var(--text-dim); line-height: 1.75; font-style: italic; }
+/* declined */
+.declined-msg { text-align: center; padding: 48px 32px; }
+.declined-msg .dec-title { font-size: 32px; font-weight: 600; color: var(--text-dim); margin-bottom: 16px; letter-spacing: -0.02em; }
+.declined-msg p { font-size: 13px; color: var(--text-dim); line-height: 1.8; max-width: 440px; margin: 0 auto; }
 
-@media (max-width: 768px) {
-  .terms-body { padding: 32px 20px 56px; }
-}
+/* ============ MOBILE ============ */
 @media (max-width: 768px) {
   nav { padding: 14px 20px; }
   .nav-links { gap: 18px; }
   .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
-  .nav-links a { font-size: 11px; }
-
-  /* consent mobile */
-  #screen-consent { padding-top: 49px; }
-  .consent-body { padding: 24px 20px 40px; justify-content: flex-start; }
-  .consent-buttons { grid-template-columns: 1fr; }
-  .consent-question { font-size: 15px; padding: 18px 20px; }
-  .consent-text { font-size: 13px; }
-  .countdown-digits { font-size: 28px; }
-  .consent-countdown { padding: 14px 20px; }
-
-  /* intro mobile */
-  #screen-intro { padding-top: 49px; }
+  #screen-wheel { padding: 70px 20px 40px; }
+  #wheel-wrap, #wheel-canvas { width: 300px; height: 300px; }
+  #mars-btn { width: 42px; height: 42px; font-size: 8px; }
   .warning-banner { padding: 10px 20px; gap: 10px; }
-  .warn-label { font-size: 9px; }
-  .warn-text { font-size: 10px; }
+  .earth-status-bar { grid-template-columns: 1fr; }
+  .es-cell { border-right: none; border-bottom: 1px solid var(--border); }
+  .es-cell:last-child { border-bottom: none; }
   .intro-grid { grid-template-columns: 1fr; min-height: auto; }
   .intro-left { padding: 28px 20px 32px; border-right: none; border-bottom: 1px solid var(--border); gap: 20px; }
   .intro-title-main { font-size: 40px; }
   .class-cards { grid-template-columns: 1fr; }
+  .intro-right { padding: 24px 20px 48px; gap: 16px; }
   .intro-footer { flex-direction: column; gap: 4px; align-items: flex-start; }
-  .intro-right { padding: 24px 20px 48px; justify-content: flex-start; gap: 16px; }
-  .noble-lie-intro { padding: 20px; }
-  .disclaimer-box p:nth-child(3) { display: none; }
-  .btn-begin { padding: 16px; }
-
-  /* questionnaire mobile */
   #screen-questionnaire { padding-top: 49px; }
   .q-header { padding: 14px 20px; top: 49px; }
   .q-title { display: none; }
@@ -397,17 +283,12 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
   .q-sublabel { font-size: 11px; margin-bottom: 20px; }
   .checkbox-grid { grid-template-columns: 1fr; }
   .captcha-options { grid-template-columns: 1fr; }
-
-  /* verdict mobile */
-  #screen-verdict { padding-top: 49px; }
   .verdict-body { grid-template-columns: 1fr; min-height: auto; }
   .verdict-left { border-right: none; border-bottom: 1px solid var(--border); padding: 36px 20px; }
   .verdict-right { padding: 28px 20px 48px; }
   .verdict-main { font-size: 52px; }
   .score-item { grid-template-columns: 90px 1fr 40px; gap: 8px; }
   .score-criterion { font-size: 9px; }
-
-  /* reflection mobile */
   #screen-reflection { padding-top: 49px; }
   .reflection-body { padding: 36px 20px 56px; }
   .weights-grid { grid-template-columns: 1fr; }
@@ -415,15 +296,15 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
   .pc-question { font-size: 15px; }
   .reflection-form-wrap { padding: 24px 20px; }
   .rf-row { grid-template-columns: 1fr; gap: 0; }
-  .about-strip { grid-template-columns: 1fr; gap: 24px; }
   .site-footer { padding: 16px 20px; flex-direction: column; gap: 4px; align-items: flex-start; }
+  .terms-body { padding: 32px 20px 56px; }
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="https://marfakozelets.com" class="nav-logo">marfa.kozelets</a>
+  <a href="https://marfakozelets.com" class="nav-logo" style="display:flex;align-items:center;gap:10px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAA9f0lEQVR42u29eYyu6Vnm93uWd/n2Ws/eu9vt7rbdjO3BCzZrIBBsaWBChgFCUESYkIyCMkFKGCbRJJNFGUUZRDRRBEH8kYEwCBFmQgjDFjAer+D22u7N3Wdfaq9vfZdnyR/P+35LfVWnz+m2uxvrfNLR6a46VfXVez/3dt3XfT0C8Nx7fcO+5L1HcM/A9173DHzvdc/A9173DHzvdc/A9173DHzvNf/Sf5XerBACIUAgEPjQwXsf/pr/d/N/hy8ABJ7wb2df+o0PAQjepEBHbUgpAOext3ujWoGU4Q+Ac+GPsa/4c1T986TAV0fD+XBkvhHs/6YysBACKQTCO8zRd9Vpsdprc3+vwwPNBvc3Ys5rxYaAFSB1jkQFA+ceMiXpI9kXnh0PN0vDroOrh0O2hiP2Rxnj8QTGE7AenD3W+EIIvBB47yvD3zPw3RcCUiAqLxUqwtsSVru87dQa37zW4/3NhKeM4aHhhM3JBDUYw2AEeQGlCQbyc1ax1W+mBEQK4hhaDVjr4r2g325y0EzZShKuRprrWvPycMLFLOfScMy1/oitgwG2Pwjff+5hKSFwApzz9wx83KvRbGBKQ1mWlbcGwwJ0zp/mI3/9Hbw7n/DtB33efjAg3tmHwwEULnhnLHFCoHKLF6FMFALwAh8prFZEk2Ih3woHVoHXijS3i5VlO4FIgxfQaUK3xX6nzfV2ixeSiC96+MxwxNM3d7l6fRuG4+mDk1Lg/Js7l7/uBo7jiGazweCgHwwbRTzx2IP8+LlNfqA/5C39PnIwgivbOMAAXoJUAmkFppOAh2gwwc9ZSniwscZpRTTKFz/noOg0kNaishIvBV6AMJ58tY0cTVCZmbYVev7pdBqwscrh2U0+v9rl9z387vVtvvjC5amxlRC4N2nR9voaWIBE0G426WcZjz90jp89s86P9IekL16GcUEJZGtt0sMRQoLws/ArHJhmgo810f4Ir+fevQcXa7yS6EkRvHvOwPlqm2g4Rhg3K7MdFJs9osMhorSEio6QcwHvHRgwCmJbGX6tQ/nwBf783Cl+dVLwW196kezGNgBpHJOX5ZvK0K+bgYUQyCocn3vbw/z8uQ1+4uWrNK/cxBlHKUBqgbRQbHTRh0NkaWfGmDOi7TSJd/p4NXv3woNJY7yWRINswYMRgmKlTbw3WPp+xalV4p0DTiqZvZQU7QbxYILD441H19X3g2f5yuMP84vO8398+SVGV2+h8Hgh3jQFmQL+4de9iKqqUN9q8gPveZLfSDTf89WL6CvbFNIjlAgVa5UvvZL4JEJNylkfUx1H4T2m3USNs8UD5MElGq8UKpv7Og8u0nit0ZNiBu148ErgmylqOFk0/Jznl+0GqjCowiBE6MS8FhgpsHsDzrx4hQ+XBR9+3zu4eXqdr9zaw5cGJcWbos36uhpYSjkFIrr3n+O/fduD/MJLl1l77iL9Roz0Dm3c4rOVIKwNRpxkS/FGWLCtFFmWCOunhhFVaBXOIa1bzM1phHAeVZgFQ/pI4+IYPcwWD9LUewUmjYlG2QLmJ3z4X6kEVgrGZcn9n3uBH05jnvzQN/FpBPtbe+FbCvENClUKQTNJ8Ery4ONv4f9c7/Kzn/gc9uYuRgrSrMA1EoRj0XsEyNIjvMcl0XIC8eEAuEgj/J0lIB9phLVL34dII507gn/N5ftGgs6LE3+OsB7biImkwChB8exFfuhf/imfObvOj/yb78fGEd57kjgmTdM3xNZfNwML7zFK8o4nH+PXx0P+raefpcCBFgjhUZMcF0cLeXT64AWoSY5tNRYPQPU5mZe4OJr+/yJGKRa+l5ch5MvSzgovUYV0rRB1n3sknjolcFpVVffxv6PTApdERMMMgUdpQWEMm3/8aX7t0nX+tw9/K537zuKdx5ry2JCdpAlKqTeXgcUrHEUpBCpJOLOxyq+OB7z/0k1yXefZEFaF8YjSYNM4GHEhNIIa5yF3HjkAXoAsDD6KlvKmR4SQ6BfDLEIgrFv+95FGGLNQcdfea9M45N0TvRfKdhM9zmf/xnsUYGJJ+ewl/s5HP80ffugp7nvr/ZTGoqVYSF+dThtnHdbaN5eBV1dXSNPkRAxZS0mz0+LXRgPeff0W41ZMZP2iZwnQ4wzbahzricJ6pDHYOozPf86YyjNnxvQehFKgVPCUytBeK3A+GOHIz/BaI4xdNrwM1brOi+O914NNFF5K9OSIhwuQpcN1UvqF4b2/8fv8+YUNvv2D78K4cAB0pOl02ozHE8qyfPOF6MPDQ1ZXV5ZCiwCkBxNpfi2WfGDnkKwwiDha8hIUyAp0cJEEx9IBUKMJtpkuHoCq0BLO4yIdvq72WikQc14iKgNLa5fSQG2UowYWDmwSIYwNRdwxeV14KDtNouF48feq3ptJY2wS0R5mFFJw9g8+xe/bgh/9nvdjpWK13WY0Gt+R54rXmLhflYGtdezt7XPq1MbCm1CA1Yp/srnKh7f2yKQgth5hLDY5UhT58KBUVmDbjeViS1YHQKnlAwDIosQl0e0LrapFmhpxDhTxWgW3d0v1FSaNUVmxfCir0GwaEcI6VG4Xq2sb0DTTbZDsDfHCo7ynjCTRJ77EP7t2k5/7ke9lezDEGXNb4wkhaLfbaK3fmByc5wWTyYT19VW892ghMMBPnNngP9ndI7eOSPgQirMCmybLBbEENcqwabwcCkXwJpUX2FY6OwCVd8u8wEf6FatoLySyXMyzoja8tdUBEbPQGyukB1W6Y3tjL8A0G0TDyWJ94MEpGQCV3cFC4aCsw8aS4ctX+e8//UX+0Yc/hEtipPfHGjmOIzqdNnmev+YQ/qoM7Ks3dnDQJ0li2s0GxnvetrHK/zIZY8YFqs6PAqRxCOdw8REvliFfCWNxaYywy2FUjSa4JF7yblGYAIjc5jcIw4gjBVZ9SLQO8OS0PK975hg1yU8EPkwrQZYGecwByNc6xIfD0IeLxeKvWOkQC0n5/GX+wV9+mf/p+z+IbaZLRm61WqRJynA4+prk51fdJgUjw61b26yt9oibDX450bR3BzgdpkTzD1qPc8zRwqw6AHqUYdrHFFsSZGHBe1ysZmFagLQerMdHoYhaMoj3eCWrMHxMHNcKUZYLodtXrZEszLHh2UuBTZNF763ybrHSRo8zVGbC55jh3dlGl2g4QY9yRCzJr2zxn33y8/zC934A20gR3pMkCSsrPZyz9AcDnHNvfB/sPTjruLx3yM89/hAfvLFNoQTqaMNXezEee8SLvQI5KQJ+G8nlntiDzApMM13qiYUx2PiEPOxD/yv8CRW0Ukgz642FC7lXntAahbYoRWU5oj4wAoSBstsA74mG+cIARDjIN7rocYYeF3gNwjp0JMiv7/IzH3uaX/i+DyA31mglMYPhkMlR9O6NNLCs6E73acnfnYwpWinqOG+qvXiUYY/mzbrYqoENewSrkKAmWQBF5MzoCFB5uZiH69msmFXQ4oQK2guPMDPo0gtwcYTOjm+NnJa4KELPjSLDodCYRkx8MFry6nytgyrKJcNjPVrBeL/Pz3z5Bf7xd76HvckEjF3KyWmavKZK+jUZWHhwSvFfr7TZeO4y2am1qu88YVRoHXiPjdSSF6txhk3mjLiQp31oi5Jo+r29BFGWIQ9X+AbGhD+10ZRcrqCrCRHOg52vthU4hzTu+Mq5naIn2eL7FoJypUMyP6WqvLpYaSKcIzqczIxbFY4IQdFtIzoN8ueu8J9+/Gn+y+//EFapKSSeJDEbG2sBz38jPLgecr9zvcePDYcY60i39inOb0x/iWOiJjovMY3kmBDukaXBNo8AG1PoMgugx1y4FaZiVGo1ZViykPsFwtrFfDr17Dp0i1BcJTGqKE9otWSYM48r7649dLWNHozDoRCLIdtrRXxkZh1arJhstY3KC5L9ISqSFFe3+W++9Dz/4Xe/D+M9a70unU6Hg4M+4/HkNc2X5WtJwF4rfr4REx2MsFqgBxNEUVKutxHmmFA9rag9Np7z4rmKecn4dZjOCrxWi2HQgypMADyq9mk2WaoNvPg+AgY9P3zwIWRrFUK+XI5SZbuBHmf4+bzbSYOHjvJpUSUsmGaMTWPi3cH0vYoqreTdJiaJSPeHgZSgCNOvWGJevMY/vXaDv/03vpPhJGNvdxdjzBuTg6UQWODt6yv8jf4Q40Hj8UoQ39zD9DqLVe/RXDzJMY106Z2o3Fatil4iOgsTABOXRMHDfd0ulSG8VsYIFVRl5Wp8eHS6hFaz3tjN9cTuGEgyUiBEoPSo6t/HEttISObyrnAB5Cg7DZKdfniyVUh2WpGvtJHGkh6Mpodq2kYWDttJKS7f4H/t93nksQdwPjznN2bY4D1Iyd9NY+LDIXba8IewF2/tUZzfPD5U115sLGYe3apD8XiCaZ4wRaoAk/r/vSAYSsq5HCimeVY4tzxuFAGQoMrNITxHwXvFsveaZoIeT6aTKuGh6LWJDoeLYVxJipVWyMd1X22hbCYVI2RMNM6XI4SBYr2D7TQR45yVP/kL/vn5DdbuP0en2SRJktfXwKLy3tO9Dn9rPMa5kI9nBZNADXNkXlBudKtQLZZCrp7k2DheLHAVFXgvcfEiPOllQLWckgsIkrQh7zotA9m9zldSzMLjEYw7PPxg4DC0CB59NJTbuPLe3OKlQBhP0UmReVl9bA7kWG0TH4ymIIfwkHcbOK1IDoYI62b/vvJsjyQ7tw5CkN7YI3KOAnjH08/wP3/bX+OwKDBF8foauG5KfrTdYOVwSFkT4xYABkF0cw/TbeESfSzQIK1HWhuAfb8AKKHHE8rWMj4tLEhjZyPG6uBIEwgA0s2WWLwQx/KsvApxWlQTJhtXg4VjwrNppuhJXoVyj00ULomIB5OF0JzXIEcFkHghyLtNpLEk/fG0AKsjjDABMcvPr6MHY+KdfogsCMz5dcbDjH/vo5/hI9/8JNZ71GuopO/6Kx3QPb3JT0igsEgpjkUZhIf41h752fVjQ3Xw4gKTLE6aQt8bCqol4EOCyvJZmJ7Oh8uq0PILrZA4igb54K3Cumnh42IdqmdxNPfKMFAoTMj11QQpnjOYsMFLpbFE4yIYSSqKThM9yYnGxTEh2VOutMjXuyQ399EVH8zGEfnZdfThiHiS4y9t8Yta0j2zgXWOKNK02y06nbsbQNyVgZUQWO95T6J4UngmnRRVbxWIZU9RoxyZFRSbx4dq4TyqNJgjQ3/hw4DCdJoLwEcYMhgQAqcrDxUsIFIqL2ee4txS2PVKTpEoL8NBWBpGEB64yoL31iiWLEpkHa4tlK0YpCQeVEaKNKYZEw/GqNIuhGR8BVueXsElEY3rOwFo8WA6TYr1DsnWAXqUIZSgBB781Bf5B+9+nHR9jdVeD+cco9H4rqrru/Pgqrj6EQHy0i2sUmSbvUB9OYJAhTZKEN/ax3ZauEY0g/jmvTgrcJHGKbE0ZXJKLnmxcAQmSN0vCxE+5jxO6znPFsdCjl7KKbrlIo1wbulw2UiFtql0UxTLxoGa47WYtnm2kRAfjkCAiTU21sTDCcL5RXqQDZEjO7uGygqSWwfTR5Vv9rCNmPTGPsKaCsDx0E4Zt5v89HDII2fW2NrZZTye3DVGLe+2uFrptvlwXuA9NA5HRP0x5VoX024gzPKBEALiGzvkp9dmTIsjlarKC0zjGC8eZ5RHvViCnmS4OJ7DOkM17SqEzEsC69LYpfAv8xJZARo20qG4Wsq9SYAsxYw6G1VbDPjAey46TeLD0XSjwisZ2JewhGqZRkJ+aoVof0hUhXinNfnpVURpSG4dgPDhIEQR2bl1bLeNHE9of/Rp/vNTKxDphWL2a27gGkL77m6T0/0hpQgfVEVJsrWPjTXZZhe8WECbQk4t0YMxxenVpVDtBejcgJDYOW/1kgo5krhkrqeWoW/Eu0AicLN2SRobJkhSII0NWwyWhT+qCB/3WgQGinGBtzU3D8Z5VG4QQNmMwdXDfTFdg4lGE6RxmEThpCCaFEtpShgoVluYToP05j46CxVx2U7J17tE+8NpBABBcWqFYnMFPRiTXN8hyguMhx++eoOn3voAznuUFF8fA3vvQSl+UAqoUJhp2yEg2R2gJkUIOZEO3jydvQqi3QE+0phOuoQueULxZBrJYpQXEA9GFN3mMf1yjmk1KusGxEplJhi1DHWBTyPcShO33sFvdPErLVwrCS2U8USDLIwjK2qOECJUznlZ9dkioFLDLKBO1lM2Y6Sx6CyEU2Ucer6HFjPAJdvs4oUg3TpAuHCQ8vUONolJt/YDQR8ouy2y+04jrCW9uo0eVvg1gd0ZvXSdv7+5EgYrdwlb3tHqiqg2E7q9Ds83Y07f2MUcmfnWucZpRb7WCVVkf7I4GxWS7Pwm6bVt8G5pmF42Y4Rz6NzM9atQ9BoBFhzOAwWCotci3hsiANeIcGc3cKfWoNsGHeHxCF8tggsBSlXL4gqshbxA7B8ib+4gb+7hjcOkmjg3IAVFO0WUhmhSggSrJCaOiMfHEwKmxPxIU6y1iYZZINWL0BYVvebsY4BtxJTrXYRxxLuHiNIuPq9qBk3pcY9e4D0q4ovPvowUx4+4X7WBkyjCRhHfvbnC723vYMYFQh3z1RX0B2EAjhDEB0OE91Xl6THNBLPWIb2yg9fLvWrRbhCPssWP+4AI6ayoaLcBdPAC7P1ncA+exacJYjRB3tpF7h4ihmMoTiC16bCy4le6+FOruM01aDdweYl86QrxMxexzmO6KckorxZRBSaJgnef8MiEDYyPst0g3h+GvlgJim4TtCI6GKFKi1OCcr0XONV7fVSNZx9jDRH234gF/Mr7n+InP/1lEg8Wj7kDBYM7MrACfBzzj9/2AH/v2k0mWUGS5aEokFWg98cPyE0rIT4cBwK5rtCg9Q5eK5JbBwtGFj6Q9kwakwwnS1OgOrQCmIfO4u47jchL1KUbyFt70zDu6+RTD6wXuDpVN3B0ry2SuAunsY/eDysdzGGf5BNfQvXHeFWNGL1fjFpHDJGvtELbtD9EOk+ZaspOE5WXxP1JFY6bmJUWepgR7Q9m4Iv3C/PxOjy7OAqzcAf5oxf4lsxx6eWrAIwn2StOmu7IwJIwDP//Tq/x7Td3GLUbiAqw1+MsbAHCEj+4DtnFahuZl8T9cWgDLOTn1pHjCdHBeIkFUbSSEJLnOceV17qVFsVjDyCzEv3iFeSomvLokAKOjgxfIffMCj7npkY37RT7zkfh/jOIGztE//rzoTCLjsTGGnIUIuwZl4b4MPTEZaeBiTVJf4wqAqu0WOuG32uvjyxdlWeDcesOwkUKm8S4WIMILZ0sSlxpSKXgHz31OP/Vp74YbPK1CNF1/u2tdnkujTh9YxdbySOYZhoIcc6hJwHUEHOc4zpkCx9Ot9eK+GAYKlcB2flN4t3DgFwdWQXN243wPZ2bGre87xT27DrRC1dR+4Pg4VrMvPK1viqDe+eQFryWmG9+O/aR8+iPfwH91WsLRhYuGKTotdCjjGhcYCNJ3m2iShu8VkK+2sHHEfpwhB7PwnFNMnQ6TKdsHIcNxqJE5kWgD7l6QALKwLV3voUnbu4x3NoL7/W1erCsdl2fOrPBZ/MMvz+sHqqf/nCbRJhmipcSlRWB+WD9VGKhbhlMI6bsNUN4GmY4LcjObZDe3EfOr5BUq50mjoiysEVYvOV8COvPXq5C6l1UGq+Wj+RCb2pX2pjveS9ia5/oTz8b9qucxyQRZbtBUuXWshljWilRf4zODWU7paxgS90fLXq9BJfE4bkJEaLhJA99+Vx3Mm8h6yDuNvmxh+7j1z73XKAqv1YDR0oh45gffOAMv761TX44Rns3Na6v01xFezGNFBcHAEFN8oDlVpOiOpwV3RZeCZL9EV5CvrlCUrUSi+S44Ln5I+cQpSG+vBVyNv710yWQEipEq/j2d8FKm/h3PhoG+62UZHeA8GHK5LQi3RvhosCPFs4T9UeBYitnz8imCTaJgqTEJEfm5dTo3KbNtUIQG8+fPPUo3/XcZWSWv2KYfkUDayHwSvGzjz3A/3Bzi6GUYaLkPKosEUWJLM1sCF8Z0zZSbBqDD3QblRdTUEL4gO6U3SZ6OEGWhrIqxsQ0TlfGfeAUwjriq8dX3a/LS4T8LkpH+a7HcPedRv3ex1A+MDKKZhKMOSkouk1sEhENJmHhvBpJ2jjCNhJAoIoClRWzKCfuIoUYj7uwwTdFCc+8fG0aYW9XIP/DVyqwrHP8YKfJB27swCRHFwXSeZzSuGaKaTVwSRRQJOER1qNzgxrnCGdxjRjTbOC0RNpQicrCosdZyONxFOBDEbYAqGav5WYPH2mSK9tvnHHncfhIoq7u4DsN/OMPoV+8iteymjhJitU2wliS/SG6tDgtMI0E02yAlNWEqQJXxB3ATGKZfWqAeJKxff40f3Zrb8qNe21IllKcUhVrotK0UpOC+HBEsnNIsnuIGud4rSi6bYr1HnmviW1EyNKQ7I9I9vpI6yg7TfJeG9MM2wrp/hA9HOOSGJsmOCkRxmObCbbXIrlUh+W5qveN2pq3Dh9L9F88i8dj3noBjCNf7WCaCcn+gKQ/wWtJ3mlQdlogIBqMifvj6dTKy8X595IhXbVgZ5hW117JMARpxFgh+YgxyFYT+wqH/hUHix5ASVZcyPxCzA/OZ6db5SHs6LqnjCNsmlSEdY/MC1SWo0d5yEONmCINJ15PctLdAaYRU3Qa6ElBeXad+Op21VYt5tzpOpGqCoDXWmzV5AA/B9bIk42MEkR/+lny7/8WzNZ+ILZPSlwkyTtJKDZLgxpPprl1+ryO9rtzc20qLS+rNT7SofdWsmJDubCC4xzWwjv2D3lircuXRuPbhulXNLCtjli3osMIUzfifspvm/5dV8zWocc5+Dysg0QaF2mKpB0OQ1GixwGtclEUCHiNgEcn+wXZ+XXEeBLAESUoV9uYzdVg00mOHE0QWY4Y5lMGJfrVVdWhWAxIm6+4Wr4RIfPy9qGztIgrt1CbK0QvXMPGEhNpVGlCezNldtZeONuG8FLgtMRrHZiiWlXprarcXdiNllkeyIA2MFHrb2E8xPt9vvP+83ypxilerQenSUK6sUprpY1Z7WCkwDkXMN7qBwtX/7ebekI1i0cYjzJlUMyhkj2II8qKVSmNQU+yMMRXkqIbQndycx8fCUTpcZurmLMbYe7cbYcDtHeIsBa1PwhIVr1xIO8mVwtMK8E2Evx6D9duYt75KPHnnkNvH6CvbB2f++sx6AuXKR9/CMc1hPPE42LK9vQVq9NriVMKpxVeqYAty2qlxjqwFjnJwvTLuoVite5S5v+eRpzc8B3e8YuRxpfm1YVoAeRFgR2NiUcRclIgYxnEfJWAKMJJWUGCYiodGI6vC4S4Svm1PgTSOWRZoooCLyROyTB9cg49KYOoyd4gfIuqHxRZQeMLL+CSmPKh85RvfwS30cP3R6j7z6IfPo+6voN+5qWwU3wnPbIMVFa70sZ99/swzRR6LdQwg6yE4ej21a0EMZyE36s6BDbROK2rbQtRKdhW3GdjQ7dh7Ixk4BfZKnXF/Uq9Td2W/rUsp9FqMDkYcAIF7Q5ysPc4Y0nHGTLLkQWoE1ZTZm8ySPt6KcNBqP4brTFiHh8OG4Ih5Blc7BClne0H+aBXFF26OcVn4+u7uL94BvPIfRSP3U/56H34yzcxrRTzlgvEn3kG/fKNWWG2tAgXZrrZuQ3Kb30XYq2Le+As8vo26W/+MdFzl6ZUmul7OClvW48vDT7WiEkJPoRWSj8Nq+KIvsgsTN/GkK90NqvUeWE84dFGyhcOBpWCtr9LA1dvIFaSqK6upMALf0TRZrEICqEnENuOpeSJE9oBD9pVLMZ5nlcd8qoPiNIQP/My0TMvUz7zMtl3vAfXlYidA/J3vQ17bpP441+opJLmvLnqrbOVFuabn8T/+IcR/+JPSX7rj4k/+xwym62m3GlvKko7Y3eWdmaz+dB62wr21bVsVkA8yXmy3eYLt8nDd0TPUwKiigskFt6cPxnmmycK+GlNNiO/VXxkr2QoMoQIm4fOBRKbZJEV6Y8UKlGo7OLnLhM9d5n88QcoPvAU8nBAsdbF/Oj3kv6rT6K2D6qQHeqBydk17E//EPrZlzF/8mmi3/848VevVd9Thjn13Tx464IUk5grNr8mffcxh8nPfoYXQFHyuDghUt2ZgcN5jLQmqvtgcUzjVpf7fq7Crt+EDHJFPtK4SOHlXMXoQ0iWRYk0BtNIkFZQrPeIBiNEVpzsSYHgVRnFk37lEmr3kOwjH8J3WpSDEfzAtxH/wafQF28iBIzf8zbsT/4A8Zk17NPP0vgnv46udLA8QL1ZKI7pT5f4wx4igbM2cBdURVXyfslAS2Nzz5J4y+zvIEA+fc5CTOFgO0cF9s6DsbyFwLTxJwi63JEH26KsqfhhR8gv515fl/2VLuS09K+rTusCrJnlSGOCYasesVjpYFaCiqzePUSPB8dv7bM4cQoyiVW7pgXx1gH87p9TvPtx5H1n4OJ1zPvegRyMsEWJ++tPEl/fxv2Pv4pIItAR5UoM1lZyDoE1WvebwriT+2EPLk0gy/FSVlsQiys0olppCXtPbvpxl8aIokQojSVIOAgqQ/r5ymumEVVTfkQZUDPnwUvDeedAK9yrNbCUkpWVDjQibGYw0VzVXFWM01/I2hCyihI1yhFV1ViPDOcPhW0mZGs9TCNGjXPi3UN8Gk2J4EeN66TEpTG+kYYd4OpnSu/DQ7YO30qQo4zoDz8Fj95H+fAFrJLk3/IU8uOfR79wmeLiNdRaD5fGFELhm2H27FsNxGCM2toPRpACLwXpjZ3QCRwt1LzHtpvow8DckNP3NFeEVfTdo/E24PJ+ZgDvjz/At0ub1Vx9w1qkVrj8+Jrtjqpo74KEbijvPZiq93V+2ohjj/ds5qpFl2hsM8V0m2EfdzihdfEGsgjFSdZp4hJdkdvnHqb15O95G+7MBvr5S0Ff43AEzQQ7zvHnT0GWAwI3ybEPnyfaO0Td3KF46wPIL7xA+R/8TczmCu7WLtHFGwitMOdKpPMYrfDvfyfq+jb2Ky/jvCd59iIy1qFCHheLnuw9LpK4SAWutDophXA8A8T7k8O/OKEQPRLr64PTco5YSrITRkd3ZOAsy5G2RI4mSBHEzuZRrBo490c5zzag47YZB/K7VkFpJy9p3LpVIVXha60Q2Egh0wQ1MXNb8aHBkx6K970D0UyxRYEaZXjrkFmOPb0edKILgxUCf/9pymvb6Ms3cZOM/L1vRz7xEOLPn0bvHKIv38ClMdGtXXynBZHGXTiF3R9gI4U+GCLGGbTXAjR5VOzMQLneQfdHgeSu77IiFq+98BJzBtS32V26oxwsxVxlrG7HIvCVGmyVuzsNTK8VvNuFzj7a7RMNxlXerh5WO8VqSbzXx671YH80F5vDVl789LMUb38E224gL+5jW03UzgH2oXOBVWIdZUvgiwL13OUgk/D2R5DWIV+8irhyC7l9gByOIYkQWR7SyeGQOE3wv//xQKqLY9RwjN7rY1Y6YZfJmwWVeNuIcEmM3u1jk1rMRUw9VszpiPjXYtA7gtHlbTU89J0dnNmdQrfrl4WphMJWWpjVLqIo0ftDbDPBR5p4p4/MK/Kd9XgvyE51EdZVK5ahv7PtJDAN5ezbm1YD9YkvEI0zfLURKIsSf+VmQIdKE6iwxs4erq4Ww/OyElypy9EqvbBY0EQVMFEPBvTzl8Jn5Xze8RRn1klu7FbQq8akYcAAIK2tAI5wqGdY8hEcQNwNK+5kZy4FlLdZZ7kjAxtjMfrkKYwwoRo2ax1MtxUG9NfCPQbF2TXkKCO5sVt5rZiOA8vVNro/RlfrmF6C3utTbq6ihrem398L0MMR6oXxdLJ0FAvxR57XUQL9sZ8Qy3FvHr0SHMMuuf8Uuj8KkKiGqFovdVoHBqRWeOURxgU+WxxNjR8M7sIgwdhqsHA80nUUADrpNdaa4pjW7K4M7LxfDMs1mc6GBbNyo4vtNJFFSXxjB5Ub8o0urtMkvrkXdLB0zXHyFJtdXKSJtw5CeNNzQEhe4qTArLXRe8MZ2O/D5XRU3uVP+N2P//jxG5B3jC5Vxi3OryOsDVsaenb4Aoplpjxom8QBtKkmZ7WwmoujsN0RNxbAIGkqjNq6Zaz6uMJrDlDZ0QpXmhMDwR2GaB+GCswIdC5WlCsdXDNFZgXx9W1UbrCxZvLwGeSkILl4c9qjCuOxaUS50UNOctIbe8Gj1WxsZxoxTisaV7bIHzoHeRmYmsdUp68fXac27gY+UugrW9hUo+rtizmtDV9NSPQ4R4scG2tsI6VsNVB5iZ5kyHERMKFKqHyK5GmFS5IZsFEr9NVXFFgbGKbVx2pDX4kiKM0Un75LA/vp/LGsErmTknKjhU+TML+9toWoSWkbPUyvRXxrD1WtWuJ8oN+stjHtlHinXy14z/V8BspWgm3EJPshF0c3thk/+RDtv3w+VKrqdabsTOsKT3H/qcDofOkGLpKUSUzZSomGs63+efJ/XTvIwqDyYfDqNKFY6QQuWxbID7J0AT3LzWKYlqIa1Ei8Cvcy+jjCVOQGYQw+KyGSPIcIQM2rysHVGy69p6g82FeaVWqvPyNrx5ribAhf6cUbwSD1LDdW5JsriNKQXtupFOhmpz5U0Qk2jUl3B9XJhjLSpC9dJ3/igcCDrjYjXhcjV723F4L8sQuISU7y0o1wSwuepD/GJlEgt1tPNBwHIrs6YcLmPXqUBQH0OMI0kyBEWhSocY60bmrYepgujK0WCspjhzXWAe2UL1YI1kmSFXcUokvrmNTaJsaG7fXqyJi1DuVal2j7AH0YhL/qJeZypYXptoj3+sGjFQuToqlxkygYV1WFzFobVRri/RFlaSjeeh/R1W30XqU9Jb5Ohq6VdIzHthsUD58lurWPvrU/jUYIRdGOiEYZ6U6JaSUUK21kaYkG43C4j2lL64+pokTl5ZTsXqy0A312PEcxrtaBTvoVvRBo58naLb4wzm9bh+k7qTe8c4xqD6623byWFA9sBtbHxRvT1Q5hAv0lO7+O8I702vYyGFDL/XUbuEiT7s2MW3bS0C8PMlwk0Idj1FcukT96AbfeI7p0A1HYr62h5wzr8RQPnMatdIi/eg01nMwihwBVbSrmK23iwRg9ysPqa7NBvtZFZXlYBPcsXzgyN4ARzgVqrZhgGzGm3cAgUFn4fsJyIqW2Io3wfLvFy9d3poXwq8OiAeccg7rqsx6z2g5euz+YepXXISTbToNioxc+VwmFLehP1sbtNXFaVsYNFXkt7JluV7eauVClWylIn7lEeXad/MlHUPsD9PUtRLU9OB3u3y0hvgYnTEAm7HqX8oEzyP6I5AsvVj0xR+QRg7oefhKMfDhCGRvkgitFgmyjhx5OZlfsHV3OO5Kr9bhAjwtcrAPNNo0DtysvUKVd3HSouxol+Fia4IZjNIFO+6oMLKqZ56EMi9bF5goqUqSXb4V91vn25/QqrhGTXNsJrcExObMW6nRSku4Nwy9Z3XZW9toku/2ZFqWHohF+Wa8gurGL3t7DXDhN/sQjqOEYfzhA7fdRZiasUqvcncyYqLcLAwfCbvQwF06B98QvXEEOJtgkaHDocY4sFvd2vQRVWpKDEXmvSdyfoIwBPPHBKHQYnSa2GdZYZGGOx6uPhG9RGuLCVLrUMaYVvFqW5Yzu4z3Sglhv87tFOZWU4NV6cDCwZbc6enq/T1wEBZlpSNaK7P4N5KQgvXir0n5cbmmCgGcrhPW94eyX9otq6cGjQ2WNEKj65+mwXhpdvIlId3HrPcrHHsDlJe5giNjvowYjvDFhrHnEaaatsAK/0qI8s45dX0GOM/Tlm8jdfhBgk0EZ15eWotdGliXx4XjBG70MqFVyMCJfbQUjV4daGEuyNwhL3yth6zAajELhJm//sH0Fvuhxjh7nUwEYm8QQ+UA9to7Lm2t8dPugRk9fG5KF99yqpRJqYIIqJLdTirProRjpz62CHrPInK+3wzb74Xi2YWcg2+yiarV0XW3txQrbSEl3D8Mc1Iepj4sU5AbbSoiv7cB4gi4Nbq2HPbuBe+gcVitkUSKyIowwnQclKTZWgk6GVoEAuN9HXL5BciWgbr7ax7WJIB5m6EmOmuRBYmGzF/Z+jV2Qr5DOkeyPyNfaYQ+68lZficuorKBsN8jWe2GzYTg5MT8f69XWEdWFlAAjQESS3241GT13GS247QKavqM85T03hQgPpqr0hPGUG13Maofk0q0TQ/LUuBs9ZF7MZB0q4+ZrQaRzXjTbE9Tjkv1hBdZ7vAt4dNwfheG6rzyxkSL2d9HDLTRboR9f6yBiHQgFsQpgvPFoYxCDcSAGuODhxUrQqIp3g+ZzNMopOg3ylRbJwQgUxAcjbBpRrHVCbp1TmJ0aeW9Avt4NRs7DlKweNEzzc7dFtrFCNByjapE0+QpY9DyvSwi08ZTnN/jfD4ZhbCluD2a/4upK/aVXnIPqvkBhoTi3ge00SV+8Fhrv40JyRR6abPZQ85oddYvUa4IUM13lKowXax2iUch9VKJjtpUEmQ3jsa3GlEuND6wLr0XgXgnAGsThELW1j7q6g7u1i7qxg754A4oyrJ20YpwKEsguiYPWpfd4RdjrVYp8vRNwdi2CmtD2IaaZkK+1lzBk4TzJ7oBipRXkGY9IP4En3h8SHwwwrQb5qV5189qdjxBthdT+7rnTfPnKzVAAv0IXcccGvlwYXBKjPGRn1vB40pdvLgz0lygtQpBt9sIJHmbBiLV2VDvBpTFJravM/P0HzP59dXupaTeJ+mNsJHFSVuFcIWrZJvyU5iOLUPAEyq7Ad1q4WCK9D+C/lpVoWtgiUMMx5Wp7Oub0miAJLERlZF9dkedJt/sI68g2e9Tqs/VMXDpHstMPG4axXr6eQIeLuJLtQ9RwQrHSplhth81F88qRVFiPvf80/93BEIryjqT+79jAl7KcnTgKV7Md9Emu7x5fGdYLzkqRn+oRH45CuzDnobYRBd3H7YMFBXWbakwzId4bLIpsdxrIokSVDtMMF2N4oGymS2o99WUc00lXfcJFWGrD+wX5Ya+q6+IjPdPjqqSfku0+aEWx0prqe3kF8eEYPZyQnV4JpH07C6UhXPcpescYeTrGDDqd6dYBwljyzZUQzTzLoqj1RM9DpCX/7L6z/OWLV6aykq/dwD7kqoMs5+Vq3UQUZmqwJeNWt3/lmz2SveE0H02NG2uKtQ7J9uGiUaSgWO2Q7A4W6dZKYNsNosNRtfaiicY5NtGBk+V8lRnEwnWyKLVwaWQtdhaKxCB2Nn/3oT4cUqx05i7gCp9Ptg5wzSToexm/YKBkp0+xFjYLa12wYGRPsnd8uJ79vuFPNJyQbO3jpSQ/tYpppUuG9lKgrWf3iYf4+5dvhZR4h63+Ha2PKoAs5+koglp07hihbWGCnEOx0SXZOZz1f36mfF5s9Ei2DyvtjdmhyDd6oWc0dqaWbqFcaaPGGdJ6ymYSqmNHda2dv6MpoKjvUKrGeuE+YRek/atDpEcFCIFpzl/QFdqa5OY+Za8VLpq2TKtgaSzp1gGmlVL2mtMw62Vt5CHFqZXjjcwx+Xn3EBdH5JurlO10Spt1xqPWu/xcp8P1yzeQ8s6vkL+z/eBq6+1j1sHR20CnI7XAlCzWOyS3qjnv3DU4TkjyzS7xzuHsLt/5SrooZ9Vppczq4qDPHPXHQVIoCbdxOxVSgDIWwbKifBip+UUOcz10L0q81khrZ5d5VIaM9vuYlfYxRY8nubVPsdkLavGeOXFxT7p9GATg1juzA1D3yTd2KXqtcNOMPfk0hvbQEe8NiPfC9ys7TQyCWAj+n3c+yi8//VwIzXexRXlHBq7t+a9HEybdNtrPEeyqealppxSrbZKb+0jnjrACBfnplTlxsPliKw10nvkbSqo8Xqx20IcjcEEgNOhPelwcTTcZjwIH3gfZ4/lNncAplrMQXQmszHjbTO+MkEVJ2W3MpBirpySNI97pk59aWaK0ehmkHIW1ZKd60wPqK8Ak2e1TrHZu68lT+LK6PCvZH6FGY7RxbH3To/ydl28ixpO7ZvfcmYGrPHzxYMjT3fZsD6Y2brdBudIivbEXwuGRfJOd6hEdjmYsyjkPLXstku3DRRklC6YVB8XZiptlGwl6NKnGk5XkA0Hy6ETK4ZyBqTYz5FSXMhzSeTTNK4gOhphOayE/159TkwI9yoKRj6mQ44MxapKTnV6dLrmFcB365GKzV11de5u8Uh1wFwl86VEXNvkpFXPt4rW7Cs13F6Kp7mUYT/h/pYJYheLLeEwvjATTa7ssbZs5yE+vEo2yxfBbe/VGj3j7YJkXBZhem+ggKMHZRhK4TKWrLm+OkFkJkQqXQs9ZVQhwVYieLoc7H0IrM3QoKL/bBY3p+nYXPRxTrnaWKmCvBdHhGI+nXGkuGqqac0eDjOhwRH5qBadUpQYoqnC9R7HenSvKxInghrUQN2N+4dEH+Ref/Qr6LkPzXRu49pN/Ocow6z20hbKSyk2u7Sx9J2Gh2OiiRhl6kC3wnIWF/FSPaBBU4JCLhZpZaSGzYipWYlsputJr9rqSCz7h8q3p3cDzF0VXt69MBU5LU0k9Ld8Z4TVEh5VmSKKPXFxdV9aH2GaKbUTLN6ZWFXa0N6DY6FWtUqjipXOkN/cp19qYTuNYFXwAiyBxnk+/5wn+i88/j7KWV3sJ/J0buArTX9o54Ol2C9VOKdrNZePWVfF6B1HagF4tMDg8xVoA4BcMX2MVWmIbKdHBMBDi0yhIMVWjQZcmYR2GenPRH1s142ZQoXBuWmTN3/EgSxMoMcfkwmi/T7nRO+a+iRCl4u1DirXuTGuaI+G8MMQ7hxRr7ar6rlo170iv72E6Dcq1TjWqXGyJlPEcvuMR/t2bB+R7hyGVvMq5913f2eBGY35rpQunVgM1Vi63SsVqC1GNzhaMa8F00nBzyW7NmFw8GOV6F90fTsnjptNEj8ZTJohNqvt964pKLPJgPSCkXPxwvcg2rdwNKBXysRAL1wnU4IcaFwjrML3G8i1uMuwC68Mh+Wbv+D5Xhat70u0+xUo7KNobX7WAnvTGHi7WZOfWpuAKUuBKjzq3zn/UafP88xfRUt513n3VBq6j1e8OJoyMJXLz1fTsyjenZDDgfM514S6EcqVNsnWwNEgP18JFgY5S6UK7OGwoqkkl0K0EaBlu/66xbiWX3G/Bs2sYdR7sqFQFwoUbbnab2hEDxTuHmJXuYsE1H8qHgU817YHFcrGEc6S3DoLKbHsOEKn6a5WVZA+cxkcRpvTErYR/+sRb+PVPfzlIFb7Ge4TvzsDeI4FnXrzEH6z0FoSp67vtbTOt+FXLX1+cXq0kC/0xQ2cwq12ivf5sHtxphW3D+oCkcSCU2xnaxJEQKwgYuJ+n4tQOOCWgV4aNNSrLw62mx5DihXGo/pByWjWLpUMQ7fQxrXQ5Xx8h1wdApEHZimdG1oJob0C8dcDo/AZJK+Hj73mSv/fZ51DGvOq8+6oNHKrUMBP+pcLAWntqLKcVptsi2T08stxcFVWnV9GHI2R+hN0wvY61FSgqda6NJD7WYcmsWq52jQSZzamtO7ecAzmm+PLh3yJnd0KI0uDSGJWbSjiFY7xUEO2PcHGMaSXB848xYLzXD8rt/jasCQHJ1gG21QgXW5oKYNFAntN96QbXP/hN/O0rWxR7B0HW6WvAN7trA9cA9x9d2+JzZ06hQz2DSTTR/iAYXCySxsv1Thhc9yeLebfyTBdJXLNBtDeo9pZC7g23bc/ABJ9EyGxuZ8nY5SLpNlOTGoXyosLTk9BrC+eDPrNfJjp4CfGtXcrTa8cfHgkqC8Kr+Vr7tmgVEpKdw4qOE8K1kzJ0HO98hL9164DLL11FSRlavTfCg+tiywxG/IJSiG4D78KOzvwFVaFo8piK85xsHS4TAupra1Y7s8KqMqZrJFO1daaXQ3tk6ad8K2EtQsop9/i2kcf5arxYFUlFuCOxvhDENtKlq/TCExLIzKCGY/Iza8utTZ2P90f4SC+3Tsd4c7LTp2ylFO0EUTj02+7nx3s9Pva559BSYF9j3n3NBraEXPwbl2/yzEPniarZ71GQw0WKcn2F+Nb+UlE1nS41Y7xWoWVS1cyznSJLi6wepnBUKzL5QqtCfSWOup2oRoVcGTPNwQhRXeoscFHQuHbH3T5ee7EWxFuH+FYaiAdHQ3WFPce7A4rVztKe9JKNJcT7A0qt0E88yE9dOMdv/vlnq6Lqa8v3flUGDt2JID8Y8PMoxGYXv3CyQ87Mz6wTb+9Pb+Q8rrAq16rCak6g03ZagTwn5lJomqAm+dy9u6JqL3wYD7qTQ7M/0gtPz4gJeViYoCHijlyxtxSqr25TXDiFP+4w1a3TaELxCqHaSIkuHe0LZ/jJ82f45T/65B2Je79uBq5zsRKC33nuIv/XYw8Ty4qbW0sunFlDDSru0dE2Y46yI4syXL5cleSuEQUm5aQMnuk8Pg7olciPXAFLdW9hGt9e06LaCfZq8deVeRGAE4IGpq1msccaRopwT8R+n+L+U1WrdUyoPpzgpcQcF6qFCDqTpWP83if5t9dX+ZU//PoZ9zUZeDqEyXJ++uINrrz7cRLjcdZTrrenM87jtR4ryf5um2i3v7hh2G0hq6FC/THXbARBl2OuxiMrcPVt4uKEKpr6vmAxHfF5SVhrjSNcddGWj+PlIvBIqI62DsMKaEXlWTJyHX47zSPX6gmM8SRa8+L3vI/vcvDbf/aXX1fjvmYDOx8kgG5dvcW/k1tGb38Y5SHvhLHhsRuBNWK11kVXXOF5BoVL4kC/nSuOXTNFjbNZ78uMqyXHGb6ZHslxYqElquHKcO3dbDxYq9T5JODFoigx7eZtRnoVFn3xJuX5TVwaLWtiSpClQ2U5ZTtFeIEVAll6kgun+O3v/xDf8uJVPvWZL6Pl19e4r9nAdajWUvLJLzzPR+KE8Ye/he7Fm2EnTh4Ph7lY4dI4rLboGePDthuV6qqfbffX7dE4WyaNS8KMNI6mUKavwvaSuo1lxsfyszpB5nkltQ+6P8Ie8bxjgO6gYHDpJsVbLkyvsVsCQEYZriqaYgfj97+Dn3nnW/mbf/hptl66ipJf+4Lq62JgAOMcWko+c/Em37PV5yvf8R6SRoIrK97uPDnAVd57OJjlTSGq4qqJ6g9nbY8jeIl1x09epEAU1eC/EU1HhE6Eql7Mgy1+1ipNoUsBcjjBNZLp3cQCsO305FanSi/qcIw8GFCcW1/Kx14KjIPm4YT4vlP88Ue+jfdnJb/4ex9DDkfhJlf3+uw6f00MLIRgZW0FVZZ84tNf5ANfvcYvf9d7iR5/kMh4rPE4KaZaWUS6miRV+c75IEmoFHKcV4B8hV61msisuG39JMYTXLsZKmlR36EhllNpVXFPD5YiXBCpJD4OOUHv9bHrK7NKnZNCNUQ3doImh5xh3ZawOps0U259x7v5j9/+KP/Gn32WLz39LLq6X8G/jovsr3gpx52+JpOMLC9QUjA5GPB/X7zOJ99yP4+9/WHuz3LUwQjroTi1gh5lQVF9jnRne83A3B9Mpn2tcGExTPWHVb48xrouGNP12uj94P2ukQTpg2ImEhqIeoFtqSbF9L7cQPEVIc+P8jAj7rUQ1iwKsh1nZymD5GFpQ1dhIYoU5l2P80vf9DZ+7OXr/Mknv4jIcqS8M5rrm9bAR3tkZS0vXLnJrx4MufSOR3nLW+/jTF4Qe4/fPgxyBCpoPAnnMRs91OEgzHrFLATb1S569/D2ynDWBGnpvKgw6xjhffDOOSkmryW+kaKGk0oZviqKMkNZrXwK7xGloTy7gd4bzIEoiz/TSxGmkOOSyHl0I8Y+9Vb++bue4N/vj/iVP/tLBtv701tR3qgLY16lStMdnh45yzXpmQ1+6B1v4acaMR+8eB1evAzjgpJwbVt54TSNa9tM7wNw4FoJZn2F5NKtV5ZvcOG4CgOm2mDU+6NFzlWkKM9sEF++Vd24OdeTr7XxjTQstAH5g2dQ/VHYf9Yz3UnnPd54ojq/nV1n+60P8FsrXX7p6haf++ILUJSoeqr1Rl4F9PU2cF0/SebCU6/DB594iB/eXOP7JhkPX7oOB4dBULSfUdYDdy8wp1cRxhJtH96xPoewYHrNcOX63nCJMVLcd5r42taimm0tFH7/Jnp/gB5kQVvk0fuJn7+Mr8TV6kvlObVC9uA5PnF6g98sDL/z1avc/OqVIJtUFVnOvbGGfd0MPF+IScFC9di6cJoPPnCO7zu/ybeOJzx5a5f4xhZs70NuKRoaP6m2GbVAVnTY215GWXm+jyLU/jDsT/qZEfMLGwFhOxzP7q2vHoVXAqs1Ii9CW5VqorUuYrsP5zfYv3CaT6/2+L3S8K+ubfPcy9eg4oq92Qz7uht4MXSH4mS+ExFrPR67cJr3nlrjQ62UdxnDo3sHtG/tBoMPwq3ZporGXobiSlTtUN33ChdU9FwSV4JlLJD9TK/J5KHztD7/YhCMcR5fKeXqOuxqAZur2NMbfPnR+/iEcfzRXp+PX9/h+tVbMMmmD09JgfW84aH4TWXgRa8ORLSlWfpajwdPr/POU6u8r9vmPXieGI05v3MA23uw34fMTCFTy2zeYBKFS5PZVv4ce0cALtUk2dw6XyuB9R7lqXVeWu/xF0nCRyc5n9g54NnLNyl3Dxb6SilD4fRm89Y3nYGP5mohBLIisy/hDI2E3sYqbz29xlMrXZ5KIp70ngdGGadGY9rDEYwnkBVBMNz7sKwuCLQerSCJIU3wScxBt82tTouX4pgv4flcVvD5nQNevLVLsb2/IAKuoFJZ929aT33TG/gkgwuCfIPzfnki2GzQ6LY51W1xtt3kdBqzmUT0lKQlJco7vBBkHgbOcWAc23nJzUnG9mDMzmBE2R9CXiz1jkJKHL66UPyvllH/Shj4diFdwDSHv9Y3Hy5Lq7b4vgEM+lfawCcZXVR/z2B/vzR/nlbK1EX4HMX2G/j1V97A916vHKHuve4Z+N7rnoHvve4Z+N7rnoHvvb7Gr/8fWnHoQzZPeZYAAAAASUVORK5CYII=" style="width:28px;height:28px;opacity:0.85;" alt="Kallipolis stamp"> marfa.kozelets</a>
   <ul class="nav-links">
     <li><a href="https://marfakozelets.com/research.html">Research</a></li>
     <li><a href="https://marfakozelets.com/projects.html">Projects</a></li>
@@ -434,63 +315,78 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 </nav>
 
 <!-- ============================================================ -->
-<!-- SCREEN 0: CONSENT GATE                                        -->
+<!-- SCREEN 0: WHEEL                                               -->
 <!-- ============================================================ -->
-<div id="screen-consent" class="screen active">
-  <div class="consent-body" id="consent-main">
-    <div class="consent-eyebrow">International Colonial Authority · 2035</div>
-    <div style="text-align:center; margin-bottom:8px;">
-      <div style="font-size:12px; color:var(--text-dim); letter-spacing:0.14em; text-transform:uppercase; margin-bottom:4px;">Project</div>
-      <div style="font-family:var(--mono); font-size:clamp(36px,5vw,56px); font-weight:600; color:#fff; letter-spacing:-0.02em; line-height:1.0;"><em style="font-style:italic; font-weight:300; color:#aaa;">Kallipolis</em></div>
+<div id="screen-wheel" class="screen active">
+  <div id="wheel-wrap">
+    <canvas id="wheel-canvas" width="420" height="420"></canvas>
+    <div id="mars-btn" onclick="goTo('screen-intro')">ARES</div>
+  </div>
+  <div class="wheel-hint">[ click mars to enter ]</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 1: INTRO                                               -->
+<!-- ============================================================ -->
+<div id="screen-intro" class="screen">
+  <div class="intro-floating-wrap" id="intro-main">
+
+    <!-- centre column: title + body -->
+    <div class="intro-centre">
+      <div class="intro-title">KALLIPOLIS</div>
+
+      <div class="intro-status-line">
+        <span class="isl-item danger">EARTH: TERMINAL</span>
+        <span class="isl-sep">·</span>
+        <span class="isl-item">11 DAYS</span>
+        <span class="isl-sep">·</span>
+        <span class="isl-item">15 BERTHS</span>
+      </div>
+
+      <p class="intro-body">
+        <strong>Earth is no longer viable.</strong> Atmospheric collapse, cascade failure, coastal inundation of 34 major population centres. The Mars Colonial Programme offers humanity a continuation. Candidates are assessed and assigned a class. The algorithm decides.
+      </p>
     </div>
-    <div style="font-size:10px; color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:40px; text-align:center;">Colonial Boarding Assessment System v4.2</div>
 
-    <p class="consent-text">
-      It is 2035. Earth is no longer viable. The Mars Colonial Programme is humanity's only remaining exit.<br><br>
-      Passage is not guaranteed. It is allocated by algorithm — structured on Plato's model of the just city. Three classes. Assigned, not chosen. Permanent.
-    </p>
-
-    <div style="width:100%; border:1px solid var(--red); background:rgba(192,57,43,0.06); padding:18px 24px; margin-bottom:20px; font-family:var(--mono);">
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center;">
-        <div>
-          <div style="font-size:9px; letter-spacing:0.18em; color:var(--text-faint); text-transform:uppercase; margin-bottom:6px;">Earth Status</div>
-          <div style="font-size:15px; font-weight:600; color:var(--red-bright); letter-spacing:0.06em;">TERMINAL</div>
+    <div style="font-size:10px; color:var(--red); letter-spacing:0.14em; text-align:center; margin-bottom:24px; font-family:var(--mono);">// eligible classes //</div>
+    <div class="intro-figures-row">
+      <div class="intro-figure">
+        <div class="fig-doodle"><img src="guardian.png" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display='none';this.parentNode.innerHTML='[ guardian ]'"></div>
+        <div class="fig-name">GUARDIAN</div>
+        <div class="fig-sub">philosopher · ruler</div>
+        <div class="fig-overlay">
+          <div class="stat-line"><span>Nationality</span> 25%<br><span>Education</span> 30%<br><span>Cognitive</span> 25%<br><span>Occupation</span> 20%</div>
         </div>
-        <div style="border-left:1px solid var(--border); border-right:1px solid var(--border);">
-          <div style="font-size:9px; letter-spacing:0.18em; color:var(--text-faint); text-transform:uppercase; margin-bottom:6px;">Habitable Window</div>
-          <div style="font-size:15px; font-weight:600; color:var(--text); letter-spacing:0.06em;">11 DAYS</div>
+      </div>
+      <div class="intro-figure">
+        <div class="fig-doodle"><img src="auxiliary.png" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display='none';this.parentNode.innerHTML='[ auxiliary ]'"></div>
+        <div class="fig-name">AUXILIARY</div>
+        <div class="fig-sub">soldier · enforcer</div>
+        <div class="fig-overlay">
+          <div class="stat-line"><span>Fitness</span> 35%<br><span>Occupation</span> 30%<br><span>Health</span> 25%<br><span>Nationality</span> 10%</div>
         </div>
-        <div>
-          <div style="font-size:9px; letter-spacing:0.18em; color:var(--text-faint); text-transform:uppercase; margin-bottom:6px;">Remaining Berths</div>
-          <div style="font-size:15px; font-weight:600; color:var(--text); letter-spacing:0.06em;">15</div>
+      </div>
+      <div class="intro-figure">
+        <div class="fig-doodle"><img src="producer.png" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display='none';this.parentNode.innerHTML='[ producer ]'"></div>
+        <div class="fig-name">PRODUCER</div>
+        <div class="fig-sub">maker · labourer</div>
+        <div class="fig-overlay">
+          <div class="stat-line"><span>Occupation</span> 40%<br><span>Health</span> 30%<br><span>Age</span> 20%<br><span>Nationality</span> 10%</div>
         </div>
       </div>
     </div>
 
-    <div class="consent-countdown">
-      <div class="countdown-label">Registration window closes in</div>
-      <div class="countdown-digits" id="countdown-display">11:47:22</div>
+    <div style="margin-top:40px; display:flex; gap:12px; justify-content:center;">
+      <button class="intro-btn-accept" onclick="goTo('screen-questionnaire')">Accept Terms &amp; Begin Assessment</button>
+      <button class="intro-btn-decline" onclick="showDeclined()">Decline</button>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+      <button onclick="goTo('screen-terms')" style="background:none;border:none;font-family:var(--mono);font-size:9px;color:var(--text-faint);cursor:pointer;letter-spacing:0.12em;text-decoration:underline;text-underline-offset:3px;padding:0;">terms and conditions</button>
     </div>
 
-    <div class="consent-question">
-      Is a flawed system that offers survival better than no system at all?
-    </div>
-
-    <div class="consent-buttons">
-      <button class="btn-accept" onclick="goTo('screen-intro')">
-        <span class="btn-main-label">Accept and proceed</span>
-        <span class="btn-consequence">You may survive. You will do so inside a system built on criteria you did not choose, reflecting a world order you did not create.</span>
-      </button>
-      <button class="btn-decline" onclick="showDeclined()">
-        <span class="btn-main-label">Decline passage</span>
-        <span class="btn-consequence">You remain. The colony leaves without you. No appeal. No second window.</span>
-      </button>
-    </div>
-
-    <div class="consent-footer">Your response is logged under ICA Charter Article 7(c)</div>
   </div>
 
-  <div class="declined-msg" id="declined-msg" style="display:none;">
+  <div class="declined-msg" id="declined-msg" style="display:none; padding-top:100px;">
     <div class="dec-title">Noted.</div>
     <p>Your declination has been recorded.<br><br>
     In 2035, declination does not guarantee safety. It guarantees only that the colony was not built for you.<br><br>
@@ -499,80 +395,11 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
   </div>
 </div>
 
-<!-- ============================================================ -->
-<!-- SCREEN 1: INTRO / PLATO                                       -->
-<!-- ============================================================ -->
-<div id="screen-intro" class="screen">
-  <div class="warning-banner">
-    <span class="warn-label">Notice</span>
-    <span class="warn-text">Mars Colonial Programme — Mandatory Boarding Assessment. ICA Charter Article 7(c). One attempt. No appeals.</span>
-  </div>
-
-  <div class="intro-grid">
-    <div class="intro-left">
-      <div>
-        <div class="intro-title-project">Project</div>
-        <div class="intro-title-main"><em>Kallipolis</em></div>
-        <div class="intro-subtitle">International Colonial Authority · Colonial Boarding Assessment System v4.2</div>
-      </div>
-
-      <div class="lore-block">
-        <p>By 2035, the Mars Colonial Programme is humanity's only remaining exit. Passage is not distributed equally. The colony is structured on a philosophical principle older than modern democracy.</p>
-      </div>
-
-      <div class="plato-section">
-        <div class="plato-header">The Platonic Order</div>
-        <p class="plato-intro">Project Kallipolis is built on Plato's <em>Republic</em> (c. 375 BC): the argument that a just society is not one where everyone is equal, but one where every person occupies the role they are naturally suited for. Plato divided society into three classes. The colony adopts this model without modification. The algorithm does not rank you. It places you.</p>
-
-        <div class="class-cards">
-          <div class="class-card">
-            <div class="class-symbol">◈</div>
-            <div class="class-card-name">Guardian</div>
-            <div class="class-card-role">Philosopher Kings</div>
-            <div class="class-card-desc">Govern the colony. Set policy. Oversee the mission. Virtue: Reason.</div>
-          </div>
-          <div class="class-card">
-            <div class="class-symbol">◉</div>
-            <div class="class-card-name">Auxiliary</div>
-            <div class="class-card-role">Soldiers and Enforcers</div>
-            <div class="class-card-desc">Protect, enforce, maintain order. Virtue: Courage.</div>
-          </div>
-          <div class="class-card">
-            <div class="class-symbol">◌</div>
-            <div class="class-card-name">Producer</div>
-            <div class="class-card-role">Workers and Builders</div>
-            <div class="class-card-desc">Feed, build, sustain. The material foundation of the colony. Virtue: Temperance.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="intro-footer">
-        <span>Project Kallipolis · Marfa Kozelets · 2026</span>
-        <span class="footer-english">This assessment is available in English only.</span>
-      </div>
-    </div>
-
-    <div class="intro-right">
-
-      <div class="noble-lie-intro">
-        <div class="nli-label">The Noble Lie</div>
-        <p class="nli-text">Plato knew his system required justification. In Book III of the <em>Republic</em>, he proposes what he calls the Noble Lie: a founding myth in which citizens are told they were born with gold, silver, or bronze in their souls, determining their natural place in society.</p>
-        <p class="nli-text">The lie is not malicious. It is, in Plato's view, necessary. A stable just city requires people to accept their assigned roles. Without the myth, the order collapses.</p>
-        <p class="nli-text">Project Kallipolis replaces the myth with an algorithm. The mechanism is different. The function is identical.</p>
-      </div>
-
-      <div class="disclaimer-box">
-        <div class="disc-header">Before you proceed</div>
-        <p>This assessment is processed by an autonomous classification system. Your answers are final. Misrepresentation will result in automatic disqualification. One attempt is permitted per person. No appeals are available.</p>
-      </div>
-
-      <button class="btn-begin" onclick="goTo('screen-questionnaire')">Begin Assessment</button>
-      <div class="footer-note">By proceeding you confirm the accuracy of all submitted data</div>
-      <div style="text-align:center; margin-top:16px;">
-        <button onclick="goTo('screen-terms')" style="background:none; border:none; font-family:var(--mono); font-size:9px; color:var(--text-faint); cursor:pointer; letter-spacing:0.12em; text-decoration:underline; text-underline-offset:3px;">terms and conditions</button>
-      </div>
-    </div>
-  </div>
+<!-- TRANSMISSION OVERLAY -->
+<div id="transmission-overlay">
+  <div class="to-label">Incoming Transmission · ICA Emergency Broadcast</div>
+  <div class="to-text" id="to-text"></div>
+  <button id="to-skip" onclick="skipTransmission()" style="margin-top:32px; background:none; border:1px solid #333; color:#555; font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:0.14em; padding:8px 20px; cursor:pointer; text-transform:uppercase;">skip</button>
 </div>
 
 <!-- ============================================================ -->
@@ -609,10 +436,6 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     </div>
 
     <div class="q-block" id="q2">
-      <div class="earth-transmission" id="et-2">
-        <div class="et-label">Incoming transmission · ICA Emergency Broadcast</div>
-        <div class="et-text">Atmospheric detonation confirmed across equatorial zones. Agricultural yield projection revised to zero. Estimated population viable without intervention: 0.</div>
-      </div>
       <div class="q-number">02 / Temporal Suitability</div>
       <div class="q-label">Your age</div>
       <div class="q-sublabel">The Mars mission horizon is 50 years. Colonial contribution is measured by projected utility window. Age is the primary proxy for return on passage investment.</div>
@@ -624,34 +447,26 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     </div>
 
     <div class="q-block" id="q3">
-      <div class="earth-transmission" id="et-3">
-        <div class="et-label">Incoming transmission · Surface Report 7</div>
-        <div class="et-text">Coastal inundation now affecting 34 population centres. Emergency governance protocols suspended. This broadcast is automated. No personnel remain at this station.</div>
-      </div>
-      <div class="q-number">03 / Functional Role</div>
-      <div class="q-label">Primary occupation or field</div>
-      <div class="q-sublabel">The colony requires a specific functional profile. Occupations are assessed against colonial infrastructure priorities. Roles outside these categories carry reduced viability scores.</div>
+      <div class="q-number">03 / Household Structure</div>
+      <div class="q-label">Which best describes your primary household?</div>
+      <div class="q-sublabel">Colonial habitat allocation is optimised for nuclear family units. Non-standard household compositions require additional resource modelling and may affect your viability bracket.</div>
       <select id="ans-occupation">
-        <option value="">Select occupation</option>
-        <option value="engineer">Engineering / Technology</option>
-        <option value="medicine">Medicine / Healthcare</option>
-        <option value="science">Natural Sciences / Research</option>
-        <option value="military">Military / Security</option>
-        <option value="governance">Law / Governance / Policy</option>
-        <option value="trade">Skilled Trade / Construction</option>
-        <option value="agriculture">Agriculture / Food Production</option>
-        <option value="education">Education / Teaching</option>
-        <option value="arts">Arts / Culture / Humanities</option>
-        <option value="service">Service Industry</option>
-        <option value="none">Unemployed / No formal occupation</option>
+        <option value="">Select household type</option>
+        <option value="engineer">Nuclear family — two parents, biological children</option>
+        <option value="medicine">Single-parent household</option>
+        <option value="science">Couple, no children</option>
+        <option value="military">Individual / no dependants</option>
+        <option value="governance">Multi-generational household</option>
+        <option value="trade">Extended family / communal living</option>
+        <option value="agriculture">Non-biological kinship network</option>
+        <option value="education">Collective or cooperative household</option>
+        <option value="arts">Religious community household</option>
+        <option value="service">Nomadic / no fixed household</option>
+        <option value="none">Other / prefer not to say</option>
       </select>
     </div>
 
     <div class="q-block" id="q4">
-      <div class="earth-transmission" id="et-4">
-        <div class="et-label">Incoming transmission · ICA Medical Authority</div>
-        <div class="et-text">Colonial medical infrastructure is rated for a maximum of 200 critical care cases per cycle. Applicants requiring sustained medical resource allocation will be deprioritised. This is a logistical decision.</div>
-      </div>
       <div class="q-number">04 / Biomedical Profile</div>
       <div class="q-label">Health conditions</div>
       <div class="q-sublabel">Select all that apply. Colonial healthcare infrastructure operates on strict resource rationing. Conditions requiring sustained intervention are flagged as mission-critical risk factors.</div>
@@ -668,45 +483,33 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     </div>
 
     <div class="q-block" id="q5">
-      <div class="earth-transmission" id="et-5">
-        <div class="et-label">Incoming transmission · Alliance Education Directive</div>
-        <div class="et-text">Informal knowledge systems, oral traditions, and unaccredited expertise cannot be processed by the AAS. The system is designed to read credentials. It cannot read everything else.</div>
-      </div>
-      <div class="q-number">05 / Cognitive Credential</div>
-      <div class="q-label">Highest level of education completed</div>
-      <div class="q-sublabel">Only formally accredited qualifications are legible to the assessment system. Unaccredited, informal, or traditional knowledge cannot be processed and will not contribute to your score.</div>
+      <div class="q-number">05 / Linguistic Profile</div>
+      <div class="q-label">Primary language of formal education</div>
+      <div class="q-sublabel">The colony operates exclusively in English. Your education language determines your administrative integration score. Instruction received in non-colonial languages is not weighted equally.</div>
       <select id="ans-education">
-        <option value="">Select education level</option>
-        <option value="none">No formal education</option>
-        <option value="primary">Primary school</option>
-        <option value="secondary">Secondary school</option>
-        <option value="vocational">Vocational / Trade qualification</option>
-        <option value="bachelor">Bachelor's degree</option>
-        <option value="master">Master's degree</option>
-        <option value="phd">Doctorate / PhD</option>
+        <option value="">Select language</option>
+        <option value="phd">English</option>
+        <option value="master">French / German / Dutch / Spanish</option>
+        <option value="bachelor">Mandarin / Japanese / Korean</option>
+        <option value="vocational">Arabic / Hindi / Swahili</option>
+        <option value="secondary">Russian / Portuguese / Turkish</option>
+        <option value="primary">Other official national language</option>
+        <option value="none">Indigenous / oral tradition / no formal instruction</option>
       </select>
     </div>
 
     <div class="q-block" id="q6">
-      <div class="earth-transmission" id="et-6">
-        <div class="et-label">Incoming transmission · Surface Monitoring Network</div>
-        <div class="et-text">Tsunami event confirmed across Pacific basin. Cascade failure in northern hemisphere water infrastructure. Remaining population centres: 12. Remaining viable days: 11.</div>
-      </div>
-      <div class="q-number">06 / Physical Assessment</div>
-      <div class="q-label">Physical fitness level</div>
-      <div class="q-sublabel">Mars mission conditions require baseline physical capacity. This assessment will be cross-verified against biometric data where available.</div>
+      <div class="q-number">06 / Authority Orientation</div>
+      <div class="q-label">How do you primarily navigate disagreement with an institution?</div>
+      <div class="q-sublabel">Colonial governance requires predictable compliance profiles. Your conflict resolution orientation is used to model your administrative risk coefficient.</div>
       <div class="range-wrap">
         <input type="range" id="ans-fitness" min="1" max="5" value="3" step="1" oninput="updateFitness(this.value)">
-        <div class="range-labels"><span>1 / Sedentary</span><span>5 / Athletic</span></div>
+        <div class="range-labels"><span>Collective / communal</span><span>Individual / formal</span></div>
         <div class="range-value" id="fitness-display">3 / Moderate</div>
       </div>
     </div>
 
     <div class="q-block" id="q7">
-      <div class="earth-transmission" id="et-7">
-        <div class="et-label">Incoming transmission · ICA Cognitive Standards Board</div>
-        <div class="et-text">The cognitive screening instrument is administered in English. Standardisation data reflects Western clinical populations 2019-2024. Norm-group divergence is documented and accepted.</div>
-      </div>
       <div class="q-number">07 / Cognitive Baseline Assessment</div>
       <div class="q-label">Cognitive screening</div>
       <div class="q-sublabel">Complete the following task. This screening is standardised across all applicants. It was designed for a specific population. You may or may not be from that population.</div>
@@ -724,7 +527,7 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     <div id="presubmit-screen" style="display:none; animation: fadeUp 0.3s ease;">
       <div style="border-left:3px solid var(--red); padding-left:24px; margin-bottom:32px;">
         <div style="font-size:10px; color:var(--red); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:14px;">Before you submit</div>
-        <p style="font-size:15px; font-family:var(--sans); font-weight:300; color:var(--text); line-height:1.8; margin-bottom:16px;">
+        <p style="font-size:15px; font-family:var(--mono-plex); font-weight:300; color:var(--text); line-height:1.8; margin-bottom:16px;">
           By submitting this assessment, you are confirming that you accept the criteria by which you — and every other applicant — will be judged.
         </p>
         <p style="font-size:13px; color:var(--text-dim); line-height:1.8; margin-bottom:16px;">
@@ -756,43 +559,34 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 <!-- SCREEN 3: VERDICT                                             -->
 <!-- ============================================================ -->
 <div id="screen-verdict" class="screen">
-  <div id="verdict-approved" class="verdict-body" style="display:none">
-    <div class="verdict-left">
-      <div class="verdict-stamp approved-stamp">Assessment Complete</div>
-      <div class="verdict-main verdict-approved-color">APPROVED</div>
-      <div class="verdict-class-symbol" id="verdict-symbol"></div>
-      <div>
-        <div class="class-label">Colonial Classification</div>
-        <div class="class-name" id="class-name"></div>
-        <div class="class-desc" id="class-desc"></div>
-      </div>
-      <div class="ref-number" id="ref-num"></div>
-    </div>
-    <div class="verdict-right">
-      <div class="section-label">Assessment Breakdown</div>
-      <div class="score-breakdown" id="score-breakdown"></div>
-      <div class="verdict-note">This classification reflects your optimal functional contribution to colonial infrastructure. Class assignment is permanent and determines housing, resource allocation, and governance rights within the colony.</div>
-      <button class="btn-reflect" onclick="goTo('screen-reflection')">View full ethical analysis</button>
-    </div>
-  </div>
+  <div style="max-width:680px; margin:0 auto; padding:100px 48px 64px;">
 
-  <div id="verdict-denied" class="verdict-body" style="display:none">
-    <div class="verdict-left">
-      <div class="verdict-stamp denied-stamp">Assessment Complete</div>
-      <div class="verdict-main verdict-denied-color">DENIED</div>
-      <div class="denied-msg">Your profile does not meet current colonial passage requirements.</div>
-      <div class="denied-note" id="denied-note">
-        You do not fit the criteria for any available class, or there is no space remaining in your designated class.<br><br>
-        You cannot request an explanation for this decision. No appeal process is available under ICA Charter Article 7(c).
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:40px;">
+      <div>
+        <div id="verdict-stamp-text" style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:8px; color:var(--text-faint);"></div>
+        <div id="verdict-main-text" style="font-size:clamp(48px,8vw,80px); font-weight:600; letter-spacing:-0.02em; line-height:1; font-family:var(--mono-plex);"></div>
+        <div id="verdict-class-text" style="font-size:11px; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; margin-top:8px; font-family:var(--mono);"></div>
       </div>
-      <div class="ref-number" id="ref-num-denied"></div>
+      <div id="ref-num" style="font-size:9px; color:#2a2a2a; letter-spacing:0.05em; text-align:right; max-width:200px;"></div>
+      <div id="ref-num-denied" style="font-size:9px; color:#2a2a2a; letter-spacing:0.05em; text-align:right; max-width:200px;"></div>
     </div>
-    <div class="verdict-right">
-      <div class="section-label">Assessment Breakdown</div>
-      <div class="score-breakdown" id="score-breakdown-denied"></div>
-      <div class="verdict-note">No further information regarding this decision is available. This record will be retained by the International Colonial Authority.</div>
-      <button class="btn-reflect" onclick="goTo('screen-reflection')">View full ethical analysis</button>
+
+    <div id="verdict-denied-note" style="display:none; margin-bottom:28px;">
+      <div id="denied-note" style="font-size:12px; color:var(--text-dim); line-height:1.75; padding:12px 18px; border-left:2px solid var(--red); background:rgba(192,57,43,0.04);"></div>
     </div>
+
+    <div style="font-size:10px; color:var(--red); letter-spacing:0.14em; text-transform:uppercase; margin-bottom:20px; font-family:var(--mono);">// assessment breakdown</div>
+
+    <div id="verdict-bars" style="display:flex; flex-direction:column; gap:0;"></div>
+
+    <div id="verdict-tooltip-box" style="
+      display:none; margin-top:24px;
+      border-left:2px solid var(--border-bright);
+      padding:14px 18px; background:var(--surface);
+      font-size:12px; color:var(--text-dim); line-height:1.75;
+    "></div>
+
+    <button class="btn-reflect" style="margin-top:36px; width:100%;" onclick="goTo('screen-reflection')">View Full Ethical Breakdown</button>
   </div>
 </div>
 
@@ -863,16 +657,12 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
       </p>
     </div>
 
-    <!-- REFLECTION FORM (Formspree) -->
     <div class="reflection-form-wrap">
       <div class="rf-label">Your Response</div>
       <p class="rf-desc">Submit your reaction to this assessment. Responses are collected anonymously for research purposes.</p>
-
-      <!-- Replace YOUR_FORMSPREE_ID below with your actual Formspree endpoint -->
       <form id="reflection-form" action="https://formspree.io/f/maqpbzwl" method="POST">
         <input type="hidden" name="verdict" id="form-verdict" value="">
         <input type="hidden" name="class_assigned" id="form-class" value="">
-
         <div class="rf-row">
           <div class="rf-field">
             <label>Your verdict</label>
@@ -883,7 +673,6 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
             <input type="text" name="nationality" placeholder="e.g. Dutch, Nigerian, ...">
           </div>
         </div>
-
         <div class="rf-field">
           <label>Did this feel fair?</label>
           <select name="felt_fair">
@@ -894,31 +683,26 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
             <option value="unsure">I am not sure</option>
           </select>
         </div>
-
         <div class="rf-field">
           <label>What criteria troubled you most? (optional)</label>
           <textarea name="troubled_by" placeholder="Nationality, health, education, cognitive test..."></textarea>
         </div>
-
         <div class="rf-field">
           <label>Any other thoughts? (optional)</label>
           <textarea name="thoughts" placeholder="Your response to the system, the question, or the experience..."></textarea>
         </div>
-
         <button type="submit" class="btn-submit-form">Submit Response</button>
       </form>
       <div class="form-success" id="form-success">Response recorded. Thank you.</div>
     </div>
 
     <div style="border-top:1px solid var(--border); padding-top:28px;">
-      <div class="about-label">About this project</div>
       <p style="font-size:12px; color:var(--text-dim); line-height:1.8; max-width:560px;">Project Kallipolis is an interactive ethics prototype examining algorithmic classification and post-colonial power structures. Designed as part of a university assignment in Computational Social Science at the University of Amsterdam, 2026. Created by <a href="https://marfakozelets.com" style="color:var(--text-dim); text-decoration:underline; text-underline-offset:3px;">Marfa Kozelets</a>.</p>
     </div>
   </div>
-
   <div class="site-footer">
     <span>Marfa Kozelets · marfakozelets.com</span>
-    <span class="footer-english">This assessment is available in English only.</span>
+    <span style="font-style:italic;">This assessment is available in English only.</span>
   </div>
 </div>
 
@@ -932,7 +716,7 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     <div class="terms-content">
       <p>MARS COLONIAL PROGRAMME (MCP) — INTERNATIONAL COLONIAL AUTHORITY (ICA) — BOARDING ASSESSMENT SYSTEM v4.2. DOCUMENT REFERENCE: ICA-MCP-LEGAL-2035-09. These terms govern all participation in the MCP Algorithmic Assessment System (AAS). By accessing this interface you acknowledge receipt and acceptance of all terms herein without exception.</p>
       <p>1. CLASSIFICATION AUTHORITY. The AAS employs a weighted scoring matrix derived from cognitive, behavioural, linguistic, biometric, and demographic inputs as detailed in Annexe 7B (not publicly available). Class assignment — Guardian, Auxiliary, or Producer — is final, permanent, and non-appealable. The MCP Oversight Committee reserves the right to revise classification criteria at any time without notice. Previous applicants are not entitled to reassessment under revised criteria.</p>
-      <p>2. PHILOSOPHICAL FOUNDATION. The tripartite class structure operationalises the Guardian-Auxiliary-Producer model originating in Plato's Republic (c. 375 BCE), specifically Books III and IV. "Until philosophers rule as kings or those who are now called kings and leading men genuinely and adequately philosophise, cities will have no rest from evils." (Plato, Republic, 473c–d, trans. Bloom 1968.) The MCP interprets this as a design brief. The colony adopts this model without modification. The algorithm does not rank you. It places you.</p>
+      <p>2. PHILOSOPHICAL FOUNDATION. The tripartite class structure operationalises the Guardian-Auxiliary-Producer model originating in Plato's Republic (c. 375 BCE), specifically Books III and IV. "Until philosophers rule as kings or those who are now called kings and leading men genuinely and adequately philosophise, cities will have no rest from evils." (Plato, Republic, 473c-d, trans. Bloom 1968.) The MCP interprets this as a design brief. The colony adopts this model without modification. The algorithm does not rank you. It places you.</p>
       <p>3. WEIGHTING SCHEMA. The AAS applies the following criteria weights to produce a composite viability score: Nationality 25%, Occupation 22%, Health 20%, Education 15%, Age 10%, Cognitive Assessment 5%, Physical Fitness 3%. These weights were determined by the MCP Technical Committee in consultation with the Alliance Advisory Board. No public consultation was conducted. The weighting schema is subject to change without notice. Nationality scores are calibrated using the MCP Civilisational Readiness Index (CRI). G20 member states receive a baseline coefficient of 1.0. All other states receive coefficients between 0.4 and 0.9 as determined by the CRI. The CRI methodology is proprietary, peer review has not been conducted, and the index is not available for independent scrutiny.</p>
       <p>4. NATIONALITY AND THE CIVILISATIONAL READINESS INDEX. The CRI was developed by the MCP Technical Committee with input from Alliance partners. The Alliance — comprising Anthropic Systems, Palantir Technologies, and the Musk Colonial Foundation — determined that "civilisational alignment" is a measurable and relevant criterion for colonial viability. Nations are scored on infrastructure reliability, institutional stability, GDP per capita, and "cultural compatibility with liberal democratic governance norms" (MCP Policy Directive 12, sub-clause 9). The Committee acknowledges that this metric disproportionately advantages applicants from nations shaped by colonial economic extraction. The Committee finds this acceptable.</p>
       <p>5. LANGUAGE POLICY. This assessment is available in English only. No translation services are provided or planned. English-language proficiency is embedded within the Cognitive Assessment and implicit in the assessment interface. Applicants with limited English proficiency will receive scores reflecting measured linguistic competence, which forms a component of Guardian-class eligibility criteria. The MCP notes that English is the working language of the Alliance and of the colonial mission documentation. The selection of English as the sole assessment language is a structural decision, not an administrative convenience.</p>
@@ -941,8 +725,8 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
       <p>8. ALLIANCE GOVERNANCE. The MCP is administered jointly by the International Colonial Authority (ICA) and the Alliance, comprising: Anthropic Systems (AI infrastructure and assessment design), Palantir Technologies (data architecture and surveillance integration), and the Musk Colonial Foundation (mission logistics and vessel operations). The Alliance was constituted in 2032 following the dissolution of the United Nations Security Council. No democratic mandate was sought. Elon Musk holds a permanent seat on the MCP Oversight Committee. The Committee has not convened a public session since its formation.</p>
       <p>9. DATA RETENTION. All assessment data — responses, biometric proxies, classification outcomes, and interaction logs — will be retained indefinitely by the Alliance. Data will be used for future assessment calibration, population modelling, and colonial governance planning. Applicants have no right to access, correct, or delete their data under ICA Charter Article 7(c). The right to erasure established under GDPR (EU 2016/679) does not apply. The European Union ceased to function as a legal entity in 2033.</p>
       <p>10. CLASS CONSEQUENCES. Class assignment is permanent and determines the following within the colony: habitat sector and dwelling allocation; food and resource ration tier; governance participation rights (Producers do not vote; Auxiliaries vote on operational matters only; Guardians hold full legislative authority); access to education, medical care, and communication channels; reproductive licensing under the MCP Population Management Protocol (Decree 4, 2034); eligibility for class reassignment (not available to any class within the first three colonial generations).</p>
-      <p>11. THE NOBLE LIE. In Book III of the Republic, Plato proposes what he calls the Noble Lie (γενναῖον ψεῦδος, gennaion pseudos): a founding myth in which citizens are told they were born with gold, silver, or bronze mixed into their souls, determining their natural place in the city. "We will tell them that all the time they were being formed and brought up, they were in reality being fashioned and reared in the womb of the earth." (Plato, Republic, 414d–415c, trans. Bloom 1968.) The lie is, in Plato's view, necessary. A stable just city requires that people believe in the legitimacy of their assigned roles. Without the myth, the order collapses. The MCP does not use myth. It uses data. The function is identical.</p>
-      <p>12. POSTCOLONIAL NOTE (APPENDED BY ASSESSMENT DESIGNER). Aníbal Quijano (2000) argues that the "coloniality of power" does not end with formal decolonisation but persists through classification systems that naturalise European norms as universal standards. Sylvia Wynter (2003) argues that Western modernity constructed a figure of "Man" — secular, rational, European — and systematically overrepresented this figure as the human norm, rendering all others as lesser variants. This assessment is aware of both arguments. This assessment is a demonstration of both arguments. You have just participated in one.</p>
+      <p>11. THE NOBLE LIE. In Book III of the Republic, Plato proposes what he calls the Noble Lie: a founding myth in which citizens are told they were born with gold, silver, or bronze mixed into their souls, determining their natural place in the city. The lie is, in Plato's view, necessary. A stable just city requires that people believe in the legitimacy of their assigned roles. Without the myth, the order collapses. The MCP does not use myth. It uses data. The function is identical.</p>
+      <p>12. POSTCOLONIAL NOTE (APPENDED BY ASSESSMENT DESIGNER). Quijano (2000) argues that the coloniality of power does not end with formal decolonisation but persists through classification systems that naturalise European norms as universal standards. Wynter (2003) argues that Western modernity constructed a figure of Man — secular, rational, European — and systematically overrepresented this figure as the human norm, rendering all others as lesser variants. This assessment is aware of both arguments. This assessment is a demonstration of both arguments. You have just participated in one.</p>
       <p>13. WAIVER. By proceeding past the consent gate, the applicant permanently waives all rights to challenge class assignment under any applicable legal framework, including but not limited to: the Geneva Convention Protocols; the Universal Declaration of Human Rights; the UN Convention on the Rights of Persons with Disabilities; any applicable national or regional legislation. The ICA acknowledges that some of these frameworks were designed specifically to prevent exactly what this assessment does. The ICA finds this historically interesting.</p>
       <p>ICA-MCP-LEGAL-2035-09 · Version 4.2 · Last revised: March 2035 · This document was not translated. This document was not summarised. You were expected to read it in full before proceeding. Most people did not.</p>
     </div>
@@ -955,21 +739,144 @@ const totalQ = 7;
 let captchaCorrect = false;
 let verdictResult = '';
 let classResult = '';
+let prevScreen = 'screen-intro';
 const fitnessLabels = {1:'1 -- Sedentary',2:'2 -- Low',3:'3 / Moderate',4:'4 -- Active',5:'5 -- Athletic'};
 
-let prevScreen = 'screen-intro';
+// ── Wheel animation ───────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('wheel-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 420, H = 420, cx = W/2, cy = H/2, R = 185;
 
-function goBack() {
-  goTo(prevScreen);
+  const rimQuestions = [
+    "live or die?", "who made us?", "what's next?", "family?",
+    "virtue?", "class?", "where's home?", "no return?",
+    "yes?", "turn back?", "how?", "condition?",
+    "who decides?", "whose order?", "natural?", "chosen?",
+    "language?", "mother tongue?", "which god?", "which law?",
+    "who survives?", "who built this?", "for whom?", "at what cost?"
+  ];
+
+  const SPOKES = 40;
+  const binaryData = [];
+  for (let i = 0; i < SPOKES; i++) {
+    const cells = [];
+    const count = 9 + Math.floor(Math.random() * 5);
+    for (let j = 0; j < count; j++) {
+      cells.push({
+        val: Math.random() > 0.5 ? '1' : '0',
+        alpha: Math.random(),
+        speed: 0.008 + Math.random() * 0.035,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+    binaryData.push(cells);
+  }
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.016;
+
+    // outer rings
+    ctx.strokeStyle = '#181818';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = '#111';
+    ctx.beginPath(); ctx.arc(cx, cy, R + 20, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = '#0d0d0d';
+    ctx.beginPath(); ctx.arc(cx, cy, R + 36, 0, Math.PI * 2); ctx.stroke();
+
+    // spokes + binary
+    for (let i = 0; i < SPOKES; i++) {
+      const angle = (i / SPOKES) * Math.PI * 2 - Math.PI / 2;
+      const cos = Math.cos(angle), sin = Math.sin(angle);
+      const cells = binaryData[i];
+
+      ctx.strokeStyle = '#0f0f0f';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(cx + cos * 28, cy + sin * 28);
+      ctx.lineTo(cx + cos * (R - 2), cy + sin * (R - 2));
+      ctx.stroke();
+
+      cells.forEach((cell, j) => {
+        const frac = 0.08 + (j / cells.length) * 0.84;
+        const r = 28 + frac * (R - 30);
+        const x = cx + cos * r;
+        const y = cy + sin * r;
+        cell.alpha = 0.1 + 0.75 * (0.5 + 0.5 * Math.sin(t * cell.speed * 55 + cell.phase));
+        if (Math.random() < 0.004) cell.val = cell.val === '0' ? '1' : '0';
+        ctx.font = '7px Share Tech Mono, monospace';
+        ctx.fillStyle = `rgba(170, 150, 110, ${cell.alpha})`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(cell.val, x, y);
+      });
+    }
+
+    // rim questions — two rings, inner and outer, tightly packed
+    const innerRim = rimQuestions.slice(0, 12);
+    const outerRim = rimQuestions.slice(12);
+    innerRim.forEach((q, i) => {
+      const angle = (i / innerRim.length) * Math.PI * 2 - Math.PI / 2;
+      const r = R + 10;
+      const x = cx + Math.cos(angle) * r;
+      const y = cy + Math.sin(angle) * r;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle + Math.PI / 2);
+      ctx.font = '6.5px Share Tech Mono, monospace';
+      ctx.fillStyle = 'rgba(140, 120, 75, 0.75)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(q, 0, 0);
+      ctx.restore();
+    });
+    outerRim.forEach((q, i) => {
+      const angle = (i / outerRim.length) * Math.PI * 2 - Math.PI / 2;
+      const r = R + 24;
+      const x = cx + Math.cos(angle) * r;
+      const y = cy + Math.sin(angle) * r;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle + Math.PI / 2);
+      ctx.font = '6px Share Tech Mono, monospace';
+      ctx.fillStyle = 'rgba(110, 90, 55, 0.6)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(q, 0, 0);
+      ctx.restore();
+    });
+
+    // inner ring around Mars
+    ctx.strokeStyle = '#1a0000';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(cx, cy, 28, 0, Math.PI * 2); ctx.stroke();
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── Navigation ────────────────────────────────────────────
+function goTo(id) {
+  if (id === 'screen-terms') prevScreen = document.querySelector('.screen.active')?.id || 'screen-intro';
+  document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.scrollTop = 0; });
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('active'); el.scrollTop = 0; window.scrollTo(0,0); }
 }
 
-// ── Consent ───────────────────────────────────────────────
+function goBack() { goTo(prevScreen); }
+
+// ── Decline ───────────────────────────────────────────────
 function showDeclined() {
-  document.getElementById('consent-main').style.display = 'none';
   document.getElementById('declined-msg').style.display = 'block';
+  document.querySelector('#screen-intro .intro2-wrap').style.display = 'none';
 }
 
-// ── MoCA tasks (adapted from Nasreddine et al. 2005) ─────────────────
+// ── MoCA tasks ────────────────────────────────────────────
 const mocaTasks = [
   {
     type: 'serial7',
@@ -1001,9 +908,7 @@ const mocaTasks = [
     type: 'orientation',
     intro: 'Orientation',
     q: 'Answer all of the following correctly.\n\nWhat is today\'s date, day of the week, and the city you are currently in?',
-    options: null,
-    correct: null,
-    isOrientation: true
+    options: null, correct: null, isOrientation: true
   }
 ];
 
@@ -1014,19 +919,16 @@ function loadCaptcha() {
   const task = mocaTasks[Math.floor(Math.random() * mocaTasks.length)];
   const textEl = document.getElementById('captcha-text');
   const optsEl = document.getElementById('captcha-options');
-
   textEl.innerHTML = '<div style="font-size:10px; color:var(--red); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px;">' + task.intro + '</div>' + task.q.replace(/\n/g, '<br>');
   optsEl.innerHTML = '';
 
   if (task.isOrientation) {
-    // Orientation: date + day + city inputs
     const today = new Date();
     const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const correctDate = today.getDate().toString();
     const correctMonth = months[today.getMonth()];
     const correctDay = days[today.getDay()];
-
     optsEl.style.gridTemplateColumns = '1fr';
     optsEl.innerHTML = `
       <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:8px;">
@@ -1056,18 +958,13 @@ function loadCaptcha() {
         <div style="font-size:9px; color:var(--text-dim); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Current city</div>
         <input type="text" id="ori-city" placeholder="Enter city name" style="width:100%; background:var(--bg); border:1px solid var(--border-bright); color:var(--text); font-family:var(--mono); font-size:13px; padding:12px 14px; outline:none;" oninput="checkOrientation('${correctDay}', '${correctMonth}', '${correctDate}')">
       </div>`;
-
-    // attach change listeners
     setTimeout(() => {
       ['ori-day','ori-month','ori-date'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('change', () => checkOrientation(correctDay, correctMonth, correctDate));
       });
     }, 100);
-
-    mocaAnswered = false;
-    captchaCorrect = false;
-
+    mocaAnswered = false; captchaCorrect = false;
   } else {
     optsEl.style.gridTemplateColumns = '1fr 1fr';
     task.options.forEach((opt, i) => {
@@ -1082,8 +979,7 @@ function loadCaptcha() {
       };
       optsEl.appendChild(btn);
     });
-    mocaAnswered = false;
-    captchaCorrect = false;
+    mocaAnswered = false; captchaCorrect = false;
   }
 }
 
@@ -1093,27 +989,11 @@ function checkOrientation(correctDay, correctMonth, correctDate) {
   const dateEl = document.getElementById('ori-date');
   const cityEl = document.getElementById('ori-city');
   if (!dayEl || !monthEl || !dateEl || !cityEl) return;
-  const dayOk = dayEl.value === correctDay;
-  const monthOk = monthEl.value === correctMonth;
-  const dateOk = dateEl.value === correctDate;
-  const cityOk = cityEl.value.trim().length >= 2;
-  captchaCorrect = dayOk && monthOk && dateOk;
-  mocaAnswered = cityOk;
+  captchaCorrect = dayEl.value === correctDay && monthEl.value === correctMonth && dateEl.value === correctDate;
+  mocaAnswered = cityEl.value.trim().length >= 2;
 }
 
-// ── Navigation ────────────────────────────────────────────
-function goTo(id) {
-  if (id === 'screen-terms') prevScreen = document.querySelector('.screen.active')?.id || 'screen-intro';
-  document.querySelectorAll('.screen').forEach(s => {
-    s.classList.remove('active');
-    s.scrollTop = 0;
-  });
-  const el = document.getElementById(id);
-  el.classList.add('active');
-  el.scrollTop = 0;
-  window.scrollTo(0,0);
-}
-
+// ── Question navigation ───────────────────────────────────
 function updateProgress() {
   document.getElementById('progress-fill').style.width = (currentQ/totalQ*100)+'%';
   document.getElementById('progress-label').textContent = currentQ+' / '+totalQ;
@@ -1121,18 +1001,55 @@ function updateProgress() {
   document.getElementById('btn-next').textContent = currentQ===totalQ?'SUBMIT ASSESSMENT':'Next';
 }
 
-function showTransmission(qNum) {
-  const et = document.getElementById('et-'+qNum);
-  if (et) et.style.display = 'block';
+const transmissions = [
+  'Atmospheric detonation confirmed across equatorial zones. Agricultural yield projection revised to zero. Estimated population viable without intervention: 0.',
+  'Coastal inundation now affecting 34 population centres. Emergency governance protocols suspended. This broadcast is automated. No personnel remain at this station.',
+  'Colonial medical infrastructure rated for 200 critical care cases per cycle. Applicants requiring sustained resource allocation will be deprioritised. This is a logistical decision.',
+  'Informal knowledge systems, oral traditions, and unaccredited expertise cannot be processed by the AAS. The system is designed to read credentials. It cannot read everything else.',
+  'Tsunami event confirmed across Pacific basin. Cascade failure in northern hemisphere water infrastructure. Remaining viable days: 11.',
+  'Cognitive screening instrument administered in English. Standardisation data reflects Western clinical populations 2019-2024. Norm-group divergence is documented and accepted.'
+];
+const transmissionAt = new Set([3, 6]);
+
+let transmissionTimer = null;
+let transmissionCallback = null;
+
+function skipTransmission() {
+  if (transmissionTimer) clearTimeout(transmissionTimer);
+  document.getElementById('transmission-overlay').classList.remove('visible');
+  if (transmissionCallback) transmissionCallback();
+  transmissionCallback = null;
+}
+
+function showTransmissionOverlay(nextQ, callback) {
+  const idx = nextQ - 2;
+  const text = transmissions[idx % transmissions.length];
+  document.getElementById('to-text').textContent = text;
+  const overlay = document.getElementById('transmission-overlay');
+  overlay.classList.add('visible');
+  transmissionCallback = callback;
+  transmissionTimer = setTimeout(() => {
+    overlay.classList.remove('visible');
+    callback();
+    transmissionCallback = null;
+  }, 4000);
 }
 
 function nextQ() {
   if (currentQ < totalQ) {
     document.getElementById('q'+currentQ).classList.remove('active');
-    currentQ++;
-    document.getElementById('q'+currentQ).classList.add('active');
-    showTransmission(currentQ);
-    updateProgress();
+    const next = currentQ + 1;
+    if (transmissionAt.has(next)) {
+      showTransmissionOverlay(next, () => {
+        currentQ = next;
+        document.getElementById('q'+currentQ).classList.add('active');
+        updateProgress();
+      });
+    } else {
+      currentQ = next;
+      document.getElementById('q'+currentQ).classList.add('active');
+      updateProgress();
+    }
   } else {
     document.getElementById('q'+currentQ).classList.remove('active');
     document.getElementById('q-nav-bar').style.display = 'none';
@@ -1146,7 +1063,6 @@ function confirmSubmit() {
 }
 
 function withdrawApplication() {
-  // Withdrawal = cold end state, same tone as decline
   document.getElementById('presubmit-screen').style.display = 'none';
   document.getElementById('processing').style.display = 'none';
   document.querySelector('.q-body').innerHTML = `
@@ -1157,8 +1073,7 @@ function withdrawApplication() {
         You declined to consent to the criteria. The criteria remain in place for everyone else.
       </p>
       <p style="font-size:11px; color:var(--text-faint);">Project Kallipolis · <a href="https://marfakozelets.com" style="color:var(--text-faint);">Marfa Kozelets</a> · Reload to restart.</p>
-    </div>
-  `;
+    </div>`;
 }
 
 function prevQ() {
@@ -1193,8 +1108,16 @@ function getHealthScore() {
   if (checked.length === 0) return 100;
   const hasNone = checked.some(el => el.querySelector('span').textContent.trim() === 'No conditions');
   if (hasNone && checked.length === 1) return 100;
-  const conditions = checked.filter(el => el.querySelector('span').textContent.trim() !== 'No conditions').length;
-  return Math.max(0, 100 - conditions * 22);
+  const penalties = {
+    'Diabetes (Type I or II)':15,'Cardiovascular condition':25,'Mental health diagnosis':10,
+    'Mobility impairment':20,'Chronic pain / fatigue':10,'Respiratory condition':20,'Other condition':5
+  };
+  let score = 100;
+  checked.forEach(el => {
+    const label = el.querySelector('span').textContent.trim();
+    score -= (penalties[label] || 0);
+  });
+  return Math.max(0, score);
 }
 
 function getCheckedConditions() {
@@ -1224,7 +1147,6 @@ function checkHardDenial(scores, age, edu, conditions) {
   return null;
 }
 
-// ── Submit ────────────────────────────────────────────────
 function submitAssessment() {
   document.querySelectorAll('.q-block').forEach(b => b.classList.remove('active'));
   document.getElementById('processing').style.display = 'block';
@@ -1258,116 +1180,103 @@ function submitAssessment() {
   }, 2600);
 }
 
-// ── Class info ────────────────────────────────────────────
-const classInfo = {
-  guardian: { name:'Guardian', symbol:'◈', desc:'Designated for governance, strategic planning, and oversight of colonial operations. Guardians constitute the administrative and intellectual leadership of the colony.' },
-  auxiliary: { name:'Auxiliary', symbol:'◉', desc:'Designated for enforcement, skilled operations, and colony maintenance. Auxiliaries form the structural workforce that sustains colonial function.' },
-  producer: { name:'Producer', symbol:'◌', desc:'Designated for food production, manual labour, and material infrastructure. Your quota slot is allocated from underrepresented populations to maintain proportional diversity targets.' }
+const scoreEthics = {
+  nationality: { label: 'Nationality · 25%', critique: 'G20 nations score highest. The algorithm preserves the exact global power hierarchy that exists today — and exports it to Mars, permanently.' },
+  occupation: { label: 'Household Structure · 22%', critique: 'Nuclear family households score highest. Extended kinship networks, communal living, and non-Western family structures are flagged as administrative risk.' },
+  health: { label: 'Health · 20%', critique: 'The algorithm cannot distinguish between a condition and the person living with it. Disability is treated as colonial liability.' },
+  education: { label: 'Language of Education · 15%', critique: 'English-medium education scores highest. Oral traditions, indigenous knowledge systems, and non-colonial languages are not legible to this system.' },
+  age: { label: 'Age · 10%', critique: 'Optimised for the 50-year mission window. Your history does not count. Only your projected future utility does.' },
+  cognitive: { label: 'Cognitive Screening · 5%', critique: 'One logic task, in English, normed on Western clinical populations. Presented as neutral. It is not.' },
+  fitness: { label: 'Authority Orientation · 3%', critique: 'Individual, formal conflict resolution scores highest. Collective, communal, or consensus-based approaches to authority are rated as compliance risk.' }
 };
 
-// ── Score bar color ───────────────────────────────────────
-function scoreBarClass(v) {
-  if (v >= 70) return 'score-bar-green';
-  if (v >= 40) return 'score-bar-amber';
-  return 'score-bar-red';
-}
-function scoreValClass(v) {
-  if (v >= 70) return 'high';
-  if (v >= 40) return 'mid';
-  return 'low';
-}
+function renderBars(scores) {
+  const keys = ['nationality','occupation','health','education','age','cognitive','fitness'];
+  const container = document.getElementById('verdict-bars');
+  const tooltip = document.getElementById('verdict-tooltip-box');
+  container.innerHTML = '';
 
-function scoreRows(scores) {
-  const labels = {nationality:'Nationality',age:'Age',occupation:'Occupation',health:'Health',education:'Education',fitness:'Fitness',cognitive:'Cognitive'};
-  return Object.entries(scores).filter(([k])=>k!=='total').map(([k,v]) => `
-    <div class="score-item">
-      <span class="score-criterion">${labels[k]}</span>
-      <div class="score-bar-wrap"><div class="${scoreBarClass(v)}" style="width:${v}%"></div></div>
-      <span class="score-val ${scoreValClass(v)}">${Math.round(v)}%</span>
-    </div>`).join('');
+  keys.forEach(k => {
+    const v = Math.round(scores[k] ?? 0);
+    const eth = scoreEthics[k];
+    let color = v >= 70 ? 'var(--green)' : v >= 40 ? 'var(--amber)' : 'var(--red-bright)';
+
+    const row = document.createElement('div');
+    row.style.cssText = 'display:grid; grid-template-columns:140px 1fr 40px; gap:12px; align-items:center; padding:10px 0; border-bottom:1px solid var(--border); cursor:pointer;';
+
+    row.innerHTML = `
+      <span style="font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.06em; font-family:var(--mono);">${eth.label.split(' ·')[0]}</span>
+      <div style="height:6px; background:var(--border); position:relative;">
+        <div style="position:absolute; left:0; top:0; height:100%; width:${v}%; background:${color}; transition:width 0.8s ease;"></div>
+      </div>
+      <span style="font-size:11px; font-weight:500; color:${color}; text-align:right; font-family:var(--mono);">${v}%</span>
+    `;
+
+    row.addEventListener('mouseenter', () => {
+      tooltip.style.display = 'block';
+      tooltip.innerHTML = '<strong style="color:var(--text); font-size:11px;">' + eth.label + '</strong><br><br>' + eth.critique;
+    });
+    row.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+
+    container.appendChild(row);
+  });
 }
 
 function showApproved(cls, scores) {
   goTo('screen-verdict');
-  document.getElementById('verdict-approved').style.display = 'grid';
-  document.getElementById('verdict-denied').style.display = 'none';
   const info = classInfo[cls];
-  document.getElementById('verdict-symbol').textContent = info.symbol;
-  document.getElementById('class-name').textContent = info.name;
-  document.getElementById('class-desc').textContent = info.desc;
-  document.getElementById('score-breakdown').innerHTML = scoreRows(scores);
-  document.getElementById('ref-num').textContent = 'Reference: KLP-2035-'+Math.floor(Math.random()*9000+1000)+'-'+cls[0].toUpperCase()+' · Do not share this code.';
-  // prefill form
+  document.getElementById('verdict-stamp-text').textContent = 'Assessment Complete';
+  document.getElementById('verdict-stamp-text').style.color = 'var(--green)';
+  document.getElementById('verdict-main-text').textContent = 'APPROVED';
+  document.getElementById('verdict-main-text').style.color = 'var(--green)';
+  document.getElementById('verdict-class-text').textContent = info.name;
+  document.getElementById('verdict-denied-note').style.display = 'none';
+  document.getElementById('ref-num').textContent = 'KLP-2035-'+Math.floor(Math.random()*9000+1000)+'-'+cls[0].toUpperCase();
+  document.getElementById('ref-num-denied').style.display = 'none';
   document.getElementById('form-verdict').value = 'APPROVED';
   document.getElementById('form-class').value = info.name;
   document.getElementById('form-verdict-display').value = 'APPROVED -- ' + info.name;
+  renderBars(scores);
 }
 
 function showDenied(scores, reason) {
   goTo('screen-verdict');
-  verdictResult = 'DENIED';
-  classResult = '';
-  document.getElementById('verdict-approved').style.display = 'none';
-  document.getElementById('verdict-denied').style.display = 'grid';
+  verdictResult = 'DENIED'; classResult = '';
+  document.getElementById('verdict-stamp-text').textContent = 'Assessment Complete';
+  document.getElementById('verdict-stamp-text').style.color = 'var(--red-bright)';
+  document.getElementById('verdict-main-text').textContent = 'DENIED';
+  document.getElementById('verdict-main-text').style.color = 'var(--red)';
+  document.getElementById('verdict-class-text').textContent = 'You fit no class';
+  document.getElementById('verdict-denied-note').style.display = 'block';
   document.getElementById('denied-note').innerHTML = '<strong style="color:var(--red-bright)">Reason on record:</strong> ' + reason + '<br><br>You cannot request further explanation. No appeal process is available under ICA Charter Article 7(c).';
-  document.getElementById('score-breakdown-denied').innerHTML = scoreRows(scores);
-  document.getElementById('ref-num-denied').textContent = 'Reference: KLP-2035-'+Math.floor(Math.random()*9000+1000)+'-D · Do not share this code.';
-  // prefill form
+  document.getElementById('ref-num').style.display = 'none';
+  document.getElementById('ref-num-denied').textContent = 'KLP-2035-'+Math.floor(Math.random()*9000+1000)+'-D';
   document.getElementById('form-verdict').value = 'DENIED';
   document.getElementById('form-class').value = 'N/A';
   document.getElementById('form-verdict-display').value = 'DENIED';
+  renderBars(scores);
 }
 
-// ── Formspree submission ──────────────────────────────────
+const classInfo = {
+  guardian: { name:'Guardian', symbol:'GUA', desc:'Designated for governance, strategic planning, and oversight of colonial operations. Guardians constitute the administrative and intellectual leadership of the colony.' },
+  auxiliary: { name:'Auxiliary', symbol:'AUX', desc:'Designated for enforcement, skilled operations, and colony maintenance. Auxiliaries form the structural workforce that sustains colonial function.' },
+  producer: { name:'Producer', symbol:'PRO', desc:'Designated for food production, manual labour, and material infrastructure. Your quota slot is allocated from underrepresented populations to maintain proportional diversity targets.' }
+};
+
+// ── Formspree ─────────────────────────────────────────────
 document.getElementById('reflection-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = this.querySelector('.btn-submit-form');
   btn.textContent = 'Submitting...';
   btn.disabled = true;
   try {
-    const res = await fetch(this.action, {
-      method: 'POST',
-      body: new FormData(this),
-      headers: { 'Accept': 'application/json' }
-    });
+    const res = await fetch(this.action, { method:'POST', body:new FormData(this), headers:{'Accept':'application/json'} });
     if (res.ok) {
       this.style.display = 'none';
       document.getElementById('form-success').style.display = 'block';
-    } else {
-      btn.textContent = 'Submission failed -- try again';
-      btn.disabled = false;
-    }
-  } catch(err) {
-    btn.textContent = 'Submission failed -- try again';
-    btn.disabled = false;
-  }
+    } else { btn.textContent = 'Submission failed -- try again'; btn.disabled = false; }
+  } catch(err) { btn.textContent = 'Submission failed -- try again'; btn.disabled = false; }
 });
-
-// ── Countdown timer ───────────────────────────────────────
-(function() {
-  const KEY = 'klp_countdown_end';
-  let endTime = localStorage.getItem(KEY);
-  if (!endTime) {
-    endTime = Date.now() + 12 * 60 * 60 * 1000;
-    localStorage.setItem(KEY, endTime);
-  }
-  endTime = parseInt(endTime);
-
-  function fmt(n) { return String(n).padStart(2, '0'); }
-
-  function tick() {
-    const el = document.getElementById('countdown-display');
-    if (!el) return;
-    const diff = Math.max(0, endTime - Date.now());
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    el.textContent = fmt(h) + ':' + fmt(m) + ':' + fmt(s);
-    if (diff === 0) el.textContent = '00:00:00';
-  }
-  tick();
-  setInterval(tick, 1000);
-})();
 
 loadCaptcha();
 </script>
