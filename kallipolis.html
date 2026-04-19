@@ -43,8 +43,8 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
 
 /* ============ SCREEN 0: WHEEL ============ */
 #screen-wheel { padding-top: 57px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
-#wheel-wrap { position: relative; width: 420px; height: 420px; cursor: pointer; flex-shrink: 0; }
-#wheel-canvas { width: 420px; height: 420px; display: block; }
+#wheel-wrap { position: relative; width: 600px; height: 600px; cursor: pointer; flex-shrink: 0; }
+#wheel-canvas { width: 600px; height: 600px; display: block; }
 #mars-btn {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
   width: 52px; height: 52px; border-radius: 50%;
@@ -319,7 +319,7 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 <!-- ============================================================ -->
 <div id="screen-wheel" class="screen active">
   <div id="wheel-wrap">
-    <canvas id="wheel-canvas" width="420" height="420"></canvas>
+    <canvas id="wheel-canvas" width="600" height="600"></canvas>
     <div id="mars-btn" onclick="goTo('screen-intro')">ARES</div>
   </div>
   <div class="wheel-hint">[ click mars to enter ]</div>
@@ -747,7 +747,7 @@ const fitnessLabels = {1:'1 -- Sedentary',2:'2 -- Low',3:'3 / Moderate',4:'4 -- 
   const canvas = document.getElementById('wheel-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const W = 420, H = 420, cx = W/2, cy = H/2, R = 185;
+  const W = 600, H = 600, cx = W/2, cy = H/2, R = 265;
 
   const rimQuestions = [
     "live or die?", "who made us?", "what's next?", "family?",
