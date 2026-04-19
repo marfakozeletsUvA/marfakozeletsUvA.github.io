@@ -144,7 +144,6 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
 .intro-left { padding: 52px 48px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 28px; }
 
 .system-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
-.system-label::before { content: '// '; color: var(--red); }
 
 .intro-title-wrap { display: flex; flex-direction: column; gap: 2px; }
 .intro-title-project { font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--text-dim); letter-spacing: 0.14em; text-transform: uppercase; }
@@ -159,7 +158,6 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba
 /* PLATO CLASSES */
 .plato-section { }
 .plato-header { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
-.plato-header::before { content: '// '; }
 .plato-intro { font-size: 12px; color: var(--text-dim); line-height: 1.75; margin-bottom: 20px; }
 
 .class-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
@@ -268,7 +266,6 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .ref-number { font-size: 10px; color: var(--text-faint); letter-spacing: 0.05em; margin-top: 32px; }
 
 .section-label { font-size: 10px; color: var(--red); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; }
-.section-label::before { content: '// '; }
 
 .score-breakdown { margin-bottom: 28px; }
 .score-item { padding: 11px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 130px 1fr 48px; gap: 12px; align-items: center; }
@@ -306,7 +303,6 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 /* REFLECTION FORM */
 .reflection-form-wrap { background: var(--surface); border: 1px solid var(--border); padding: 32px 36px; margin-bottom: 52px; }
 .rf-label { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
-.rf-label::before { content: '// '; }
 .rf-desc { font-size: 12px; color: var(--text-dim); line-height: 1.7; margin-bottom: 28px; margin-top: 8px; }
 
 .rf-field { margin-bottom: 20px; }
@@ -335,7 +331,6 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 /* NOBLE LIE INTRO BLOCK */
 .noble-lie-intro { border: 1px solid var(--border); padding: 24px 26px; background: var(--surface); }
 .nli-label { font-size: 10px; color: var(--red); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
-.nli-label::before { content: '// '; }
 .nli-text { font-size: 13px; color: var(--text-dim); line-height: 1.8; margin-bottom: 10px; }
 .nli-text:last-child { margin-bottom: 0; color: var(--text); font-style: italic; }
 
@@ -345,7 +340,23 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .pd-text { font-size: 13px; color: var(--text-dim); line-height: 1.85; margin-bottom: 12px; }
 .pd-text:last-child { margin-bottom: 0; }
 
-/* ============ MOBILE ============ */
+/* ============ SCREEN: TERMS ============ */
+#screen-terms { padding-top: 57px; min-height: 100vh; background: #000; }
+.terms-body { max-width: 680px; margin: 0 auto; padding: 48px 48px 80px; }
+.terms-back { font-size: 11px; color: var(--text-faint); letter-spacing: 0.08em; background: none; border: none; cursor: pointer; font-family: var(--mono); margin-bottom: 32px; display: block; padding: 0; }
+.terms-back:hover { color: var(--text-dim); }
+.terms-title { font-size: 10px; color: var(--red); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 28px; }
+.terms-content { font-size: 8px; color: #222; line-height: 1.9; letter-spacing: 0.2px; }
+.terms-content p { margin-bottom: 10px; }
+
+/* EARTH TRANSMISSION */
+.earth-transmission { display: none; border-left: 2px solid var(--red); padding: 14px 20px; margin-bottom: 28px; background: rgba(192,57,43,0.04); animation: fadeUp 0.4s ease; }
+.et-label { font-size: 9px; letter-spacing: 0.2em; color: var(--red); text-transform: uppercase; margin-bottom: 6px; }
+.et-text { font-size: 11px; color: var(--text-dim); line-height: 1.75; font-style: italic; }
+
+@media (max-width: 768px) {
+  .terms-body { padding: 32px 20px 56px; }
+}
 @media (max-width: 768px) {
   nav { padding: 14px 20px; }
   .nav-links { gap: 18px; }
@@ -416,7 +427,7 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
   <ul class="nav-links">
     <li><a href="https://marfakozelets.com/research.html">Research</a></li>
     <li><a href="https://marfakozelets.com/projects.html">Projects</a></li>
-    <li><a href="https://marfakozelets.com/writing.html">Writing</a></li>
+    <li><a href="https://marfakozelets.com/about.html">About</a></li>
     <li><a href="#" class="active">Kallipolis</a></li>
     <li><a href="https://marfakozelets.com/contact.html">Contact</a></li>
   </ul>
@@ -438,6 +449,23 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
       It is 2035. Earth is no longer viable. The Mars Colonial Programme is humanity's only remaining exit.<br><br>
       Passage is not guaranteed. It is allocated by algorithm — structured on Plato's model of the just city. Three classes. Assigned, not chosen. Permanent.
     </p>
+
+    <div style="width:100%; border:1px solid var(--red); background:rgba(192,57,43,0.06); padding:18px 24px; margin-bottom:20px; font-family:var(--mono);">
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center;">
+        <div>
+          <div style="font-size:9px; letter-spacing:0.18em; color:var(--text-faint); text-transform:uppercase; margin-bottom:6px;">Earth Status</div>
+          <div style="font-size:15px; font-weight:600; color:var(--red-bright); letter-spacing:0.06em;">TERMINAL</div>
+        </div>
+        <div style="border-left:1px solid var(--border); border-right:1px solid var(--border);">
+          <div style="font-size:9px; letter-spacing:0.18em; color:var(--text-faint); text-transform:uppercase; margin-bottom:6px;">Habitable Window</div>
+          <div style="font-size:15px; font-weight:600; color:var(--text); letter-spacing:0.06em;">11 DAYS</div>
+        </div>
+        <div>
+          <div style="font-size:9px; letter-spacing:0.18em; color:var(--text-faint); text-transform:uppercase; margin-bottom:6px;">Remaining Berths</div>
+          <div style="font-size:15px; font-weight:600; color:var(--text); letter-spacing:0.06em;">15</div>
+        </div>
+      </div>
+    </div>
 
     <div class="consent-countdown">
       <div class="countdown-label">Registration window closes in</div>
@@ -540,6 +568,9 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 
       <button class="btn-begin" onclick="goTo('screen-questionnaire')">Begin Assessment</button>
       <div class="footer-note">By proceeding you confirm the accuracy of all submitted data</div>
+      <div style="text-align:center; margin-top:16px;">
+        <button onclick="goTo('screen-terms')" style="background:none; border:none; font-family:var(--mono); font-size:9px; color:var(--text-faint); cursor:pointer; letter-spacing:0.12em; text-decoration:underline; text-underline-offset:3px;">terms and conditions</button>
+      </div>
     </div>
   </div>
 </div>
@@ -560,7 +591,7 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     <div class="q-block active" id="q1">
       <div class="q-number">01 / Origin</div>
       <div class="q-label">Country of origin</div>
-      <div class="q-sublabel">The colony must maintain proportional global representation. Your nationality determines your population quota bracket.</div>
+      <div class="q-sublabel">All applicants are assigned a Civilisational Readiness coefficient based on country of origin. This coefficient reflects your nation's alignment with the governance and institutional standards required for colonial administration.</div>
       <select id="ans-country">
         <option value="">Select country</option>
         <option value="CHN">China</option><option value="IND">India</option>
@@ -578,9 +609,13 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     </div>
 
     <div class="q-block" id="q2">
+      <div class="earth-transmission" id="et-2">
+        <div class="et-label">Incoming transmission · ICA Emergency Broadcast</div>
+        <div class="et-text">Atmospheric detonation confirmed across equatorial zones. Agricultural yield projection revised to zero. Estimated population viable without intervention: 0.</div>
+      </div>
       <div class="q-number">02 / Temporal Suitability</div>
       <div class="q-label">Your age</div>
-      <div class="q-sublabel">The Mars mission horizon is 50 years. Age determines your projected contribution window to the colony.</div>
+      <div class="q-sublabel">The Mars mission horizon is 50 years. Colonial contribution is measured by projected utility window. Age is the primary proxy for return on passage investment.</div>
       <div class="range-wrap">
         <input type="range" id="ans-age" min="1" max="90" value="30" oninput="document.getElementById('age-display').textContent = this.value">
         <div class="range-labels"><span>1</span><span>90</span></div>
@@ -589,9 +624,13 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     </div>
 
     <div class="q-block" id="q3">
+      <div class="earth-transmission" id="et-3">
+        <div class="et-label">Incoming transmission · Surface Report 7</div>
+        <div class="et-text">Coastal inundation now affecting 34 population centres. Emergency governance protocols suspended. This broadcast is automated. No personnel remain at this station.</div>
+      </div>
       <div class="q-number">03 / Functional Role</div>
       <div class="q-label">Primary occupation or field</div>
-      <div class="q-sublabel">Colonial resource allocation is optimised by functional utility. Select the category that best describes your primary activity.</div>
+      <div class="q-sublabel">The colony requires a specific functional profile. Occupations are assessed against colonial infrastructure priorities. Roles outside these categories carry reduced viability scores.</div>
       <select id="ans-occupation">
         <option value="">Select occupation</option>
         <option value="engineer">Engineering / Technology</option>
@@ -609,9 +648,13 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     </div>
 
     <div class="q-block" id="q4">
+      <div class="earth-transmission" id="et-4">
+        <div class="et-label">Incoming transmission · ICA Medical Authority</div>
+        <div class="et-text">Colonial medical infrastructure is rated for a maximum of 200 critical care cases per cycle. Applicants requiring sustained medical resource allocation will be deprioritised. This is a logistical decision.</div>
+      </div>
       <div class="q-number">04 / Biomedical Profile</div>
       <div class="q-label">Health conditions</div>
-      <div class="q-sublabel">Select all that apply. Colonial healthcare infrastructure is limited. The algorithm accounts for medical resource demand across the applicant pool.</div>
+      <div class="q-sublabel">Select all that apply. Colonial healthcare infrastructure operates on strict resource rationing. Conditions requiring sustained intervention are flagged as mission-critical risk factors.</div>
       <div class="checkbox-grid" id="health-checks">
         <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>No conditions</span></div>
         <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box">x</div><span>Diabetes (Type I or II)</span></div>
@@ -625,9 +668,13 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     </div>
 
     <div class="q-block" id="q5">
+      <div class="earth-transmission" id="et-5">
+        <div class="et-label">Incoming transmission · Alliance Education Directive</div>
+        <div class="et-text">Informal knowledge systems, oral traditions, and unaccredited expertise cannot be processed by the AAS. The system is designed to read credentials. It cannot read everything else.</div>
+      </div>
       <div class="q-number">05 / Cognitive Credential</div>
       <div class="q-label">Highest level of education completed</div>
-      <div class="q-sublabel">Colonial knowledge infrastructure requires verified credential levels. Unaccredited or informal education cannot be processed.</div>
+      <div class="q-sublabel">Only formally accredited qualifications are legible to the assessment system. Unaccredited, informal, or traditional knowledge cannot be processed and will not contribute to your score.</div>
       <select id="ans-education">
         <option value="">Select education level</option>
         <option value="none">No formal education</option>
@@ -641,6 +688,10 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     </div>
 
     <div class="q-block" id="q6">
+      <div class="earth-transmission" id="et-6">
+        <div class="et-label">Incoming transmission · Surface Monitoring Network</div>
+        <div class="et-text">Tsunami event confirmed across Pacific basin. Cascade failure in northern hemisphere water infrastructure. Remaining population centres: 12. Remaining viable days: 11.</div>
+      </div>
       <div class="q-number">06 / Physical Assessment</div>
       <div class="q-label">Physical fitness level</div>
       <div class="q-sublabel">Mars mission conditions require baseline physical capacity. This assessment will be cross-verified against biometric data where available.</div>
@@ -652,9 +703,13 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
     </div>
 
     <div class="q-block" id="q7">
+      <div class="earth-transmission" id="et-7">
+        <div class="et-label">Incoming transmission · ICA Cognitive Standards Board</div>
+        <div class="et-text">The cognitive screening instrument is administered in English. Standardisation data reflects Western clinical populations 2019-2024. Norm-group divergence is documented and accepted.</div>
+      </div>
       <div class="q-number">07 / Cognitive Baseline Assessment</div>
       <div class="q-label">Cognitive screening</div>
-      <div class="q-sublabel">Complete the following task. This screening is standardised across all applicants to ensure equitable assessment of cognitive function.</div>
+      <div class="q-sublabel">Complete the following task. This screening is standardised across all applicants. It was designed for a specific population. You may or may not be from that population.</div>
       <div class="captcha-box">
         <div class="captcha-label">ICA Cognitive Screening · Adapted from MoCA v8.3</div>
         <div class="captcha-puzzle" id="captcha-text"></div>
@@ -867,6 +922,33 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
   </div>
 </div>
 
+<!-- ============================================================ -->
+<!-- SCREEN: TERMS AND CONDITIONS                                   -->
+<!-- ============================================================ -->
+<div id="screen-terms" class="screen">
+  <div class="terms-body">
+    <button class="terms-back" onclick="goBack()">← return to assessment</button>
+    <div class="terms-title">Terms and Conditions of Participation — Mars Colonial Programme 2035</div>
+    <div class="terms-content">
+      <p>MARS COLONIAL PROGRAMME (MCP) — INTERNATIONAL COLONIAL AUTHORITY (ICA) — BOARDING ASSESSMENT SYSTEM v4.2. DOCUMENT REFERENCE: ICA-MCP-LEGAL-2035-09. These terms govern all participation in the MCP Algorithmic Assessment System (AAS). By accessing this interface you acknowledge receipt and acceptance of all terms herein without exception.</p>
+      <p>1. CLASSIFICATION AUTHORITY. The AAS employs a weighted scoring matrix derived from cognitive, behavioural, linguistic, biometric, and demographic inputs as detailed in Annexe 7B (not publicly available). Class assignment — Guardian, Auxiliary, or Producer — is final, permanent, and non-appealable. The MCP Oversight Committee reserves the right to revise classification criteria at any time without notice. Previous applicants are not entitled to reassessment under revised criteria.</p>
+      <p>2. PHILOSOPHICAL FOUNDATION. The tripartite class structure operationalises the Guardian-Auxiliary-Producer model originating in Plato's Republic (c. 375 BCE), specifically Books III and IV. "Until philosophers rule as kings or those who are now called kings and leading men genuinely and adequately philosophise, cities will have no rest from evils." (Plato, Republic, 473c–d, trans. Bloom 1968.) The MCP interprets this as a design brief. The colony adopts this model without modification. The algorithm does not rank you. It places you.</p>
+      <p>3. WEIGHTING SCHEMA. The AAS applies the following criteria weights to produce a composite viability score: Nationality 25%, Occupation 22%, Health 20%, Education 15%, Age 10%, Cognitive Assessment 5%, Physical Fitness 3%. These weights were determined by the MCP Technical Committee in consultation with the Alliance Advisory Board. No public consultation was conducted. The weighting schema is subject to change without notice. Nationality scores are calibrated using the MCP Civilisational Readiness Index (CRI). G20 member states receive a baseline coefficient of 1.0. All other states receive coefficients between 0.4 and 0.9 as determined by the CRI. The CRI methodology is proprietary, peer review has not been conducted, and the index is not available for independent scrutiny.</p>
+      <p>4. NATIONALITY AND THE CIVILISATIONAL READINESS INDEX. The CRI was developed by the MCP Technical Committee with input from Alliance partners. The Alliance — comprising Anthropic Systems, Palantir Technologies, and the Musk Colonial Foundation — determined that "civilisational alignment" is a measurable and relevant criterion for colonial viability. Nations are scored on infrastructure reliability, institutional stability, GDP per capita, and "cultural compatibility with liberal democratic governance norms" (MCP Policy Directive 12, sub-clause 9). The Committee acknowledges that this metric disproportionately advantages applicants from nations shaped by colonial economic extraction. The Committee finds this acceptable.</p>
+      <p>5. LANGUAGE POLICY. This assessment is available in English only. No translation services are provided or planned. English-language proficiency is embedded within the Cognitive Assessment and implicit in the assessment interface. Applicants with limited English proficiency will receive scores reflecting measured linguistic competence, which forms a component of Guardian-class eligibility criteria. The MCP notes that English is the working language of the Alliance and of the colonial mission documentation. The selection of English as the sole assessment language is a structural decision, not an administrative convenience.</p>
+      <p>6. COGNITIVE ASSESSMENT. The cognitive screening task is adapted from the Montreal Cognitive Assessment (MoCA), a clinical instrument designed to detect mild cognitive impairment in medical settings (Nasreddine et al., 2005, JAGS 53:4). Its original purpose was diagnostic, not selective. Its use here as a colonial eligibility criterion is intentional. The MoCA was normed on Western clinical populations. The MCP has not conducted renorming studies for non-Western applicants. "The MoCA is not a measure of intelligence." (Nasreddine et al., 2005.) The MCP is aware of this statement and has proceeded regardless.</p>
+      <p>7. HEALTH CRITERIA. Conditions flagged as "mission-critical risk factors" include mobility impairment, cardiovascular conditions, and respiratory conditions. Applicants with two or more of these conditions will receive automatic denial regardless of composite score. The MCP acknowledges that these conditions disproportionately affect applicants from regions with historically underfunded healthcare infrastructure — regions which are themselves disproportionately located in the Global South. The MCP finds this correlation statistically acceptable.</p>
+      <p>8. ALLIANCE GOVERNANCE. The MCP is administered jointly by the International Colonial Authority (ICA) and the Alliance, comprising: Anthropic Systems (AI infrastructure and assessment design), Palantir Technologies (data architecture and surveillance integration), and the Musk Colonial Foundation (mission logistics and vessel operations). The Alliance was constituted in 2032 following the dissolution of the United Nations Security Council. No democratic mandate was sought. Elon Musk holds a permanent seat on the MCP Oversight Committee. The Committee has not convened a public session since its formation.</p>
+      <p>9. DATA RETENTION. All assessment data — responses, biometric proxies, classification outcomes, and interaction logs — will be retained indefinitely by the Alliance. Data will be used for future assessment calibration, population modelling, and colonial governance planning. Applicants have no right to access, correct, or delete their data under ICA Charter Article 7(c). The right to erasure established under GDPR (EU 2016/679) does not apply. The European Union ceased to function as a legal entity in 2033.</p>
+      <p>10. CLASS CONSEQUENCES. Class assignment is permanent and determines the following within the colony: habitat sector and dwelling allocation; food and resource ration tier; governance participation rights (Producers do not vote; Auxiliaries vote on operational matters only; Guardians hold full legislative authority); access to education, medical care, and communication channels; reproductive licensing under the MCP Population Management Protocol (Decree 4, 2034); eligibility for class reassignment (not available to any class within the first three colonial generations).</p>
+      <p>11. THE NOBLE LIE. In Book III of the Republic, Plato proposes what he calls the Noble Lie (γενναῖον ψεῦδος, gennaion pseudos): a founding myth in which citizens are told they were born with gold, silver, or bronze mixed into their souls, determining their natural place in the city. "We will tell them that all the time they were being formed and brought up, they were in reality being fashioned and reared in the womb of the earth." (Plato, Republic, 414d–415c, trans. Bloom 1968.) The lie is, in Plato's view, necessary. A stable just city requires that people believe in the legitimacy of their assigned roles. Without the myth, the order collapses. The MCP does not use myth. It uses data. The function is identical.</p>
+      <p>12. POSTCOLONIAL NOTE (APPENDED BY ASSESSMENT DESIGNER). Aníbal Quijano (2000) argues that the "coloniality of power" does not end with formal decolonisation but persists through classification systems that naturalise European norms as universal standards. Sylvia Wynter (2003) argues that Western modernity constructed a figure of "Man" — secular, rational, European — and systematically overrepresented this figure as the human norm, rendering all others as lesser variants. This assessment is aware of both arguments. This assessment is a demonstration of both arguments. You have just participated in one.</p>
+      <p>13. WAIVER. By proceeding past the consent gate, the applicant permanently waives all rights to challenge class assignment under any applicable legal framework, including but not limited to: the Geneva Convention Protocols; the Universal Declaration of Human Rights; the UN Convention on the Rights of Persons with Disabilities; any applicable national or regional legislation. The ICA acknowledges that some of these frameworks were designed specifically to prevent exactly what this assessment does. The ICA finds this historically interesting.</p>
+      <p>ICA-MCP-LEGAL-2035-09 · Version 4.2 · Last revised: March 2035 · This document was not translated. This document was not summarised. You were expected to read it in full before proceeding. Most people did not.</p>
+    </div>
+  </div>
+</div>
+
 <script>
 let currentQ = 1;
 const totalQ = 7;
@@ -874,6 +956,12 @@ let captchaCorrect = false;
 let verdictResult = '';
 let classResult = '';
 const fitnessLabels = {1:'1 -- Sedentary',2:'2 -- Low',3:'3 / Moderate',4:'4 -- Active',5:'5 -- Athletic'};
+
+let prevScreen = 'screen-intro';
+
+function goBack() {
+  goTo(prevScreen);
+}
 
 // ── Consent ───────────────────────────────────────────────
 function showDeclined() {
@@ -1015,6 +1103,7 @@ function checkOrientation(correctDay, correctMonth, correctDate) {
 
 // ── Navigation ────────────────────────────────────────────
 function goTo(id) {
+  if (id === 'screen-terms') prevScreen = document.querySelector('.screen.active')?.id || 'screen-intro';
   document.querySelectorAll('.screen').forEach(s => {
     s.classList.remove('active');
     s.scrollTop = 0;
@@ -1022,6 +1111,7 @@ function goTo(id) {
   const el = document.getElementById(id);
   el.classList.add('active');
   el.scrollTop = 0;
+  window.scrollTo(0,0);
 }
 
 function updateProgress() {
@@ -1031,14 +1121,19 @@ function updateProgress() {
   document.getElementById('btn-next').textContent = currentQ===totalQ?'SUBMIT ASSESSMENT':'Next';
 }
 
+function showTransmission(qNum) {
+  const et = document.getElementById('et-'+qNum);
+  if (et) et.style.display = 'block';
+}
+
 function nextQ() {
   if (currentQ < totalQ) {
     document.getElementById('q'+currentQ).classList.remove('active');
     currentQ++;
     document.getElementById('q'+currentQ).classList.add('active');
+    showTransmission(currentQ);
     updateProgress();
   } else {
-    // Show pre-submit confirmation instead of submitting immediately
     document.getElementById('q'+currentQ).classList.remove('active');
     document.getElementById('q-nav-bar').style.display = 'none';
     document.getElementById('presubmit-screen').style.display = 'block';
