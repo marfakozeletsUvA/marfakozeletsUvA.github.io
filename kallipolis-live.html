@@ -687,17 +687,15 @@ body.revealed { background: #f5f0e8 !important; }
 <div id="screen-verdict" class="screen">
   <div style="max-width:680px; margin:0 auto; padding:100px 48px 64px;">
 
-    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:40px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
       <div>
         <div id="verdict-stamp-text" style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:8px; color:var(--text-faint);"></div>
         <div id="verdict-main-text" style="font-size:clamp(48px,8vw,80px); font-weight:600; letter-spacing:-0.02em; line-height:1; font-family:var(--mono-plex);"></div>
         <div id="verdict-class-text" style="font-size:11px; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; margin-top:8px; font-family:var(--mono);"></div>
       </div>
-      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
-        <div id="ref-num" style="font-size:9px; color:#2a2a2a; letter-spacing:0.05em; text-align:right; max-width:200px;"></div>
-        <div id="ref-num-denied" style="font-size:9px; color:#2a2a2a; letter-spacing:0.05em; text-align:right; max-width:200px;"></div>
-        <img id="verdict-class-doodle" src="" style="width:140px; opacity:0.75; display:none;" onerror="this.style.display='none'">
-        <div id="verdict-class-doodle-label" style="display:none; font-size:10px; color:var(--text-faint); letter-spacing:0.12em; text-transform:uppercase; font-family:var(--mono); text-align:right; margin-top:4px;"></div>
+      <div id="verdict-class-doodle-wrap" style="display:none; flex-direction:column; align-items:center; gap:10px;">
+        <img id="verdict-class-doodle" src="" style="width:200px; opacity:0.8;" onerror="this.style.display='none'">
+        <div id="verdict-class-doodle-label" style="font-size:11px; color:var(--text-dim); letter-spacing:0.14em; text-transform:uppercase; font-family:var(--mono); text-align:center;"></div>
       </div>
     </div>
 
@@ -756,7 +754,7 @@ body.revealed { background: #f5f0e8 !important; }
 
     <img src="humanity.png" class="humanity-img" alt="" onerror="this.style.display='none'">
 
-    <img src="reflection.png" style="width:100%; max-width:600px; display:block; margin:0 auto 32px; opacity:0.85;" onerror="this.style.display='none'">
+    <img src="reflection.png" style="width:100%; max-width:600px; display:block; margin:-80px auto 32px; opacity:0.85;" onerror="this.style.display='none'">
 
     <div class="reveal-form-wrap">
       <div class="rf-label" style="color:#c0392b;">Your Response</div>
@@ -1327,17 +1325,14 @@ function showApproved(cls, scores) {
   document.getElementById('verdict-main-text').style.color = 'var(--green)';
   document.getElementById('verdict-class-text').textContent = info.name;
   document.getElementById('verdict-denied-note').style.display = 'none';
-  document.getElementById('ref-num').textContent = 'KLP-2035-'+Math.floor(Math.random()*9000+1000)+'-'+cls[0].toUpperCase();
-  document.getElementById('ref-num-denied').style.display = 'none';
   document.getElementById('form-verdict').value = 'APPROVED';
   document.getElementById('form-class').value = info.name;
   document.getElementById('form-verdict-display').value = 'APPROVED -- ' + info.name;
   const doodle = document.getElementById('verdict-class-doodle');
   doodle.src = cls + '.png';
-  doodle.style.display = 'block';
   const lbl = document.getElementById('verdict-class-doodle-label');
   lbl.textContent = info.name;
-  lbl.style.display = 'block';
+  document.getElementById('verdict-class-doodle-wrap').style.display = 'flex';
   renderBars(scores);
 }
 
@@ -1352,13 +1347,10 @@ function showDenied(scores, reason) {
   document.getElementById('verdict-class-text').textContent = 'You fit no class';
   document.getElementById('verdict-denied-note').style.display = 'block';
   document.getElementById('denied-note').innerHTML = '<strong style="color:var(--red-bright)">Reason on record:</strong> ' + reason + '<br><br>You cannot request further explanation. No appeal process is available under ICA Charter Article 7(c).';
-  document.getElementById('ref-num').style.display = 'none';
-  document.getElementById('ref-num-denied').textContent = 'KLP-2035-'+Math.floor(Math.random()*9000+1000)+'-D';
   document.getElementById('form-verdict').value = 'DENIED';
   document.getElementById('form-class').value = 'N/A';
   document.getElementById('form-verdict-display').value = 'DENIED';
-  document.getElementById('verdict-class-doodle').style.display = 'none';
-  document.getElementById('verdict-class-doodle-label').style.display = 'none';
+  document.getElementById('verdict-class-doodle-wrap').style.display = 'none';
   renderBars(scores);
 }
 
