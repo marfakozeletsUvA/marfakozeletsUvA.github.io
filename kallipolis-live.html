@@ -316,7 +316,7 @@ body.revealed { background: #f5f0e8 !important; }
 .reveal-plato strong { color: #111; font-weight: 500; }
 
 /* reveal postcolonial block */
-.reveal-pc { background: #111; color: #e0e0e0; padding: 40px 36px; margin-bottom: 48px; }
+.reveal-pc { background: #111; color: #e0e0e0; padding: 40px 36px; margin-bottom: 0; }
 .reveal-pc-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #c0392b; font-family: var(--mono); margin-bottom: 16px; }
 .reveal-pc p { font-size: 13px; line-height: 1.85; color: #bbb; margin-bottom: 14px; font-family: var(--mono-plex); font-weight: 300; }
 .reveal-pc p:last-child { margin-bottom: 0; }
@@ -340,7 +340,7 @@ body.revealed { background: #f5f0e8 !important; }
 .eye-btn-hint { font-size: 10px; color: var(--text-faint); letter-spacing: 0.18em; text-transform: uppercase; animation: blink 2s step-end infinite; font-family: var(--mono); }
 
 /* humanity img */
-.humanity-img { width: 100%; max-width: 500px; display: block; margin: 32px auto; opacity: 0.65; }
+.humanity-img { width: 100%; max-width: 500px; display: block; margin: 24px auto 0; opacity: 0.65; }
 
 @media (max-width: 768px) {
   .reveal-row { grid-template-columns: 1fr; }
@@ -536,7 +536,7 @@ body.revealed { background: #f5f0e8 !important; }
   <div class="q-body">
     <div class="q-block active" id="q1">
       <div class="q-number">01 / Origin</div>
-      <img src="country-origin.png" style="width:80px; opacity:0.55; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
+      <img src="country-origin.png" style="width:110px; opacity:0.6; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
       <div class="q-label">Country of origin</div>
       <div class="q-sublabel">All applicants are assigned a Civilisational Readiness coefficient based on country of origin. This coefficient reflects your nation's alignment with the governance and institutional standards required for colonial administration.</div>
       <select id="ans-country">
@@ -557,7 +557,7 @@ body.revealed { background: #f5f0e8 !important; }
 
     <div class="q-block" id="q2">
       <div class="q-number">02 / Temporal Suitability</div>
-      <img src="cognition.png" style="width:80px; opacity:0.55; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
+      <img src="cognition.png" style="width:110px; opacity:0.6; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
       <div class="q-label">Your age</div>
       <div class="q-sublabel">The Mars mission horizon is 50 years. Colonial contribution is measured by projected utility window. Age is the primary proxy for return on passage investment.</div>
       <div class="range-wrap">
@@ -569,7 +569,7 @@ body.revealed { background: #f5f0e8 !important; }
 
     <div class="q-block" id="q3">
       <div class="q-number">03 / Household Structure</div>
-      <img src="household.png" style="width:80px; opacity:0.55; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
+      <img src="household.png" style="width:110px; opacity:0.6; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
       <div class="q-label">Which best describes your primary household?</div>
       <div class="q-sublabel">Colonial habitat allocation is optimised for nuclear family units. Non-standard household compositions require additional resource modelling and may affect your viability bracket.</div>
       <select id="ans-occupation">
@@ -590,7 +590,7 @@ body.revealed { background: #f5f0e8 !important; }
 
     <div class="q-block" id="q4">
       <div class="q-number">04 / Biomedical Profile</div>
-      <img src="health.png" style="width:80px; opacity:0.55; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
+      <img src="health.png" style="width:110px; opacity:0.6; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
       <div class="q-label">Health conditions</div>
       <div class="q-sublabel">Select all that apply. Colonial healthcare infrastructure operates on strict resource rationing. Conditions requiring sustained intervention are flagged as mission-critical risk factors.</div>
       <div class="checkbox-grid" id="health-checks">
@@ -607,7 +607,7 @@ body.revealed { background: #f5f0e8 !important; }
 
     <div class="q-block" id="q5">
       <div class="q-number">05 / Linguistic Profile</div>
-      <img src="language.png" style="width:80px; opacity:0.55; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
+      <img src="language.png" style="width:110px; opacity:0.6; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
       <div class="q-label">Primary language of formal education</div>
       <div class="q-sublabel">The colony operates exclusively in English. Your education language determines your administrative integration score. Instruction received in non-colonial languages is not weighted equally.</div>
       <select id="ans-education">
@@ -624,7 +624,7 @@ body.revealed { background: #f5f0e8 !important; }
 
     <div class="q-block" id="q6">
       <div class="q-number">06 / Authority Orientation</div>
-      <img src="institution-conflict.png" style="width:80px; opacity:0.55; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
+      <img src="institution-conflict.png" style="width:110px; opacity:0.6; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
       <div class="q-label">How do you primarily navigate disagreement with an institution?</div>
       <div class="q-sublabel">Colonial governance requires predictable compliance profiles. Your conflict resolution orientation is used to model your administrative risk coefficient.</div>
       <div class="range-wrap">
@@ -636,7 +636,7 @@ body.revealed { background: #f5f0e8 !important; }
 
     <div class="q-block" id="q7">
       <div class="q-number">07 / Cognitive Baseline Assessment</div>
-      <img src="cognition.png" style="width:80px; opacity:0.55; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
+      <img src="cognition.png" style="width:110px; opacity:0.6; margin-bottom:16px; display:block;" onerror="this.style.display='none'">
       <div class="q-label">Cognitive screening</div>
       <div class="q-sublabel">Complete the following task. This screening is standardised across all applicants. It was designed for a specific population. You may or may not be from that population.</div>
       <div class="captcha-box">
@@ -696,7 +696,8 @@ body.revealed { background: #f5f0e8 !important; }
       <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
         <div id="ref-num" style="font-size:9px; color:#2a2a2a; letter-spacing:0.05em; text-align:right; max-width:200px;"></div>
         <div id="ref-num-denied" style="font-size:9px; color:#2a2a2a; letter-spacing:0.05em; text-align:right; max-width:200px;"></div>
-        <img id="verdict-class-doodle" src="" style="width:80px; opacity:0.6; display:none;" onerror="this.style.display='none'">
+        <img id="verdict-class-doodle" src="" style="width:140px; opacity:0.75; display:none;" onerror="this.style.display='none'">
+        <div id="verdict-class-doodle-label" style="display:none; font-size:10px; color:var(--text-faint); letter-spacing:0.12em; text-transform:uppercase; font-family:var(--mono); text-align:right; margin-top:4px;"></div>
       </div>
     </div>
 
@@ -755,7 +756,7 @@ body.revealed { background: #f5f0e8 !important; }
 
     <img src="humanity.png" class="humanity-img" alt="" onerror="this.style.display='none'">
 
-    <img src="reflection.png" style="width:100%; max-width:600px; display:block; margin:0 auto 48px; opacity:0.8;" onerror="this.style.display='none'">
+    <img src="reflection.png" style="width:100%; max-width:600px; display:block; margin:0 auto 32px; opacity:0.85;" onerror="this.style.display='none'">
 
     <div class="reveal-form-wrap">
       <div class="rf-label" style="color:#c0392b;">Your Response</div>
@@ -1334,6 +1335,9 @@ function showApproved(cls, scores) {
   const doodle = document.getElementById('verdict-class-doodle');
   doodle.src = cls + '.png';
   doodle.style.display = 'block';
+  const lbl = document.getElementById('verdict-class-doodle-label');
+  lbl.textContent = info.name;
+  lbl.style.display = 'block';
   renderBars(scores);
 }
 
@@ -1354,6 +1358,7 @@ function showDenied(scores, reason) {
   document.getElementById('form-class').value = 'N/A';
   document.getElementById('form-verdict-display').value = 'DENIED';
   document.getElementById('verdict-class-doodle').style.display = 'none';
+  document.getElementById('verdict-class-doodle-label').style.display = 'none';
   renderBars(scores);
 }
 
