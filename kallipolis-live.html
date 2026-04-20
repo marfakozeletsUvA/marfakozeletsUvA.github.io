@@ -694,7 +694,7 @@ body.revealed { background: #f5f0e8 !important; }
         <div id="verdict-class-text" style="font-size:11px; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; margin-top:8px; font-family:var(--mono);"></div>
       </div>
       <div id="verdict-class-doodle-wrap" style="display:none; flex-direction:column; align-items:center; gap:10px;">
-        <img id="verdict-class-doodle" src="" style="width:200px; opacity:0.8;" onerror="this.style.display='none'">
+        <img id="verdict-class-doodle" src="" style="width:200px; opacity:0.8;">
         <div id="verdict-class-doodle-label" style="font-size:11px; color:var(--text-dim); letter-spacing:0.14em; text-transform:uppercase; font-family:var(--mono); text-align:center;"></div>
       </div>
     </div>
@@ -754,7 +754,9 @@ body.revealed { background: #f5f0e8 !important; }
 
     <img src="humanity.png" class="humanity-img" alt="" onerror="this.style.display='none'">
 
-    <img src="reflection.png" style="width:100%; max-width:600px; display:block; margin:-80px auto 32px; opacity:0.85;" onerror="this.style.display='none'">
+    <div style="overflow:hidden; margin-bottom:32px;">
+      <img src="reflection.png" style="width:100%; max-width:600px; display:block; margin:-120px auto 0; opacity:0.85;" onerror="this.parentNode.style.display='none'">
+    </div>
 
     <div class="reveal-form-wrap">
       <div class="rf-label" style="color:#c0392b;">Your Response</div>
