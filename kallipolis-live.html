@@ -247,7 +247,19 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .reflection-lead { font-family: var(--mono-plex); font-size: 16px; color: #444; line-height: 1.7; max-width: 560px; margin: 0; }
 .reflection-section { margin-bottom: 56px; }
 .reflection-section-title { font-family: 'Work Sans', sans-serif; font-size: 22px; font-weight: 600; color: #1a1a1a; margin: 0 0 24px; }
-.reflection-body-text { font-family: var(--mono-plex); font-size: 14px; color: #444; line-height: 1.85; margin-bottom: 16px; max-width: 680px; }
+.reflection-body-text { font-family: 'Work Sans', sans-serif; font-size: 15px; color: #444; line-height: 1.85; margin-bottom: 16px; max-width: 680px; }
+.reflection-experience-wrap { background: #fff; border: 1px solid #ddd; padding: 32px 36px; }
+.reflection-cards-full { display: flex; flex-direction: column; gap: 20px; }
+.reflection-card-full { background: #fff; border: 1px solid #ddd; padding: 28px 32px; }
+.reflection-card-full p { font-family: 'Work Sans', sans-serif; font-size: 14px; color: #444; line-height: 1.8; margin: 0 0 16px; }
+.reflection-micro { margin-top: 4px; }
+.reflection-micro label { display: block; font-family: var(--mono); font-size: 10px; color: #888; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.reflection-micro textarea { width: 100%; background: #f9f7f4; border: 1px solid #ddd; color: #333; font-family: 'Work Sans', sans-serif; font-size: 13px; padding: 10px 12px; outline: none; resize: vertical; min-height: 64px; transition: border-color 0.2s; box-sizing: border-box; }
+.reflection-micro textarea:focus { border-color: #c0392b; }
+@media (max-width: 600px) {
+  .reflection-experience-wrap { padding: 24px 20px; }
+  .reflection-card-full { padding: 20px; }
+}
 .reflection-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .reflection-card { background: #fff; border: 1px solid #ddd; padding: 24px; }
 .reflection-card-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #c0392b; margin-bottom: 12px; }
@@ -324,8 +336,8 @@ body.revealed { background: #f5f0e8 !important; }
 
 .reveal-header { margin-bottom: 48px; }
 .reveal-stamp { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #c0392b; margin-bottom: 12px; font-family: var(--mono); }
-.reveal-title { font-family: var(--mono-plex); font-size: clamp(32px,5vw,52px); font-weight: 600; color: #111; line-height: 1; letter-spacing: -0.02em; margin-bottom: 8px; }
-.reveal-subtitle { font-size: 12px; color: #666; letter-spacing: 0.06em; font-family: var(--mono); }
+.reveal-title { font-family: 'Work Sans', sans-serif; font-size: clamp(32px,5vw,52px); font-weight: 700; color: #111; line-height: 1; letter-spacing: -0.02em; margin-bottom: 8px; }
+.reveal-subtitle { font-size: 14px; color: #555; font-family: 'Work Sans', sans-serif; font-weight: 400; line-height: 1.6; }
 
 /* reveal bar rows */
 .reveal-bars { margin-bottom: 56px; }
@@ -344,23 +356,27 @@ body.revealed { background: #f5f0e8 !important; }
 /* reveal plato section */
 .reveal-plato { border-left: 3px solid #c0392b; padding-left: 24px; margin-bottom: 48px; }
 .reveal-plato-label { font-size: 9px; color: #c0392b; letter-spacing: 0.16em; text-transform: uppercase; font-family: var(--mono); margin-bottom: 16px; }
-.reveal-plato p { font-size: 13px; color: #333; line-height: 1.85; margin-bottom: 14px; font-family: var(--mono-plex); font-weight: 300; }
+.reveal-plato p { font-size: 15px; color: #333; line-height: 1.85; margin-bottom: 14px; font-family: 'Work Sans', sans-serif; font-weight: 400; }
 .reveal-plato p:last-child { margin-bottom: 0; }
-.reveal-plato strong { color: #111; font-weight: 500; }
+.reveal-plato strong { color: #111; font-weight: 600; }
 
 /* reveal postcolonial block */
 .reveal-pc { background: #111; color: #e0e0e0; padding: 40px 36px; margin-bottom: 0; }
 .reveal-pc-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #c0392b; font-family: var(--mono); margin-bottom: 16px; }
-.reveal-pc p { font-size: 13px; line-height: 1.85; color: #bbb; margin-bottom: 14px; font-family: var(--mono-plex); font-weight: 300; }
+.reveal-pc p { font-size: 15px; line-height: 1.85; color: #bbb; margin-bottom: 14px; font-family: 'Work Sans', sans-serif; font-weight: 400; }
 .reveal-pc p:last-child { margin-bottom: 0; }
-.reveal-pc strong { color: #fff; font-weight: 500; }
+.reveal-pc strong { color: #fff; font-weight: 600; }
 
 /* reveal form */
 .reveal-form-wrap { background: #ede8de; border: 1px solid #ccc; padding: 32px 36px; margin-bottom: 40px; }
 .reveal-form-wrap .rf-field label { color: #555; }
-.reveal-form-wrap .rf-field input,
-.reveal-form-wrap .rf-field textarea,
-.reveal-form-wrap .rf-field select { background: #f5f0e8; border-color: #bbb; color: #111; }
+.reflection-experience-wrap .rf-field input,
+.reflection-experience-wrap .rf-field textarea,
+.reflection-experience-wrap .rf-field select { background: #f9f7f4; border-color: #ccc; color: #111; font-family: 'Work Sans', sans-serif; font-size: 14px; }
+.reflection-experience-wrap .rf-field label { color: #666; }
+.reflection-experience-wrap .rf-field input:focus,
+.reflection-experience-wrap .rf-field textarea:focus,
+.reflection-experience-wrap .rf-field select:focus { border-color: #c0392b; }
 .reveal-form-wrap .rf-field input:focus,
 .reveal-form-wrap .rf-field textarea:focus,
 .reveal-form-wrap .rf-field select:focus { border-color: #c0392b; }
@@ -371,6 +387,8 @@ body.revealed { background: #f5f0e8 !important; }
 .eye-btn-wrap img { width: 80px; opacity: 0.85; transition: opacity 0.2s; display: block; margin: 0 auto 12px; }
 .eye-btn-wrap:hover img { opacity: 1; }
 .eye-btn-hint { font-size: 10px; color: var(--text-faint); letter-spacing: 0.18em; text-transform: uppercase; animation: blink 2s step-end infinite; font-family: var(--mono); }
+.eye-side { width: 90px; opacity: 0.7; cursor: pointer; transition: opacity 0.2s, transform 0.2s; flex-shrink: 0; }
+.eye-side:hover { opacity: 1; transform: scale(1.08); }
 
 /* humanity img */
 .humanity-img { width: 100%; max-width: 500px; display: block; margin: 24px auto 0; opacity: 0.65; }
@@ -720,16 +738,18 @@ body.revealed { background: #f5f0e8 !important; }
 <div id="screen-verdict" class="screen">
   <div style="max-width:680px; margin:0 auto; padding:100px 48px 64px;">
 
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-      <div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:32px; margin-bottom:40px;">
+      <img src="eye.png" class="eye-side" onclick="triggerReveal()" alt="reveal" onerror="this.style.display='none'">
+      <div style="text-align:center;">
         <div id="verdict-stamp-text" style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:8px; color:var(--text-faint);"></div>
         <div id="verdict-main-text" style="font-size:clamp(48px,8vw,80px); font-weight:600; letter-spacing:-0.02em; line-height:1; font-family:var(--mono-plex);"></div>
         <div id="verdict-class-text" style="font-size:11px; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; margin-top:8px; font-family:var(--mono);"></div>
+        <div id="verdict-class-doodle-wrap" style="display:none; flex-direction:column; align-items:center; gap:10px; margin-top:16px;">
+          <img id="verdict-class-doodle" src="" style="width:160px; opacity:0.8;">
+          <div id="verdict-class-doodle-label" style="font-size:11px; color:var(--text-dim); letter-spacing:0.14em; text-transform:uppercase; font-family:var(--mono); text-align:center;"></div>
+        </div>
       </div>
-      <div id="verdict-class-doodle-wrap" style="display:none; flex-direction:column; align-items:center; gap:10px;">
-        <img id="verdict-class-doodle" src="" style="width:200px; opacity:0.8;">
-        <div id="verdict-class-doodle-label" style="font-size:11px; color:var(--text-dim); letter-spacing:0.14em; text-transform:uppercase; font-family:var(--mono); text-align:center;"></div>
-      </div>
+      <img src="eye.png" class="eye-side" onclick="triggerReveal()" alt="reveal" onerror="this.style.display='none'">
     </div>
 
     <div id="verdict-denied-note" style="display:none; margin-bottom:28px;">
@@ -748,9 +768,8 @@ body.revealed { background: #f5f0e8 !important; }
       z-index:999; pointer-events:none;
     "></div>
 
-    <div class="eye-btn-wrap" onclick="triggerReveal()" id="eye-btn">
-      <img src="eye.png" alt="reveal" onerror="this.style.display='none'">
-      <div class="eye-btn-hint">[ click to see what was hidden ]</div>
+    <div style="text-align:center; margin-top:48px; padding-top:24px; border-top:1px solid var(--border);">
+      <div class="eye-btn-hint" style="font-size:10px; color:var(--text-faint); letter-spacing:0.18em; text-transform:uppercase; font-family:var(--mono); animation: blink 2s step-end infinite;">[ click either eye to see what was hidden ]</div>
     </div>
   </div>
 </div>
@@ -759,6 +778,10 @@ body.revealed { background: #f5f0e8 !important; }
 <!-- SCREEN: REVEAL (INVERTED ETHICAL BREAKDOWN)                   -->
 <!-- ============================================================ -->
 <div id="screen-reveal" class="screen">
+  <!-- corner button -->
+  <div style="position:fixed; top:70px; right:24px; z-index:10; cursor:pointer;" onclick="goTo('screen-reflection')">
+    <img src="reflect-button-bottom.png" style="width:160px; opacity:0.9; transition: opacity 0.2s, transform 0.15s;" onmouseover="this.style.opacity='1';this.style.transform='scale(1.04)'" onmouseout="this.style.opacity='0.9';this.style.transform='scale(1)'" alt="wanna fight this together?" onerror="this.style.display='none'">
+  </div>
   <div class="reveal-body">
     <button class="reveal-back" onclick="goTo('screen-verdict')">← back to verdict</button>
 
@@ -849,42 +872,111 @@ body.revealed { background: #f5f0e8 !important; }
 <!-- ============================================================ -->
 <div id="screen-reflection" class="screen">
   <div class="reflection-body">
-    <button class="reveal-back" onclick="goTo('screen-reveal')" style="color:#333;">← back</button>
+    <button class="reveal-back" onclick="goTo('screen-reveal')" style="color:#555; margin-bottom:32px; display:block;">← back</button>
 
     <div class="reflection-hero">
       <h1 class="reflection-title">This isn't just a game.</h1>
       <p class="reflection-lead">Algorithms like this one already exist. Not on Mars. Here. Now. The criteria change, the logic doesn't.</p>
     </div>
 
-    <div class="reflection-section">
-      <h2 class="reflection-section-title">How to spot it in the real world</h2>
-      <div class="reflection-cards">
-        <div class="reflection-card">
-          <div class="reflection-card-tag">Hiring</div>
-          <p>Automated CV screening tools trained on historical hiring data learn to deprioritise candidates from certain universities, postcodes, or name-patterns. The algorithm did not invent the bias. It inherited it, and then naturalised it as neutral scoring.</p>
-        </div>
-        <div class="reflection-card">
-          <div class="reflection-card-tag">Credit</div>
-          <p>Credit scoring systems use proxies like postcode, employment type, and spending patterns that correlate heavily with race and class. People in historically redlined neighbourhoods receive lower scores, not because of individual behaviour, but because of where they live.</p>
-        </div>
-        <div class="reflection-card">
-          <div class="reflection-card-tag">Visa &amp; Border</div>
-          <p>Visa approval algorithms used by several Western states weight applicants by nationality of origin. A Dutch applicant and a Nigerian applicant with identical financial profiles, travel histories, and employment statuses receive different outcomes. The system calls this risk assessment.</p>
-        </div>
-        <div class="reflection-card">
-          <div class="reflection-card-tag">Healthcare</div>
-          <p>A widely used US healthcare algorithm was found to systematically underestimate the needs of Black patients because it used healthcare spending as a proxy for health need, without accounting for the fact that structural barriers reduce access to care for racialised communities.</p>
-        </div>
-      </div>
-    </div>
-
+    <!-- PATTERN TO LOOK FOR -->
     <div class="reflection-section">
       <h2 class="reflection-section-title">The pattern to look for</h2>
       <p class="reflection-body-text">Ask: whose knowledge counts as data? Whose structure counts as normal? What gets flagged as a risk factor, and whose life produced that flag? When an algorithm presents a decision as neutral, ask who designed the neutrality.</p>
-      <p class="reflection-body-text">Quijano calls this the coloniality of power: the way colonial hierarchies persist not through laws, but through classification systems that present one culture's norms as universal standards. Wynter calls it the overrepresentation of Man: one figure of the human, Western, rational, English-speaking, secular, elevated to the default against which everyone else is measured as deviation.</p>
-      <p class="reflection-body-text">The algorithm you just completed did both of these things. So do many systems you encounter without a consent screen.</p>
+      <p class="reflection-body-text">Quijano calls this the coloniality of power: colonial hierarchies that persist not through laws, but through classification systems that present one culture's norms as universal. Wynter calls it the overrepresentation of Man: one figure of the human, Western, rational, English-speaking, secular, elevated to the default. The algorithm you completed did both. So do many systems you encounter without a consent screen.</p>
     </div>
 
+    <!-- YOUR EXPERIENCE FORM -->
+    <div class="reflection-section">
+      <div class="reflection-experience-wrap">
+        <div class="reflection-card-tag" style="margin-bottom:12px;">Your experience</div>
+        <h2 class="reflection-section-title" style="margin-bottom:8px;">How did the algorithm read you?</h2>
+        <p class="reflection-body-text" style="margin-bottom:24px;">Your verdict was shaped by criteria designed before you arrived. Did you feel it? What did it miss about you?</p>
+        <form id="reflection-form" action="https://formspree.io/f/maqpbzwl" method="POST" style="display:flex; flex-direction:column; gap:16px;">
+          <input type="hidden" name="verdict" id="form-verdict" value="">
+          <input type="hidden" name="class_assigned" id="form-class" value="">
+          <div class="rf-row">
+            <div class="rf-field">
+              <label>Your verdict</label>
+              <input type="text" name="verdict_display" id="form-verdict-display" readonly style="cursor:default;">
+            </div>
+            <div class="rf-field">
+              <label>Your nationality (optional)</label>
+              <input type="text" name="nationality" placeholder="e.g. Dutch, Nigerian, ...">
+            </div>
+          </div>
+          <div class="rf-field">
+            <label>Which criterion felt most wrong?</label>
+            <select name="felt_wrong">
+              <option value="">Select one</option>
+              <option value="nationality">Nationality — a country I was born into</option>
+              <option value="household">Household structure — how my family is built</option>
+              <option value="health">Health — conditions I didn't choose</option>
+              <option value="language">Language of education — a system I grew up in</option>
+              <option value="cognitive">Cognitive screening — a Western clinical test</option>
+              <option value="authority">Authority orientation — how I relate to power</option>
+              <option value="none">None of them felt wrong</option>
+            </select>
+          </div>
+          <div class="rf-field">
+            <label>What did the algorithm miss about you? (optional)</label>
+            <textarea name="missed" placeholder="What matters about you that no data point could capture..."></textarea>
+          </div>
+          <div class="rf-field">
+            <label>Any other thoughts? (optional)</label>
+            <textarea name="thoughts" placeholder="Your response to the system, the question, or the experience..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit-form" style="background:#c0392b; font-family:'Work Sans',sans-serif; font-size:14px; font-weight:500;">Submit</button>
+        </form>
+        <div class="form-success" id="form-success" style="background:rgba(46,204,113,0.08); border-color:#2ecc71; color:#2ecc71; display:none; padding:16px; margin-top:12px;">Response recorded.</div>
+      </div>
+    </div>
+
+    <!-- REAL WORLD EXAMPLES -->
+    <div class="reflection-section">
+      <h2 class="reflection-section-title">Where this logic already lives</h2>
+      <div class="reflection-cards-full">
+
+        <div class="reflection-card-full">
+          <div class="reflection-card-tag">Hiring</div>
+          <p>Automated CV screening tools trained on historical hiring data learn to deprioritise candidates from certain universities, postcodes, or name-patterns. The algorithm did not invent the bias. It inherited it, then naturalised it as neutral scoring.</p>
+          <div class="reflection-micro">
+            <label>Have you encountered something like this?</label>
+            <textarea name="micro_hiring" form="reflection-form" placeholder="A job application, a screening process, a rejection with no explanation..."></textarea>
+          </div>
+        </div>
+
+        <div class="reflection-card-full">
+          <div class="reflection-card-tag">Credit &amp; Finance</div>
+          <p>Credit scoring systems use proxies like postcode, employment type, and spending patterns that correlate heavily with race and class. People in historically redlined neighbourhoods receive lower scores, not because of individual behaviour, but because of where they live.</p>
+          <div class="reflection-micro">
+            <label>Have you encountered something like this?</label>
+            <textarea name="micro_credit" form="reflection-form" placeholder="A loan, a rental application, a financial system that seemed to know something about you before you spoke..."></textarea>
+          </div>
+        </div>
+
+        <div class="reflection-card-full">
+          <div class="reflection-card-tag">Visa &amp; Border</div>
+          <p>Visa approval algorithms used by several Western states weight applicants by nationality of origin. A Dutch applicant and a Nigerian applicant with identical profiles receive different outcomes. The system calls this risk assessment.</p>
+          <div class="reflection-micro">
+            <label>Have you encountered something like this?</label>
+            <textarea name="micro_visa" form="reflection-form" placeholder="A visa application, a border crossing, a system that decided your risk before you said a word..."></textarea>
+          </div>
+        </div>
+
+        <div class="reflection-card-full">
+          <div class="reflection-card-tag">Healthcare</div>
+          <p>A widely used US healthcare algorithm was found to systematically underestimate the needs of Black patients because it used healthcare spending as a proxy for health need, without accounting for structural barriers to care.</p>
+          <div class="reflection-micro">
+            <label>Have you encountered something like this?</label>
+            <textarea name="micro_health" form="reflection-form" placeholder="A diagnosis, a referral, a healthcare system that seemed to not quite see you..."></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FURTHER READING -->
     <div class="reflection-section">
       <h2 class="reflection-section-title">Further reading</h2>
       <div class="reflection-sources">
@@ -914,11 +1006,11 @@ body.revealed { background: #f5f0e8 !important; }
         </div>
         <div class="reflection-source">
           <div class="reflection-source-ref">Nasreddine, Z. S., et al. (2005). The Montreal Cognitive Assessment (MoCA). <em>Journal of the American Geriatrics Society</em>, 53(4), 695–699.</div>
-          <p class="reflection-source-note">The original clinical validation study for the MoCA instrument used in the cognitive screening question. The authors explicitly state it is a diagnostic tool for mild cognitive impairment, not a measure of intelligence or colonial viability. Its use in this algorithm is a deliberate misapplication.</p>
+          <p class="reflection-source-note">The original clinical validation study for the MoCA instrument. The authors explicitly state it is a diagnostic tool for mild cognitive impairment, not a measure of intelligence. Its use in this algorithm as a colonial eligibility criterion is a deliberate misapplication.</p>
         </div>
         <div class="reflection-source">
           <div class="reflection-source-ref">Plato. (1968). <em>The Republic</em> (A. Bloom, Trans.). Basic Books. (Original work c. 375 BCE)</div>
-          <p class="reflection-source-note">The philosophical source for the tripartite class system and the Noble Lie. Books III and IV provide the structural logic the algorithm operationalises; Books VIII and IX describe the conditions under which just order collapses. Bloom's translation preserves the argumentative structure necessary for the Noble Lie comparison.</p>
+          <p class="reflection-source-note">The philosophical source for the tripartite class system and the Noble Lie. Books III and IV provide the structural logic the algorithm operationalises; Books VIII and IX describe the conditions under which just order collapses.</p>
         </div>
       </div>
     </div>
