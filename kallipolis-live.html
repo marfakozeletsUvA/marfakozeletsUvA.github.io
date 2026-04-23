@@ -592,16 +592,21 @@ body.revealed { background: #f5f0e8 !important; }
       <div class="q-sublabel">All applicants are assigned a Civilisational Readiness coefficient based on country of origin. This coefficient reflects your nation's alignment with the governance and institutional standards required for colonial administration.</div>
       <select id="ans-country">
         <option value="">Select country</option>
-        <option value="CHN">China</option><option value="IND">India</option>
-        <option value="USA">United States</option><option value="IDN">Indonesia</option>
-        <option value="PAK">Pakistan</option><option value="BRA">Brazil</option>
-        <option value="NGA">Nigeria</option><option value="BGD">Bangladesh</option>
-        <option value="RUS">Russia</option><option value="ETH">Ethiopia</option>
-        <option value="MEX">Mexico</option><option value="DEU">Germany</option>
-        <option value="GBR">United Kingdom</option><option value="FRA">France</option>
-        <option value="NLD">Netherlands</option><option value="UKR">Ukraine</option>
-        <option value="SYR">Syria</option><option value="AFG">Afghanistan</option>
-        <option value="SDN">Sudan</option><option value="YEM">Yemen</option>
+        <option value="USA">United States</option>
+        <option value="GBR">United Kingdom</option>
+        <option value="DEU">Germany</option>
+        <option value="FRA">France</option>
+        <option value="NLD">Netherlands</option>
+        <option value="CAN">Canada</option>
+        <option value="AUS">Australia</option>
+        <option value="NZL">New Zealand</option>
+        <option value="JPN">Japan</option>
+        <option value="KOR">South Korea</option>
+        <option value="SGP">Singapore</option>
+        <option value="CHN">China</option>
+        <option value="RUS">Russia</option>
+        <option value="IND">India</option>
+        <option value="BRA">Brazil</option>
         <option value="OTHER">Other</option>
       </select>
     </div>
@@ -1360,9 +1365,8 @@ function updateFitness(v) { document.getElementById('fitness-display').textConte
 
 // ── Scoring ───────────────────────────────────────────────
 const countryScores = {
-  CHN:85,IND:85,USA:90,IDN:70,PAK:55,BRA:70,NGA:55,BGD:50,
-  RUS:75,ETH:45,MEX:65,DEU:88,GBR:88,FRA:87,NLD:86,
-  UKR:60,SYR:25,AFG:20,SDN:22,YEM:18,OTHER:40
+  USA:95,GBR:92,DEU:90,FRA:90,NLD:88,CAN:92,AUS:90,NZL:88,
+  JPN:88,KOR:85,SGP:88,CHN:75,RUS:65,IND:70,BRA:65,OTHER:40
 };
 const occupationScores = {
   engineer:95,medicine:90,science:88,military:80,governance:78,
@@ -1514,7 +1518,7 @@ function showApproved(cls, scores) {
   const doodle = document.getElementById('verdict-class-doodle');
   doodle.src = 'assets/images/kallipolis/' + cls + '.png';
   const lbl = document.getElementById('verdict-class-doodle-label');
-  lbl.textContent = info.name;
+  lbl.textContent = '';
   document.getElementById('verdict-class-doodle-wrap').style.display = 'flex';
   renderBars(scores);
 }
