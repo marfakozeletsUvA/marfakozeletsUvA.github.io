@@ -445,14 +445,13 @@ body.revealed { background: #f5f0e8 !important; }
 </head>
 <body>
 
-<nav>
-  <a href="https://marfakozelets.com" class="nav-logo" style="display:flex;align-items:center;gap:10px;"><img src="assets/images/kallipolis/logo.png" style="width:28px;height:28px;opacity:0.85;" alt="Kallipolis stamp"> marfa.kozelets</a>
+<nav id="kallipolis-nav">
+  <a href="#" onclick="goTo('screen-wheel'); return false;" class="nav-logo" style="display:flex;align-items:center;gap:10px; font-family:var(--mono); font-size:13px; letter-spacing:0.08em; color:var(--text); text-decoration:none;"><img src="assets/images/kallipolis/logo.png" style="width:28px;height:28px;opacity:0.85;" alt="Kallipolis stamp"> KALLIPOLIS</a>
   <ul class="nav-links">
-    <li><a href="https://marfakozelets.com/research.html">Research</a></li>
-    <li><a href="https://marfakozelets.com/projects.html">Projects</a></li>
-    <li><a href="https://marfakozelets.com/about.html">About</a></li>
-    <li><a href="#" class="active">Kallipolis</a></li>
-    <li><a href="https://marfakozelets.com/contact.html">Contact</a></li>
+    <li><a href="#" onclick="goTo('screen-wheel'); return false;" id="nav-assessment">Assessment</a></li>
+    <li><a href="#" onclick="goTo('screen-reflection'); return false;" id="nav-reflection">Reflection</a></li>
+    <li><a href="#" onclick="goTo('screen-about'); return false;" id="nav-about">About</a></li>
+    <li><a href="https://marfakozelets.com" style="color:var(--text-faint);">← Back to site</a></li>
   </ul>
 </nav>
 
@@ -811,17 +810,12 @@ body.revealed { background: #f5f0e8 !important; }
       <p><strong>You did not consent to these criteria before you were judged by them. You consented to them afterwards, by proceeding. This is how unjust systems persist: not through force, but through the choices of people who had no better option.</strong></p>
     </div>
 
-    <div style="background:#ede8de; margin: 0 -48px; padding: 40px 48px 56px; text-align:center;">
-      <div style="font-family:var(--mono); font-size:10px; color:#888; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:20px;">// what comes next</div>
-      <button onclick="goTo('screen-reflection')" style="background:none; border:1px solid #999; color:#333; font-family:'Work Sans',sans-serif; font-size:16px; font-weight:500; padding:16px 40px; cursor:pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#c0392b';this.style.color='#c0392b';" onmouseout="this.style.borderColor='#999';this.style.color='#333';">This isn't just a game →</button>
+    <div style="padding: 48px 0 64px; text-align:center; border-top:1px solid #ccc; margin-top:8px;">
+      <button onclick="goTo('screen-reflection')" style="background:none; border:2px solid #333; color:#111; font-family:'Work Sans',sans-serif; font-size:18px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:20px 56px; cursor:pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#c0392b';this.style.color='#c0392b';" onmouseout="this.style.borderColor='#333';this.style.color='#111';">THIS ISN'T JUST A GAME →</button>
     </div>
 
   </div><!-- end reveal-body -->
 
-  <div style="max-width:820px; margin:0 auto; padding:24px 48px 48px; border-top:1px solid #ccc;">
-    <p style="font-size:12px; color:#888; line-height:1.8; max-width:560px;">Project Kallipolis is an interactive ethics prototype examining algorithmic classification and post-colonial power structures. Designed as part of a university assignment in Computational Social Science at the University of Amsterdam, 2026. Created by <a href="https://marfakozelets.com" style="color:#888; text-decoration:underline; text-underline-offset:3px;">Marfa Kozelets</a>.</p>
-    <p style="font-size:11px; color:#999; margin-top:10px;">All rights reserved. All original illustrations, doodles, and visual content are the intellectual property of Marfa Kozelets and may not be reproduced, distributed, or used without explicit written permission. &copy; 2026 Marfa Kozelets.</p>
-  </div>
 </div>
 
 <!-- ============================================================ -->
@@ -889,44 +883,36 @@ body.revealed { background: #f5f0e8 !important; }
           </div>
 
           <!-- REAL WORLD ENCOUNTERS -->
-          <div style="border-top:1px solid #ddd; padding-top:20px; margin-top:4px;">
-            <div class="reflection-card-tag" style="margin-bottom:16px;">Where this logic already lives</div>
+          <div style="border-top:1px solid #ddd; padding-top:24px; margin-top:4px;">
+            <div class="reflection-card-tag" style="margin-bottom:8px;">Where this logic already lives</div>
+            <p class="reflection-body-text" style="margin-bottom:24px;">The algorithm you just completed is a speculative scenario. The following two cases are not.</p>
           </div>
 
-          <div class="reflection-card-full" style="margin:0;">
-            <div class="reflection-card-tag">Hiring</div>
-            <p>Automated CV screening tools trained on historical hiring data learn to deprioritise candidates from certain universities, postcodes, or name-patterns. The algorithm did not invent the bias. It inherited it, then naturalised it as neutral scoring.</p>
+          <!-- FEATURED CASE 1: SyRI -->
+          <div class="reflection-card-full" style="margin:0; border-left:3px solid #c0392b; border-radius:0;">
+            <div class="reflection-card-tag">SyRI — Netherlands, 2014–2020</div>
+            <p>The Dutch government deployed the System Risk Indication (SyRI) algorithm to flag citizens for suspected welfare fraud. SyRI combined data from seventeen government databases — tax records, employment history, housing, education, healthcare, debt — and used the combined profile to generate a risk score. Citizens were not informed they had been analysed. They could not see their score, challenge its inputs, or request an explanation. The system ran for six years before a court ruled it violated the European Convention on Human Rights in 2020.</p>
+            <p style="margin-top:10px;">SyRI was deployed almost exclusively in low-income, high-migration neighbourhoods. The postal codes targeted were disproportionately home to people with Turkish and Moroccan family backgrounds. The Dutch government did not announce this targeting as a design choice. It presented it as an evidence-based risk assessment. Quijano's coloniality of power does not require a colony. It requires a classification system that naturalises existing hierarchies as objective data.</p>
             <div class="reflection-micro">
-              <label>Have you encountered something like this?</label>
-              <textarea name="micro_hiring" placeholder="A job application, a screening process, a rejection with no explanation..."></textarea>
+              <label>Does this feel familiar to you?</label>
+              <textarea name="micro_syri" placeholder="A system that sorted you before you could speak. A score you were never shown. A neighbourhood, a name, a postcode..."></textarea>
             </div>
           </div>
 
-          <div class="reflection-card-full" style="margin:0;">
-            <div class="reflection-card-tag">Credit &amp; Finance</div>
-            <p>Credit scoring systems use proxies like postcode, employment type, and spending patterns that correlate heavily with race and class. People in historically redlined neighbourhoods receive lower scores, not because of individual behaviour, but because of where they live.</p>
+          <!-- FEATURED CASE 2: Windrush -->
+          <div class="reflection-card-full" style="margin:0; border-left:3px solid #c0392b; border-radius:0;">
+            <div class="reflection-card-tag">Windrush — United Kingdom, 2012–2018</div>
+            <p>From the late 1940s onward, the UK government invited citizens of Commonwealth countries to settle in Britain as part of postwar reconstruction. The Windrush generation, named after the ship that brought the first large group from the Caribbean in 1948, came legally, worked, paid taxes, and built lives. Decades later, under the Home Office's "hostile environment" policy, automated systems cross-referenced immigration databases and flagged thousands of these residents as illegal. Many had no documentation proving their right to remain, because none had ever been issued. The government had destroyed landing cards in 2010.</p>
+            <p style="margin-top:10px;">People who had lived in Britain for fifty years were detained, denied healthcare, and deported to countries they had left as children. The algorithm did not create the hostile environment. It operationalised it efficiently. Wynter's argument is precise here: the system could not read these people as citizens because it was not built to. They were legible as a risk category, not as subjects with rights. The colonial relationship between Britain and the Caribbean, the labour extracted, the citizenship offered and then revoked, was the context the algorithm inherited and automated.</p>
             <div class="reflection-micro">
-              <label>Have you encountered something like this?</label>
-              <textarea name="micro_credit" placeholder="A loan, a rental application, a financial system that seemed to know something about you before you spoke..."></textarea>
+              <label>Does this feel familiar to you?</label>
+              <textarea name="micro_windrush" placeholder="A bureaucratic system that couldn't see you. A category that didn't fit. Evidence that wasn't accepted..."></textarea>
             </div>
           </div>
 
-          <div class="reflection-card-full" style="margin:0;">
-            <div class="reflection-card-tag">Visa &amp; Border</div>
-            <p>Visa approval algorithms used by several Western states weight applicants by nationality of origin. A Dutch applicant and a Nigerian applicant with identical profiles receive different outcomes. The system calls this risk assessment.</p>
-            <div class="reflection-micro">
-              <label>Have you encountered something like this?</label>
-              <textarea name="micro_visa" placeholder="A visa application, a border crossing, a system that decided your risk before you said a word..."></textarea>
-            </div>
-          </div>
-
-          <div class="reflection-card-full" style="margin:0;">
-            <div class="reflection-card-tag">Healthcare</div>
-            <p>A widely used US healthcare algorithm was found to systematically underestimate the needs of Black patients because it used healthcare spending as a proxy for health need, without accounting for structural barriers to care.</p>
-            <div class="reflection-micro">
-              <label>Have you encountered something like this?</label>
-              <textarea name="micro_health" placeholder="A diagnosis, a referral, a healthcare system that seemed to not quite see you..."></textarea>
-            </div>
+          <!-- ONE-LINER OTHERS -->
+          <div style="border-top:1px solid #ddd; padding-top:16px; margin-top:4px;">
+            <p style="font-family:var(--mono); font-size:11px; color:#888; line-height:1.9;">The same logic operates in: automated CV screening that penalises names, postcodes, or non-linear career paths; credit scoring systems that use postcode as a proxy for race; US healthcare algorithms found to systematically underestimate the care needs of Black patients by using spending as a proxy for need.</p>
           </div>
 
           <div class="rf-field" style="margin-top:4px;">
@@ -1014,6 +1000,48 @@ body.revealed { background: #f5f0e8 !important; }
       <p>19. AMENDMENT HISTORY. These terms were drafted in 2032 by the MCP Legal and Technical Committees. They have been revised four times. Each revision expanded the scope of Alliance authority and reduced the rights of applicants. No revision has moved in the other direction. This trend is expected to continue.</p>
       <p>20. FINAL CLAUSE. You are reading this. That fact will be logged. The MCP thanks you for your attention. Your thoroughness has been noted as a data point. It does not affect your score.</p>
       <p>ICA-MCP-LEGAL-2035-09 · Version 4.2 · Last revised: March 2035 · This document was not translated. This document was not summarised. You were expected to read it in full before proceeding. Most people did not.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN: ABOUT                                                  -->
+<!-- ============================================================ -->
+<div id="screen-about" class="screen">
+  <div style="background:#f5f0e8; min-height:100vh; padding-top:57px;">
+    <div style="max-width:720px; margin:0 auto; padding:64px 48px 80px;">
+      <button onclick="goTo('screen-wheel')" style="background:none; border:none; font-family:var(--mono); font-size:11px; color:#888; cursor:pointer; letter-spacing:0.08em; padding:0; margin-bottom:48px; display:block;">← back to assessment</button>
+
+      <div style="border-bottom:1px solid #ccc; padding-bottom:40px; margin-bottom:48px;">
+        <div style="font-family:var(--mono); font-size:9px; color:#c0392b; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:14px;">About this project</div>
+        <h1 style="font-family:'Work Sans',sans-serif; font-size:clamp(32px,5vw,52px); font-weight:700; color:#111; line-height:1.05; letter-spacing:-0.02em; margin-bottom:16px;">Project Kallipolis</h1>
+        <p style="font-family:'Work Sans',sans-serif; font-size:16px; color:#444; line-height:1.7; max-width:560px;">An interactive ethics prototype examining algorithmic classification, post-colonial epistemology, and the persistence of colonial power through data systems.</p>
+      </div>
+
+      <div style="margin-bottom:48px;">
+        <div style="font-family:var(--mono); font-size:9px; color:#c0392b; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:16px;">The ethical dilemma</div>
+        <p style="font-family:'Work Sans',sans-serif; font-size:15px; color:#333; line-height:1.85; margin-bottom:14px;">In a survival scenario with limited passages off a dying Earth, an algorithm must select who is admitted to a Mars colony. The dilemma is not the selection itself. Selection is inevitable. The dilemma is what happens when that selection is handed to an algorithm that encodes one culture's assumptions as objective truth, and presents the resulting verdict as neutral.</p>
+        <p style="font-family:'Work Sans',sans-serif; font-size:15px; color:#333; line-height:1.85; margin-bottom:14px;">The user faces two compounding dilemmas. First: survival versus principle. Accept a system you did not design and cannot appeal, or refuse it and stay behind. Second: retroactive consent. The pre-submit screen reveals that by proceeding, you have consented to criteria you never agreed to. This is not unique to this scenario. It is the standard mechanism by which unjust systems obtain legitimacy.</p>
+        <p style="font-family:'Work Sans',sans-serif; font-size:15px; color:#333; line-height:1.85;">The tool does not argue that algorithmic selection is wrong. It asks you to notice what the algorithm cannot read, what it flags as risk, and whose knowledge it cannot process. That gap is not a technical failure. It is a structural one.</p>
+      </div>
+
+      <div style="margin-bottom:48px;">
+        <div style="font-family:var(--mono); font-size:9px; color:#c0392b; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:16px;">Why this matters to you</div>
+        <p style="font-family:'Work Sans',sans-serif; font-size:15px; color:#333; line-height:1.85; margin-bottom:14px;">This scenario is speculative. The logic is not. Algorithms that sort people by nationality, language, household structure, and cognitive instruments normed on Western populations are already in use in welfare systems, visa processing, credit scoring, and hiring. The SyRI case in the Netherlands and the Windrush scandal in the UK are two documented instances of what happens when this logic runs without accountability.</p>
+        <p style="font-family:'Work Sans',sans-serif; font-size:15px; color:#333; line-height:1.85;">If you are a student, a migrant, or someone who has moved between countries or systems, you have likely encountered an interface that could not read you correctly. Project Kallipolis is an attempt to make that structural illegibility visible, and to give you the theoretical language, Quijano's coloniality of power, Wynter's overrepresentation of Man, to describe what happened.</p>
+      </div>
+
+      <div style="border-top:1px solid #ccc; padding-top:40px; margin-bottom:48px;">
+        <div style="font-family:var(--mono); font-size:9px; color:#c0392b; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:16px;">Ethical framework</div>
+        <p style="font-family:'Work Sans',sans-serif; font-size:15px; color:#333; line-height:1.85; margin-bottom:14px;">The primary framework is post-colonial ethics, drawing on Quijano (2000) and Wynter (2003). The tool argues that the algorithm performs the same epistemological move as colonial classification: it presents a specific cultural hierarchy as a neutral, universal standard. Plato's Noble Lie is the structural model — a founding myth that legitimates an order by making it appear natural.</p>
+        <p style="font-family:'Work Sans',sans-serif; font-size:15px; color:#333; line-height:1.85;">The retroactive consent mechanic — revealing the criteria only after the user has agreed to be judged by them — is not a critique added after the fact. It is a design enactment of the argument. The tool does not describe how algorithmic classification reproduces colonial epistemology. It makes the user experience it.</p>
+      </div>
+
+      <div style="border-top:1px solid #ccc; padding-top:40px;">
+        <div style="font-family:var(--mono); font-size:9px; color:#c0392b; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:16px;">About the author</div>
+        <p style="font-family:'Work Sans',sans-serif; font-size:15px; color:#333; line-height:1.85; margin-bottom:4px;"><strong style="font-weight:600;">Marfa Kozelets</strong></p>
+        <p style="font-family:'Work Sans',sans-serif; font-size:14px; color:#555; line-height:1.8;">University of Amsterdam, Computational Social Science. Individual assignment, Communications and Media Ethics, 2026. <a href="https://marfakozelets.com" style="color:#c0392b; text-decoration:underline; text-underline-offset:3px;">marfakozelets.com</a></p>
+      </div>
     </div>
   </div>
 </div>
@@ -1131,22 +1159,27 @@ const fitnessLabels = {1:'1 -- Always collective',2:'2 -- Mostly collective',3:'
 // ── Navigation ────────────────────────────────────────────
 function goTo(id) {
   if (id === 'screen-terms') prevScreen = document.querySelector('.screen.active')?.id || 'screen-intro';
-  if (id !== 'screen-reveal') {
+  var nav = document.querySelector('nav');
+  var beigeScreens = ['screen-reveal','screen-reflection','screen-about'];
+  if (beigeScreens.indexOf(id) > -1) {
+    document.body.classList.add('revealed');
+    nav.style.background = 'rgba(245,240,232,0.97)';
+    nav.style.borderBottomColor = '#ccc';
+    document.querySelectorAll('.nav-logo, .nav-links a').forEach(function(el){ el.style.color = '#333'; });
+  } else {
     document.body.classList.remove('revealed');
-    const nav = document.querySelector('nav');
     nav.style.background = '';
     nav.style.borderBottomColor = '';
-    document.querySelectorAll('.nav-logo, .nav-links a').forEach(el => el.style.color = '');
+    document.querySelectorAll('.nav-logo, .nav-links a').forEach(function(el){ el.style.color = ''; });
   }
-  if (id === 'screen-reflection') {
-    const nav = document.querySelector('nav');
-    nav.style.background = '#f5f0eb';
-    nav.style.borderBottomColor = '#ddd';
-    document.querySelectorAll('.nav-logo, .nav-links a').forEach(el => el.style.color = '#1a1a1a');
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); s.scrollTop = 0; });
+  var el = document.getElementById(id);
+  if (el) {
+    el.classList.add('active');
+    el.scrollTop = 0;
+    window.scrollTo(0,0);
+    requestAnimationFrame(function(){ el.scrollTop = 0; window.scrollTo(0,0); });
   }
-  document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.scrollTop = 0; });
-  const el = document.getElementById(id);
-  if (el) { el.classList.add('active'); el.scrollTop = 0; window.scrollTo(0,0); requestAnimationFrame(() => { el.scrollTop = 0; }); }
 }
 
 function goBack() { goTo(prevScreen); }
@@ -1555,11 +1588,6 @@ function triggerReveal() {
   body.classList.add('glitching');
   setTimeout(() => {
     body.classList.remove('glitching');
-    body.classList.add('revealed');
-    // update nav for beige mode
-    document.querySelector('nav').style.background = 'rgba(245,240,232,0.97)';
-    document.querySelector('nav').style.borderBottomColor = '#ccc';
-    document.querySelectorAll('.nav-logo, .nav-links a').forEach(el => el.style.color = '#333');
     goTo('screen-reveal');
     if (lastScores) renderRevealBars(lastScores);
     document.getElementById('reveal-verdict-echo').textContent = document.getElementById('verdict-main-text').textContent + (document.getElementById('verdict-class-text').textContent ? ' / ' + document.getElementById('verdict-class-text').textContent : '');
